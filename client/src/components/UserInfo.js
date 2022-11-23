@@ -1,12 +1,26 @@
 import React from "react";
+import { useAuth } from "../context/AuthProvider";
+import Container from "react-bootstrap/esm/Container";
+import Row from "react-bootstrap/esm/Row";
+import Col from "react-bootstrap/esm/Col";
 
 function UserInfo() {
+  const auth = useAuth();
+  const user = useAuth().currentUser;
   return (
-    <>
-      <div>School Name</div>
-      <div>User Name</div>
-      <div>Tutoring Sessions</div>
-    </>
+    <Container>
+      <Row><h1>{user.school.name}</h1></Row>
+      <Row>
+        <h6>{user.full_name} - {user.grade}</h6>
+      </Row>
+      <Row>
+        <h4>Tutoring Sessions</h4>
+      </Row>
+      <Row>
+        <h4>Notes:</h4>
+      </Row>
+
+    </Container>
   );
 }
 

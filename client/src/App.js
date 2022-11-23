@@ -54,7 +54,7 @@ function App() {
       <div>
         <Routes>
           <Route
-            path="/user"
+            path={`/user/:id`}
             element={
               <ProtectedRoute isAllowed={auth.isLoggedIn}>
                 <UserDashboard />
@@ -63,7 +63,13 @@ function App() {
           />
           <Route
             path="/"
-            element={auth.isLoggedIn ? <Navigate to={`/user`} /> : <Home />}
+            element={
+              auth.currentUser.id ? (
+                <Navigate to={`/user/${auth.currentUser.id}`} />
+              ) : (
+                <Home />
+              )
+            }
           />
         </Routes>
       </div>

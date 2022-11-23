@@ -12,15 +12,7 @@ export const useAuth = () => {
 };
 
 function useProvideAuth() {
-  const [currentUser, setCurrentUser] = useState([
-    {
-      // id: "",
-      full_name: "",
-      school: "",
-      grade: "",
-      role: "",
-    },
-  ]);
+  const [currentUser, setCurrentUser] = useState({});
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,11 +26,12 @@ function useProvideAuth() {
     }).then((res) => {
       if (res.ok) {
         res.json().then((user) => {
+          console.log(user);
           setCurrentUser(user);
           setIsLoggedIn(true);
         });
       } else {
-        //res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
         res.json().then((e) => console.log(Object.entries(e.error)));
       }
     });
@@ -53,10 +46,13 @@ function useProvideAuth() {
       body: JSON.stringify(signUpForm),
     }).then((res) => {
       if (res.ok) {
-        setIsLoggedIn(true);
-        res.json().then(setCurrentUser);
+        res.json().then((user) => {
+          console.log(user);
+          setCurrentUser(user);
+          setIsLoggedIn(true);
+        });
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
         res.json().then((e) => console.log(Object.entries(e.error)));
       }
     });
@@ -88,6 +84,7 @@ function useProvideAuth() {
 
   return {
     currentUser,
+    setCurrentUser,
     login,
     logout,
     signup,

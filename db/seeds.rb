@@ -30,14 +30,47 @@ end
 schools = School.all
  schools.each do |school|
   if school.name == "Lincoln Middle School"
-    user = fake_data()
-    User.create!(full_name: user[0], email: user[1], school_id:school.id, grade:'6', password:'Abc123!', role:'tutee')
-    User.create!(full_name: user[0], email: user[1], school_id:school.id, grade:'8', password:'Abc123!', role:'tutor')
-    User.create!(full_name: user[0], email: user[1], school_id:school.id, grade:'Admin', password:'Abc123!', role:'admin')
+    User.create!(full_name: Faker::Name.name, 
+      email: Faker::Internet.email, 
+      school_id:school.id, 
+      grade:'6', 
+      password:'Abc123!', 
+      role:'tutee')
+
+    User.create!(full_name: Faker::Name.name, 
+      email: Faker::Internet.email, 
+      school_id:school.id, 
+      grade:'8', 
+      password:'Abc123!', 
+      role:'tutor')
+
+    User.create!(full_name: Faker::Name.name, 
+      email: Faker::Internet.email, 
+      school_id:school.id, 
+      grade:'Admin', 
+      password:'Abc123!', 
+      role:'admin')
+
   else
-    user = fake_data()
-    User.create!(full_name: user[0], email: user[1], school_id:school.id, grade:'freshman', password:'Abc123!', role:'tutee')
-    User.create!(full_name: user[0], email: user[1], school_id:school.id, grade:'senior', password:'Abc123!', role:'tutor')
-    User.create!(full_name: user[0], email: user[1], school_id:school.id, grade:'Admin', password:'Abc123!', role:'admin')
+    User.create!(full_name: Faker::Name.name, 
+      email: Faker::Internet.email, 
+      school_id:school.id, 
+      grade:'freshman', 
+      password:'Abc123!', 
+      role:'tutee')
+
+    User.create!(full_name: Faker::Name.name, 
+      email: Faker::Internet.email, 
+      school_id:school.id, 
+      grade:'senior', 
+      password:'Abc123!', 
+      role:'tutor')
+
+    User.create!(full_name: Faker::Name.name, 
+      email: Faker::Internet.email, 
+      school_id:school.id, 
+      grade:'Admin', 
+      password:'Abc123!', 
+      role:'admin')
   end
 end

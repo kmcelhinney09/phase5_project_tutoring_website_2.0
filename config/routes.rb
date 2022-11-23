@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   
   resources :schools
-  resources :users, only:[:show, :create]
+  resources :users
 
   get "/auth", to: 'users#show'
   post "/login", to: "sessions#create"
