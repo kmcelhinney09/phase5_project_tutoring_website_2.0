@@ -11,6 +11,8 @@ require 'faker'
 puts "Clearing Old Data"
 School.destroy_all
 User.destroy_all
+TutoringTimeSlot.destroy_all
+BookedSlot.destroy_all
 
 puts "Seeding Data"
 
@@ -22,11 +24,6 @@ puts "Creating Schools"
 
 puts "Creating Users"
 
-def fake_data()
-  fake_name = Faker::Name.name
-  fake_email = Faker::Internet.email
-  [fake_name, fake_email]
-end
 schools = School.all
  schools.each do |school|
   if school.name == "Lincoln Middle School"
@@ -72,5 +69,26 @@ schools = School.all
       grade:'Admin', 
       password:'Abc123!', 
       role:'admin')
+    end
   end
-end
+
+
+  puts 'Creating Tutoring Time Slots'
+  40.times do
+    start_time = DateTime.parse(Faker::Time.forward(23,:afternoon).to_s)
+    end_time = start_time+2.hours
+    TutoringTimeSlot.create!(created_by:[3,6,9,12].sample, 
+      tutor_capacity:2, 
+      tutee_capacity:6, 
+      booked_status: false, 
+      start_time: start_time, 
+      end_time: end_time, 
+      school_id:rand(1..4), 
+      room_id:rand(1..10), 
+      open_status: false)
+  end
+
+  puts "Creating Booked Time Slots"
+  20.times do
+    BookedSlot.create!(tutor_id:[2,3,5,6,8,9,11,12].sample, tutee_id:[1,4,7,10].sample, tutoring_time_slot_id:rand(1..40))
+  end

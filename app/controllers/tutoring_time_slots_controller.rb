@@ -1,0 +1,2 @@
+class TutoringTimeSlotsController < ApplicationController
+end

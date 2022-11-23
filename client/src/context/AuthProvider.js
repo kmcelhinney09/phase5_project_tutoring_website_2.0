@@ -12,7 +12,7 @@ export const useAuth = () => {
 };
 
 function useProvideAuth() {
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,7 +31,7 @@ function useProvideAuth() {
           setIsLoggedIn(true);
         });
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
+        // res.json().then((e) => setErrors(Object.entries(e.error)));
         res.json().then((e) => console.log(Object.entries(e.error)));
       }
     });
@@ -52,7 +52,7 @@ function useProvideAuth() {
           setIsLoggedIn(true);
         });
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
+        // res.json().then((e) => setErrors(Object.entries(e.error)));
         res.json().then((e) => console.log(Object.entries(e.error)));
       }
     });

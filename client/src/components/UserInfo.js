@@ -5,7 +5,6 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 
 function UserInfo() {
-  const auth = useAuth();
   const user = useAuth().currentUser;
   return (
     <Container>

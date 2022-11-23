@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :tutoring_time_slots
   resources :schools
   resources :users
 

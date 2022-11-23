@@ -64,7 +64,7 @@ function App() {
           <Route
             path="/"
             element={
-              auth.currentUser.id ? (
+              auth.currentUser ? (
                 <Navigate to={`/user/${auth.currentUser.id}`} />
               ) : (
                 <Home />

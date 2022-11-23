@@ -10,13 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_22_180653) do
+ActiveRecord::Schema.define(version: 2022_11_23_014154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "booked_slots", force: :cascade do |t|
+    t.integer "tutor_id"
+    t.integer "tutee_id"
+    t.integer "tutoring_time_slot_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "schools", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tutoring_time_slots", force: :cascade do |t|
+    t.integer "created_by"
+    t.integer "tutor_capacity"
+    t.integer "tutee_capacity"
+    t.boolean "booked_status"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer "school_id"
+    t.integer "room_id"
+    t.boolean "open_status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
