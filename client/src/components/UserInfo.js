@@ -2,7 +2,6 @@ import React from "react";
 import { useAuth } from "../context/AuthProvider";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
-import Col from "react-bootstrap/esm/Col";
 
 function UserInfo() {
   const user = useAuth().currentUser;
@@ -14,6 +13,7 @@ function UserInfo() {
       </Row>
       <Row>
         <h4>Tutoring Sessions</h4>
+        
       </Row>
       <Row>
         <h4>Notes:</h4>

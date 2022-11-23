@@ -92,3 +92,15 @@ schools = School.all
   20.times do
     BookedSlot.create!(tutor_id:[2,3,5,6,8,9,11,12].sample, tutee_id:[1,4,7,10].sample, tutoring_time_slot_id:rand(1..40))
   end
+
+  puts "Creating Buildings"
+  24.times do
+    Building.create!(name:Faker::Educator.campus + " Hall", school_id:rand(1..4))
+  end
+
+  puts "Creating Rooms"
+  72.times do
+    Room.create!(name:'Room ' + rand(1..500).to_s, building_id:rand(1..24))
+  end
+
+  puts "The Field Is Planted"

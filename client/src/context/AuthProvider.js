@@ -12,7 +12,7 @@ export const useAuth = () => {
 };
 
 function useProvideAuth() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -73,8 +73,9 @@ function useProvideAuth() {
     fetch("/auth").then((res) => {
       if (res.ok) {
         res.json().then((user) => {
-          setIsLoggedIn(true);
+          console.log(user);
           setCurrentUser(user);
+          setIsLoggedIn(true);
         });
       } else {
         setIsLoggedIn(false);
