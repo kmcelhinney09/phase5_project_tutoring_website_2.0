@@ -18,7 +18,6 @@ import { useAuth } from "./context/AuthProvider";
 
 function App() {
   const auth = useAuth();
-  const currentUser = auth.currentUser;
 
   useEffect(() => {
     auth.auto();
@@ -27,7 +26,6 @@ function App() {
   function handleLogout() {
     auth.logout();
   }
-
   return (
     <Router>
       <div>
@@ -45,8 +43,8 @@ function App() {
                     Logout
                   </Button>
                 ) : null}
-                <Nav.Link href={`/user/${currentUser.id}`}>
-                  {auth.isLoggedIn ? currentUser.full_name : null}
+                <Nav.Link href="">
+                  {auth.isLoggedIn ? auth.currentUser.full_name : null}
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>
@@ -55,19 +53,22 @@ function App() {
       </div>
       <div>
         <Routes>
-          
           <Route
             path={`/user/:id`}
             element={
-              // <ProtectedRoute isAllowed={auth.isLoggedIn}>
+              <ProtectedRoute isAllowed={auth.isLoggedIn}>
                 <UserDashboard />
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           />
           <Route
-            exact path="/"
+            path="/"
             element={
+              auth.isLoggedIn ? (
+                <Navigate to={`/user/${auth.currentUser.id}`} />
+              ) : (
                 <Home />
+              )
             }
           />
         </Routes>

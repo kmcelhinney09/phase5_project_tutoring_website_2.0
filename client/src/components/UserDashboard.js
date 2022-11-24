@@ -25,7 +25,7 @@ function UserDashboard() {
   return (
     <>
       {user.role ? (
-        <div>
+        <div className="mb-5">
           {console.log(id)}
           <Tab.Container
             id="left-tabs-example"
