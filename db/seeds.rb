@@ -16,6 +16,8 @@ Room.destroy_all
 TutoringTimeSlot.destroy_all
 BookedSlot.destroy_all
 TutorNote.destroy_all
+TutorSlotSignUp.destroy_all
+Subject.destroy_all
 
 puts "Seeding Data"
 
@@ -112,6 +114,21 @@ schools = School.all
   puts "Adding Tutor Slot Signups"
   20.times do
     TutorSlotSignUp.create(tutor_id:[2,3,5,6,8,9,11,12].sample, tutoring_time_slot_id:rand(1..40))
+  end
+
+  puts "Creating Subjects"
+  20.times do
+    Subject.create(name:Faker::Educator.subject)
+  end
+
+  puts "Creating Tutored Subjects"
+
+  tutors = [2,3,5,6,8,9,11,12]
+  subjects = Subject.all
+  2.times do
+    tutors.each do |tutor|
+      TutoredSubject.create(tutor_id:tutor, subject_id:subjects.sample.id)
+    end
   end
 
   puts "The Field Is Planted"

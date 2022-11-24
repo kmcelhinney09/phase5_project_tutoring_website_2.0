@@ -1,0 +1,2 @@
+class TutoredSubject < ApplicationRecord
+end
