@@ -5,9 +5,8 @@ class User < ApplicationRecord
   belongs_to :school
   
   has_many :booked_slots, foreign_key: 'tutee_id'
-    # May not need these plus they mess up the deployment because not all users have booked_tutors/tutees
-  # has_many :booked_tutors, class_name: 'BookedSlot', foreign_key: 'tutor_id'
-  # has_many :booked_tutees, class_name: 'BookedSlot', foreign_key: 'tutee_id'
+  has_many :tutored_subjects, class_name: 'TutoredSubject', foreign_key: 'tutor_id'
+  has_many :subjects_signed_up, :through => :tutored_subjects, :source => 'subject'
 
   after_initialize do
     if self.new_record?
