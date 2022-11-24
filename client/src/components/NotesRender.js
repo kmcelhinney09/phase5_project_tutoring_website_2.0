@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 function NotesRender() {
   const user = useAuth().currentUser;
-  console.log("Notes User:", user);
+  
   return (
     <Container>
       <h4>Notes:</h4>

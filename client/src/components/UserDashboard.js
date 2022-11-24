@@ -26,7 +26,6 @@ function UserDashboard() {
     <>
       {user.role ? (
         <div className="mb-5">
-          {console.log(id)}
           <Tab.Container
             id="left-tabs-example"
             activeKey={key}
