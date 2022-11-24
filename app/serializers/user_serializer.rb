@@ -1,8 +1,9 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :full_name, :email, :grade, :role
+  attributes :id, :full_name, :email, :grade, :role,  :tutor_notes
   belongs_to :school
-  # May not need these plus they mess up the deployment because not all users have booked_tutors/tutees
-  # has_many :booked_tutors, class_name: 'BookedSlot', foreign_key: 'tutor_id'
-  # has_many :booked_tutees, class_name: 'BookedSlot', foreign_key: 'tutee_id'
   has_many :booked_slots, foreign_key: 'tutee_id'
+
+  def tutor_notes
+    notes = object.notes_from_tutor
+  end
 end

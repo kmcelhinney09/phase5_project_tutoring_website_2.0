@@ -2,6 +2,8 @@ import React from "react";
 import { useAuth } from "../context/AuthProvider";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
+import SessionRender from "./SessionRender"
+import NotesRender from "./NotesRender";
 
 function UserInfo() {
   const user = useAuth().currentUser;
@@ -12,11 +14,10 @@ function UserInfo() {
         <h6>{user.full_name} - {user.grade}</h6>
       </Row>
       <Row>
-        <h4>Tutoring Sessions</h4>
-        
+        <SessionRender/>
       </Row>
       <Row>
-        <h4>Notes:</h4>
+        <NotesRender />
       </Row>
 
     </Container>

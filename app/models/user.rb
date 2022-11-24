@@ -14,4 +14,9 @@ class User < ApplicationRecord
       self.role ||= :tutee
     end
   end
+
+  def notes_from_tutor
+    notes = TutorNote.where(tutee_id:self.id).to_a
+    tutor_notes_arry = notes.map{|note| {id:note.id, tutor_name:note.tutor.full_name, tutor_note:note.note}}
+  end
 end

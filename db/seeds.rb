@@ -11,8 +11,11 @@ require 'faker'
 puts "Clearing Old Data"
 School.destroy_all
 User.destroy_all
+Building.destroy_all
+Room.destroy_all
 TutoringTimeSlot.destroy_all
 BookedSlot.destroy_all
+TutorNote.destroy_all
 
 puts "Seeding Data"
 
@@ -23,7 +26,6 @@ puts "Creating Schools"
   School.create!(name:"Lincoln Middle School")
 
 puts "Creating Users"
-
 schools = School.all
  schools.each do |school|
   if school.name == "Lincoln Middle School"
@@ -71,7 +73,16 @@ schools = School.all
       role:'admin')
     end
   end
+  
+  puts "Creating Buildings"
+  24.times do
+    Building.create!(name:Faker::Educator.campus + " Hall", school_id:rand(1..4))
+  end
 
+  puts "Creating Rooms"
+  72.times do
+    Room.create!(name:'Room ' + rand(1..500).to_s, building_id:rand(1..24))
+  end
 
   puts 'Creating Tutoring Time Slots'
   40.times do
@@ -93,14 +104,9 @@ schools = School.all
     BookedSlot.create!(tutor_id:[2,3,5,6,8,9,11,12].sample, tutee_id:[1,4,7,10].sample, tutoring_time_slot_id:rand(1..40))
   end
 
-  puts "Creating Buildings"
-  24.times do
-    Building.create!(name:Faker::Educator.campus + " Hall", school_id:rand(1..4))
-  end
-
-  puts "Creating Rooms"
-  72.times do
-    Room.create!(name:'Room ' + rand(1..500).to_s, building_id:rand(1..24))
+  puts "Create Notes"
+  20.times do
+    TutorNote.create(tutor_id:[2,3,5,6,8,9,11,12].sample, tutee_id:[1,4,7,10].sample, note:Faker::Movies::StarWars.quote)
   end
 
   puts "The Field Is Planted"
