@@ -45,7 +45,7 @@ function App() {
                     Logout
                   </Button>
                 ) : null}
-                <Nav.Link href="">
+                <Nav.Link href={`/user/${currentUser.id}`}>
                   {auth.isLoggedIn ? currentUser.full_name : null}
                 </Nav.Link>
               </Nav>
@@ -55,22 +55,19 @@ function App() {
       </div>
       <div>
         <Routes>
+          
           <Route
             path={`/user/:id`}
             element={
-              <ProtectedRoute isAllowed={auth.isLoggedIn}>
+              // <ProtectedRoute isAllowed={auth.isLoggedIn}>
                 <UserDashboard />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
           <Route
-            path="/"
+            exact path="/"
             element={
-              auth.currentUser.id ? (
-                <Navigate to={`/user/${currentUser.id}`} />
-              ) : (
                 <Home />
-              )
             }
           />
         </Routes>
