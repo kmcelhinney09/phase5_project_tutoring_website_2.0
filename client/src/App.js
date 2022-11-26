@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,11 +12,13 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/esm/Button";
 import Home from "./components/Home";
 import UserDashboard from "./components/UserDashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
+import PrivateRoutes from "./components/PrivateRoutes";
 import { useAuth } from "./context/AuthProvider";
 
 function App() {
   const auth = useAuth();
+  const user = auth.currentUser;
+  const [dashboardKey, setDashboardKey] = useState("dashboard");
 
   useEffect(() => {
     auth.auto();
@@ -25,6 +27,21 @@ function App() {
   function handleLogout() {
     auth.logout();
   }
+
+  function handle_dashboard_key_change(key) {
+    setDashboardKey(key);
+  }
+
+  function handle_user_view() {
+    let navigation;
+    if (user.role === "admin") {
+      navigation = <Navigate to={`/admin/${auth.currentUser.id}`} />;
+    } else {
+      navigation = <Navigate to={`/user/${auth.currentUser.id}`} />;
+    }
+    return navigation;
+  }
+
   return (
     <Router>
       <div>
@@ -52,23 +69,38 @@ function App() {
       </div>
       <div>
         <Routes>
-          <Route
-            path={`/user/:id`}
-            element={
-              <ProtectedRoute isAllowed={auth.isLoggedIn}>
-                <UserDashboard />
-              </ProtectedRoute>
-            }
-          />
+          <Route element={<PrivateRoutes />}>
+            <Route
+              path={`/admin/:id`}
+              element={
+                <UserDashboard
+                  dashboardKey={"adminControl"}
+                  handle_dashboard_key_change={handle_dashboard_key_change}
+                />
+              }
+            />
+            <Route
+              path={`/user/tutoring`}
+              element={
+                <UserDashboard
+                  dashboardKey={"tutoring"}
+                  handle_dashboard_key_change={handle_dashboard_key_change}
+                />
+              }
+            />
+            <Route
+              path={`/user/:id`}
+              element={
+                <UserDashboard
+                  dashboardKey={dashboardKey}
+                  handle_dashboard_key_change={handle_dashboard_key_change}
+                />
+              }
+            />
+          </Route>
           <Route
             path="/"
-            element={
-              auth.isLoggedIn ? (
-                <Navigate to={`/user/${auth.currentUser.id}`} />
-              ) : (
-                <Home />
-              )
-            }
+            element={auth.isLoggedIn ? handle_user_view() : <Home />}
           />
         </Routes>
       </div>

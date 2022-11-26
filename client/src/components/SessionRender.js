@@ -42,8 +42,9 @@ function SessionRender() {
                   </tr>
                 );
               })
-            ) : (
-              <h5>No Current Sessions</h5>
+            ) : (<tr>
+              <td>No Current Sessions</td>
+            </tr>
             )}
           </tbody>
         </Table>

@@ -5,22 +5,18 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Nav from "react-bootstrap/esm/Nav";
 import UserInfo from "./UserInfo";
-import TutoringSignUp from "./TutoringSignUp";
 import { useParams } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
+import TutoringSignUp from "./TutoringSignUp";
+import AdminControl from "./AdminControl";
 
-function UserDashboard() {
+function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
   const user = useAuth().currentUser;
   const { id } = useParams();
-  const [key, setKey] = useState("dashboard");
+  // const [key, setKey] = useState("dashboard");
 
-  useEffect(() => {
-    if (!isNaN(id)) {
-      setKey("dashboard");
-    } else {
-      setKey(id);
-    }
-  }, []);
+  console.log("ID =", id);
+  console.log("Key =", dashboardKey);
 
   return (
     <>
@@ -28,40 +24,46 @@ function UserDashboard() {
         <div className="mb-5">
           <Tab.Container
             id="left-tabs-example"
-            activeKey={key}
-            onSelect={(k) => setKey(k)}
+            activeKey={dashboardKey}
+            onSelect={(k) => handle_dashboard_key_change(k)}
           >
             <Row>
               <Col sm={3}>
                 <Nav variant="pills" className="flex-column">
-                  <Nav.Item>
-                    <LinkContainer to={`/user/${user.id}`}>
-                      <Nav.Link eventKey="dashboard">Dashboard</Nav.Link>
-                    </LinkContainer>
-                  </Nav.Item>
+                {user.role === "admin" ? (
+                    <Nav.Item>
+                      <LinkContainer to={`/admin/${user.id}`}>
+                        <Nav.Link eventKey="adminControl">
+                          Admin Control
+                        </Nav.Link>
+                      </LinkContainer>
+                    </Nav.Item>
+                  ) : (
+                    <Nav.Item>
+                      <LinkContainer to={`/user/${user.id}`}>
+                        <Nav.Link eventKey="dashboard">Dashboard</Nav.Link>
+                      </LinkContainer>
+                    </Nav.Item>
+                  ) }
                   <Nav.Item>
                     <LinkContainer to="/user/tutoring">
-                      <Nav.Link to="/user/tutoring" eventKey="tutoring">
-                        Tutoring Sign-up
-                      </Nav.Link>
+                      <Nav.Link eventKey="tutoring">Tutoring Sign-up</Nav.Link>
                     </LinkContainer>
                   </Nav.Item>
-                  {user.role === "tutor" ? (
+                  {user.role === "tutor" || user.role === "admin" ? (
                     <Nav.Item>
                       <Nav.Link eventKey="sessionSignup">
                         Session Signup
                       </Nav.Link>
                     </Nav.Item>
                   ) : null}
-                  {user.role === "admin" ? (
-                    <Nav.Item>
-                      <Nav.Link eventKey="adminControl">Admin Control</Nav.Link>
-                    </Nav.Item>
-                  ) : null}
                 </Nav>
               </Col>
               <Col sm={8}>
                 <Tab.Content>
+                  <Tab.Pane eventKey="adminControl">
+                    <AdminControl />
+                  </Tab.Pane>
                   <Tab.Pane eventKey="dashboard">
                     <UserInfo />
                   </Tab.Pane>
@@ -69,9 +71,6 @@ function UserDashboard() {
                     <TutoringSignUp />
                   </Tab.Pane>
                   <Tab.Pane eventKey="sessionSignup">
-                    <UserInfo />
-                  </Tab.Pane>
-                  <Tab.Pane eventKey="adminControl">
                     <UserInfo />
                   </Tab.Pane>
                 </Tab.Content>
