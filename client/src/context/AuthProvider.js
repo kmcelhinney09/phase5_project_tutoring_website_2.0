@@ -26,7 +26,6 @@ function useProvideAuth() {
     }).then((res) => {
       if (res.ok) {
         res.json().then((user) => {
-          console.log(user);
           setCurrentUser(user);
           setIsLoggedIn(true);
         });
@@ -47,7 +46,6 @@ function useProvideAuth() {
     }).then((res) => {
       if (res.ok) {
         res.json().then((user) => {
-          console.log(user);
           setCurrentUser(user);
           setIsLoggedIn(true);
         });
@@ -73,7 +71,6 @@ function useProvideAuth() {
     fetch("/auth").then((res) => {
       if (res.ok) {
         res.json().then((user) => {
-          console.log(user);
           setCurrentUser(user);
           setIsLoggedIn(true);
         });

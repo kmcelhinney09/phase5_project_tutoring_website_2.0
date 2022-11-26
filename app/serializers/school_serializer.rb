@@ -1,10 +1,9 @@
 class SchoolSerializer < ActiveModel::Serializer
-  attributes :id, :name, :buildings, :tutoring_time_slots
-  has_many :users
+  attributes :id, :name, :locations, :tutoring_time_slots
   has_many :buildings
   has_many :tutoring_time_slots
 
-  def buildings
+  def locations
     buildings= object.buildings
     rooms = buildings.map{|building| [{building:building,room:building.rooms}]}
   end
