@@ -7,7 +7,7 @@ import Button from "react-bootstrap/esm/Button";
 
 function SessionRender() {
   const user = useAuth().currentUser;
-
+  console.log(user)
   return (
     <Container>
       <Row>
