@@ -3,4 +3,13 @@ class BookedSlot < ApplicationRecord
   # belongs_to :booked_tutor, class_name:"User"
   # belongs_to :booked_tutee, class_name:"User"
   belongs_to :tutoring_time_slot
+
+  def tutor
+    tutor = User.find(tutor_id)
+    subjects = []
+    tutor.subjects_signed_up.each do |sub|
+      subjects.push(sub.name)
+    end
+    {id:tutor.id, full_name:tutor.full_name, subjects_covered:subjects * ", "}
+  end
 end

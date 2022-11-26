@@ -13,7 +13,7 @@ function TutoringSignUp() {
     fetch(`/school/${user.school.id}/tutoring`).then((res) => {
       if (res.ok) {
         res.json().then((data) => {
-          console.log("TutoringTimeSlostData: ",data);
+          console.log("TutoringTimeSlostData: ", data);
           setTutoringInfo(data);
         });
       }
@@ -21,7 +21,6 @@ function TutoringSignUp() {
   }, [user.school.id]);
 
   function book_tutoring(tutor_id, slot_id) {
-
     fetch("/booked_time_slots", {
       method: "POST",
       headers: {
@@ -38,7 +37,7 @@ function TutoringSignUp() {
   function tutoring_slots(slot_info) {
     let slot_status;
     let slot_return;
-    
+
     slot_return = slot_info.tutors.map((tutor) => {
       if (slot_info.booked_status === false) {
         slot_status = (
@@ -64,7 +63,7 @@ function TutoringSignUp() {
         </tr>
       );
     });
-    
+
     return slot_return;
   }
 
@@ -85,7 +84,6 @@ function TutoringSignUp() {
                     {buildingInfo.rooms
                       .sort((a, b) => (a.id > b.id ? 1 : -1))
                       .map((rooms) => {
-
                         return (
                           <Row key={rooms.id}>
                             <Row>
