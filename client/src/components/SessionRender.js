@@ -7,7 +7,7 @@ import Button from "react-bootstrap/esm/Button";
 
 function SessionRender() {
   const user = useAuth().currentUser;
-  console.log(user)
+  
   return (
     <Container>
       <Row>
@@ -24,23 +24,27 @@ function SessionRender() {
             </tr>
           </thead>
           <tbody>
-            {user.booked_slots.map((slot) => {
-              return (
-                <tr key={slot.id}>
-                  <td>{slot.location}</td>
-                  <td>{slot.date}</td>
-                  <td>
-                    {slot.start_time}-{slot.end_time}
-                  </td>
-                  <td>{slot.tutor.full_name}</td>
-                  <td>{slot.tutor.subjects_covered}</td>
+            {user.booked_slots.length !== 0 ? (
+              user.booked_slots.map((slot) => {
+                return (
+                  <tr key={slot.id}>
+                    <td>{slot.location}</td>
+                    <td>{slot.date}</td>
+                    <td>
+                      {slot.start_time}-{slot.end_time}
+                    </td>
+                    <td>{slot.tutor.full_name}</td>
+                    <td>{slot.tutor.subjects_covered}</td>
 
-                  <td>
-                    <Button>Drop Session</Button>
-                  </td>
-                </tr>
-              );
-            })}
+                    <td>
+                      <Button>Drop Session</Button>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <h5>No Current Sessions</h5>
+            )}
           </tbody>
         </Table>
       </Row>

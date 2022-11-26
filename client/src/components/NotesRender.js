@@ -12,7 +12,7 @@ function NotesRender() {
     <Container>
       <h4>Notes:</h4>
       <Row xs={1} md={2} className="g-4">
-        {user.tutor_notes.map((note) => {
+        {user.tutor_notes.length !== 0? (user.tutor_notes.map((note) => {
           return (
             <Col key={note.id}>
               <Card border="success">
@@ -23,7 +23,7 @@ function NotesRender() {
               </Card>
             </Col>
           );
-        })}
+        })): <h5>No Notes</h5>}
       </Row>
     </Container>
   );
