@@ -12,11 +12,11 @@ puts "Creating Booked Time Slots"
 
   slot = 17  
   15.times do
-    BookedSlot.create!(tutor_id:10, tutee_id:[6,7,8].sample, tutoring_time_slot_id:slot)
+    BookedSlot.create!(tutor_id:10, tutee_id:[7,8,9].sample, tutoring_time_slot_id:slot)
     slot = slot + 1
   end
   slot = 17  
   15.times do
-    BookedSlot.create!(tutor_id:11, tutee_id:[6,7,8].sample, tutoring_time_slot_id:slot)
+    BookedSlot.create!(tutor_id:11, tutee_id:[7,8,9].sample, tutoring_time_slot_id:slot)
     slot = slot + 1
   end
