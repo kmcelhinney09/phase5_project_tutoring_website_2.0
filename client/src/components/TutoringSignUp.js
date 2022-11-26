@@ -13,7 +13,7 @@ function TutoringSignUp() {
     fetch(`/school/${user.school.id}/tutoring`).then((res) => {
       if (res.ok) {
         res.json().then((data) => {
-          console.log(data);
+          console.log("TutoringTimeSlostData: ",data);
           setTutoringInfo(data);
         });
       }
@@ -21,7 +21,7 @@ function TutoringSignUp() {
   }, [user.school.id]);
 
   function book_tutoring(tutor_id, slot_id) {
-    console.log(`${user.id}, ${tutor_id}, ${slot_id}`);
+
     fetch("/booked_time_slots", {
       method: "POST",
       headers: {
@@ -38,7 +38,7 @@ function TutoringSignUp() {
   function tutoring_slots(slot_info) {
     let slot_status;
     let slot_return;
-    console.log(slot_info)
+    
     slot_return = slot_info.tutors.map((tutor) => {
       if (slot_info.booked_status === false) {
         slot_status = (
@@ -53,7 +53,7 @@ function TutoringSignUp() {
       }
 
       return (
-        <tr key={slot_info.id + tutor.full_name}>
+        <tr key={slot_info.id + tutor.full_name + slot_info.room_id}>
           <td className="text-center">{slot_info.date}</td>
           <td className="text-center">{tutor.full_name}</td>
           <td className="text-center">{tutor.subjects_covered}</td>
@@ -64,7 +64,7 @@ function TutoringSignUp() {
         </tr>
       );
     });
-    console.log(slot_return)
+    
     return slot_return;
   }
 
@@ -111,7 +111,6 @@ function TutoringSignUp() {
                                     a.date_sort > b.date_sort ? 1 : -1
                                   )
                                   .map((slot) => {
-                                    // console.log(slot.room_id === rooms.id)
                                     return (
                                       <tbody key={slot.id}>
                                         {slot.room_id === rooms.id

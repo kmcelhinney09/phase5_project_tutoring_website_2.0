@@ -1,4 +1,6 @@
 puts "Creating Buildings"
-  24.times do
-    Building.create!(name:Faker::Educator.campus + " Hall", school_id:rand(1..4))
-  end
+    Building.create!(name:"Unicorn Hill Hall", school_id:1)
+    Building.create!(name:"Wolverine Hall", school_id:1)
+    Building.create!(name:"Kittiecorn Hall", school_id:2)
+    Building.create!(name:"Peter Parker Hall", school_id:2)
+  

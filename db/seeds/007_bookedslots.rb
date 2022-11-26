@@ -1,4 +1,22 @@
 puts "Creating Booked Time Slots"
-  20.times do
-    BookedSlot.create!(tutor_id:[2,3,5,6,8,9,11,12].sample, tutee_id:[1,4,7,10].sample, tutoring_time_slot_id:rand(1..40))
+  slot = 1  
+  15.times do
+    BookedSlot.create!(tutor_id:4, tutee_id:[1,2,3].sample, tutoring_time_slot_id:slot)
+    slot = slot + 1
+  end
+  slot = 2  
+  15.times do
+    BookedSlot.create!(tutor_id:5, tutee_id:[1,2,3].sample, tutoring_time_slot_id:slot)
+    slot = slot + 1
+  end
+
+  slot = 17  
+  15.times do
+    BookedSlot.create!(tutor_id:10, tutee_id:[6,7,8].sample, tutoring_time_slot_id:slot)
+    slot = slot + 1
+  end
+  slot = 17  
+  15.times do
+    BookedSlot.create!(tutor_id:11, tutee_id:[6,7,8].sample, tutoring_time_slot_id:slot)
+    slot = slot + 1
   end

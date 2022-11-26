@@ -1,4 +1,12 @@
 puts "Creating Rooms"
-  72.times do
-    Room.create!(name:'Room ' + rand(1..500).to_s, building_id:rand(1..24))
-  end
+  Room.create!(name:'Room 1006' , building_id:1)
+  Room.create!(name:'Room 1000', building_id:1)
+
+  Room.create!(name:'Room 600', building_id:2)
+  Room.create!(name:'Room 623', building_id:2)
+
+  Room.create!(name:'Room 2689', building_id:3)
+  Room.create!(name:'Room 10', building_id:3)
+
+  Room.create!(name:'Room 699', building_id:4)
+  Room.create!(name:'Room 1', building_id:4)
