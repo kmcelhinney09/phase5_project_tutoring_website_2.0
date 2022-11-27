@@ -78,10 +78,11 @@ function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
                     <UserInfo />
                   </Tab.Pane>
                   <Tab.Pane eventKey="tutoring">
-                    <TutoringSignUp tutoringInfo={tutoringInfo}/>
+                    <TutoringSignUp tutoringInfo={tutoringInfo}
+                    callingComponent={'TutoringSignUp'}/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="sessionSignup">
-                    <SessionSignUp tutoringInfo={tutoringInfo}/>
+                    <SessionSignUp tutoringInfo={tutoringInfo} callingComponent={'SessionSignUp'}/>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>

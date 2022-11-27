@@ -3,17 +3,22 @@ import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import TutoringSlotRender from "./TutoringSlotRender";
 
-
-function TutoringSignUp({tutoringInfo}) {
-
-  function handle_closed_sessions(session){
-    if (session.open_status){
-      return (<TutoringSlotRender slot_info={session}/>)
-    } else{
-      return null
+function TutoringSignUp({ tutoringInfo, callingComponent }) {
+  function handle_closed_sessions(session) {
+    if (callingComponent === "TutoringSignUp") {
+      if (session.open_status === true) {
+        return <TutoringSlotRender slot_info={session} />;
+      } else {
+        return null;
+      }
+    } else {
+      if (session.tutors.length < session.tutor_capacity) {
+        return <TutoringSlotRender slot_info={session} />;
+      } else {
+        return null;
+      }
     }
   }
-  console.log(tutoringInfo)
   return (
     <>
       {tutoringInfo.id ? (

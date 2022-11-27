@@ -4,7 +4,7 @@ import Button from "react-bootstrap/esm/Button";
 function TutoringSlotRender({ slot_info }) {
   const user = useAuth().currentUser;
   let slot_status;
-
+  
   function handle_book_tutoring(tutor_id, slot_id) {
     fetch("/booked_time_slots", {
       method: "POST",
@@ -21,7 +21,7 @@ function TutoringSlotRender({ slot_info }) {
 
   return (
     <>
-      {slot_info.tutors.map((tutor) => {
+      {slot_info.tutors.length !== 0?(slot_info.tutors.map((tutor) => {
         if (slot_info.booked_status === false) {
           slot_status = (
             <td>
@@ -47,7 +47,17 @@ function TutoringSlotRender({ slot_info }) {
             {slot_status}
           </tr>
         );
-      })}
+      })):(
+        <tr>
+            <td className="text-center">{slot_info.date}</td>
+            <td className="text-center">None Signed up</td>
+            <td className="text-center"></td>
+            <td className="text-center">{slot_info.start_time}</td>
+            <td className="text-center">{slot_info.end_time}</td>
+            <td className="text-center">{slot_info.tutee_space}</td>
+            <td><Button>Sign up</Button></td>
+          </tr>
+      )}
     </>
   );
 }

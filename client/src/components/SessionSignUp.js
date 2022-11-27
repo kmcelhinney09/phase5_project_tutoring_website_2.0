@@ -1,8 +1,8 @@
-import React from 'react'
+import TutoringSignUp from "./TutoringSignUp"
 
-function SessionSignUp() {
+function SessionSignUp({tutoringInfo, callingComponent}) {
   return (
-    <div>SessionSignUp</div>
+    <TutoringSignUp tutoringInfo={tutoringInfo} callingComponent={"SessionSignUp"} />
   )
 }
 
