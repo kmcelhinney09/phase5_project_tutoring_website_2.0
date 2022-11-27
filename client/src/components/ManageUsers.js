@@ -11,7 +11,6 @@ function ManageUsers() {
     fetch(`/schools/${user.school.id}`).then((res) => {
       if (res.ok) {
         res.json().then((data) => {
-          console.log("School Users: ", data);
           setSchoolData(data);
         });
       }

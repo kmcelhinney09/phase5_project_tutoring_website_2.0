@@ -6,7 +6,6 @@ import Button from "react-bootstrap/esm/Button";
 
 function ManageSchool() {
   const user = useAuth().currentUser;
-  console.log(user)
   return (
     <>
       <h3> Current Resources</h3>
