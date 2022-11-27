@@ -7,6 +7,7 @@ import UserInfo from "./UserInfo";
 import { LinkContainer } from "react-router-bootstrap";
 import TutoringSignUp from "./TutoringSignUp";
 import AdminControl from "./AdminControl";
+import SessionSignUp from "./SessionSignUp";
 
 function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
   const user = useAuth().currentUser;
@@ -23,7 +24,7 @@ function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
             <Row>
               <Col sm={3}>
                 <Nav variant="pills" className="flex-column">
-                {user.role === "admin" ? (
+                  {user.role === "admin" ? (
                     <Nav.Item>
                       <LinkContainer to={`/admin/${user.id}`}>
                         <Nav.Link eventKey="adminControl">
@@ -37,7 +38,7 @@ function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
                         <Nav.Link eventKey="dashboard">Dashboard</Nav.Link>
                       </LinkContainer>
                     </Nav.Item>
-                  ) }
+                  )}
                   <Nav.Item>
                     <LinkContainer to="/user/tutoring">
                       <Nav.Link eventKey="tutoring">Tutoring Sign-up</Nav.Link>
@@ -64,7 +65,7 @@ function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
                     <TutoringSignUp />
                   </Tab.Pane>
                   <Tab.Pane eventKey="sessionSignup">
-                    <UserInfo />
+                    <SessionSignUp />
                   </Tab.Pane>
                 </Tab.Content>
               </Col>
