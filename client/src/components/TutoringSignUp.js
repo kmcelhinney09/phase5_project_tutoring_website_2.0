@@ -1,26 +1,19 @@
-import { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthProvider";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import TutoringSlotRender from "./TutoringSlotRender";
 
 
-function TutoringSignUp() {
-  const user = useAuth().currentUser;
-  const [tutoringInfo, setTutoringInfo] = useState(false);
+function TutoringSignUp({tutoringInfo}) {
 
-  useEffect(() => {
-    fetch(`/school/${user.school.id}/tutoring`).then((res) => {
-      if (res.ok) {
-        res.json().then((data) => {
-          // console.log("TutoringTimeSlostData: ", data);
-          setTutoringInfo(data);
-        });
-      }
-    });
-  }, [user.school.id]);
-
+  function handle_closed_sessions(session){
+    if (session.open_status){
+      return (<TutoringSlotRender slot_info={session}/>)
+    } else{
+      return null
+    }
+  }
+  console.log(tutoringInfo)
   return (
     <>
       {tutoringInfo.id ? (
@@ -66,7 +59,7 @@ function TutoringSignUp() {
                                     return (
                                       <tbody key={slot.id}>
                                         {slot.room_id === rooms.id
-                                          ? <TutoringSlotRender slot_info={slot}/>
+                                          ? handle_closed_sessions(slot)
                                           : null}
                                       </tbody>
                                     );

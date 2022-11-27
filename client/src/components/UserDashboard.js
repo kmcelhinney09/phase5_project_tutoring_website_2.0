@@ -1,4 +1,5 @@
 import { useAuth } from "../context/AuthProvider";
+import { useState, useEffect } from "react";
 import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
@@ -11,6 +12,19 @@ import SessionSignUp from "./SessionSignUp";
 
 function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
   const user = useAuth().currentUser;
+
+  const [tutoringInfo, setTutoringInfo] = useState(false);
+
+  useEffect(() => {
+    fetch(`/school/${user.school.id}/tutoring`).then((res) => {
+      if (res.ok) {
+        res.json().then((data) => {
+          // console.log("TutoringTimeSlostData: ", data);
+          setTutoringInfo(data);
+        });
+      }
+    });
+  }, [user.school.id]);
 
   return (
     <>
@@ -64,10 +78,10 @@ function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
                     <UserInfo />
                   </Tab.Pane>
                   <Tab.Pane eventKey="tutoring">
-                    <TutoringSignUp />
+                    <TutoringSignUp tutoringInfo={tutoringInfo}/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="sessionSignup">
-                    <SessionSignUp />
+                    <SessionSignUp tutoringInfo={tutoringInfo}/>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>
