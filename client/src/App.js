@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "./context/AuthProvider";
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,7 +14,7 @@ import Button from "react-bootstrap/esm/Button";
 import Home from "./components/Home";
 import UserDashboard from "./components/UserDashboard";
 import PrivateRoutes from "./components/PrivateRoutes";
-import { useAuth } from "./context/AuthProvider";
+import ViewTutoringTimeSlot from "./components/ViewTutoringTimeSlot";
 
 function App() {
   const auth = useAuth();
@@ -80,7 +81,8 @@ function App() {
               }
             />
             <Route
-              path={`/user/tutoring`}
+              //TODO:Make more Restful /tutoring to show all slots use school in controler
+              path={"/user/tutoring"}
               element={
                 <UserDashboard
                   dashboardKey={"tutoring"}
@@ -89,7 +91,7 @@ function App() {
               }
             />
             <Route
-              path={`/user/session_signup`}
+              path={"/user/session_signup"}
               element={
                 <UserDashboard
                   dashboardKey={"sessionSignup"}
@@ -98,13 +100,17 @@ function App() {
               }
             />
             <Route
-              path={`/user/:id`}
+              path={"/user/:id"}
               element={
                 <UserDashboard
                   dashboardKey={dashboardKey}
                   handle_dashboard_key_change={handle_dashboard_key_change}
                 />
               }
+            />
+            <Route
+              path={"/tutoring_time_slots/:id"}
+              element={<ViewTutoringTimeSlot />}
             />
           </Route>
           <Route

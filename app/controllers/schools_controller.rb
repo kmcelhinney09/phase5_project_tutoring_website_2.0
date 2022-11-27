@@ -7,7 +7,7 @@ class SchoolsController < ApplicationController
 
   def tutoring
     school = School.find(params[:id])
-    render json:school
+    render json:school, status: :ok
   end
   
   private

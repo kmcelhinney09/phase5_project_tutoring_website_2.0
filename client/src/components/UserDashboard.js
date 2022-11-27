@@ -16,6 +16,7 @@ function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
   const [tutoringInfo, setTutoringInfo] = useState(false);
 
   useEffect(() => {
+    //TODO:Make more Restful /tutoring to show all slots use school in controler
     fetch(`/school/${user.school.id}/tutoring`).then((res) => {
       if (res.ok) {
         res.json().then((data) => {

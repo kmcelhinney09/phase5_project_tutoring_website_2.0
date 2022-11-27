@@ -4,8 +4,9 @@ class UsersController < ApplicationController
 
   
   def show
+    #TODO: Create admin varification
     current_user = User.find(session[:user_id])
-    render json: current_user
+    render json: current_user, status: :ok
   end
 
   def create
@@ -13,7 +14,7 @@ class UsersController < ApplicationController
     school_id = School.find_by(name:params[:school]).id
     user = User.create!(full_name:params[:full_name],email:params[:email],school_id:school_id,password:params[:password],time_zone:params[:time_zone],grade:params[:grade], role:params[:role])
     session[:user_id] = user.id
-    render json: user
+    render json: user, status: :created
   end
 
   private
