@@ -46,9 +46,11 @@ function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
                   </Nav.Item>
                   {user.role === "tutor" || user.role === "admin" ? (
                     <Nav.Item>
-                      <Nav.Link eventKey="sessionSignup">
-                        Session Signup
-                      </Nav.Link>
+                      <LinkContainer to="/user/session_signup">
+                        <Nav.Link eventKey="sessionSignup">
+                          Session Signup
+                        </Nav.Link>
+                      </LinkContainer>
                     </Nav.Item>
                   ) : null}
                 </Nav>

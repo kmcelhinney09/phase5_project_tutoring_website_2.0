@@ -89,6 +89,15 @@ function App() {
               }
             />
             <Route
+              path={`/user/session_signup`}
+              element={
+                <UserDashboard
+                  dashboardKey={"sessionSignup"}
+                  handle_dashboard_key_change={handle_dashboard_key_change}
+                />
+              }
+            />
+            <Route
               path={`/user/:id`}
               element={
                 <UserDashboard
