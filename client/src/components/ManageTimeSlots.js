@@ -59,8 +59,8 @@ function ManageTimeSlots() {
                                             <td className="text-center">{slot.tutee_capacity}</td>
                                             <td className="text-center">{slot.booked_status?'Full':'Open'}</td>
                                             <td>
-                                              <Button>Edit</Button>
-                                              <Button>View</Button>
+                                              <Button className="mb-2">Edit</Button>{" "}
+                                              <Button className="mb-2">View</Button>
                                             </td>
                                           </tr>)
                                           : null}

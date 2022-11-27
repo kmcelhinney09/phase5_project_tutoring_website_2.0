@@ -14,7 +14,7 @@ function TutoringSignUp() {
     fetch(`/school/${user.school.id}/tutoring`).then((res) => {
       if (res.ok) {
         res.json().then((data) => {
-          console.log("TutoringTimeSlostData: ", data);
+          // console.log("TutoringTimeSlostData: ", data);
           setTutoringInfo(data);
         });
       }

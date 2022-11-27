@@ -5,6 +5,7 @@ import Col from "react-bootstrap/esm/Col";
 import Nav from "react-bootstrap/esm/Nav";
 import ManageSchool from "./ManageSchool";
 import ManageTimeSlots from "./ManageTimeSlots";
+import ManageUsers from "./ManageUsers";
 
 function AdminControl() {
   const user = useAuth().currentUser;
@@ -20,7 +21,7 @@ function AdminControl() {
                 defaultActiveKey={"schoolResources"}
               >
                 <Row>
-                  <Col sm={3}>
+                  <Col sm={2}>
                     <Nav variant="pills" className="flex-column">
                       <Nav.Item>
                         <Nav.Link eventKey="schoolResources">
@@ -39,7 +40,7 @@ function AdminControl() {
                       </Nav.Item>
                     </Nav>
                   </Col>
-                  <Col sm={8}>
+                  <Col sm={10}>
                     <Tab.Content>
                       <Tab.Pane eventKey="schoolResources">
                         <ManageSchool />
@@ -48,7 +49,7 @@ function AdminControl() {
                         <ManageTimeSlots />
                       </Tab.Pane>
                       <Tab.Pane eventKey="manageUsers">
-                        <ManageSchool />
+                        <ManageUsers />
                       </Tab.Pane>
                     </Tab.Content>
                   </Col>
