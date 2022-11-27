@@ -14,30 +14,32 @@ function ManageSchool() {
           .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
           .map((buildingInfo) => {
             return (
-              <Container>
+              <Container key={buildingInfo.building.id}>
                 <Row>
                   <h5>{buildingInfo.building.name}</h5>
                 </Row>
                 <Row>
-                  <Table responsive="md">
+                  <Table responsive="md" striped bordered hover>
                     <thead>
-                      <th>Room</th>
-                      <th className="text-center">Actions</th>
+                      <tr>
+                        <th>Room</th>
+                        <th className="text-center">Actions</th>
+                      </tr>
                     </thead>
                     <tbody>
-                    {buildingInfo.rooms
-                      .sort((a, b) => (a.id > b.id ? 1 : -1))
-                      .map((room) => {
-                        return (
-                          <tr key={room.id}>
-                            <td >{room.name}</td>
-                            <td className="text-center">
-                              <Button>Edit</Button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                      </tbody>
+                      {buildingInfo.rooms
+                        .sort((a, b) => (a.id > b.id ? 1 : -1))
+                        .map((room) => {
+                          return (
+                            <tr key={room.id}>
+                              <td>{room.name}</td>
+                              <td className="text-center">
+                                <Button>Edit</Button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
                   </Table>
                 </Row>
               </Container>
@@ -46,8 +48,7 @@ function ManageSchool() {
       ) : (
         <h4>Loading....</h4>
       )}
-      <Button>Create New Building</Button>{" "}
-      <Button>Create New Room</Button>
+      <Button>Create New Building</Button> <Button>Create New Room</Button>
     </>
   );
 }

@@ -14,12 +14,13 @@ function ManageTimeSlots() {
   return (
      <>
       <h3> Current Resources</h3>
+      <Container>
       {user.id ? (
         user.school.locations
           .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
           .map((buildingInfo) => {
             return (
-              <Container>
+              
                   <Row key={buildingInfo.building.id}>
                     <h3>{buildingInfo.building.name}</h3>
                     {buildingInfo.rooms
@@ -31,7 +32,7 @@ function ManageTimeSlots() {
                               <h5>{rooms.name}</h5>
                             </Row>
                             <Row>
-                              <Table responsive="md">
+                              <Table responsive="md" bordered hover>
                                 <thead>
                                   <tr>
                                     <th>Session</th>
@@ -73,12 +74,13 @@ function ManageTimeSlots() {
                         );
                       })}
                   </Row>
-              </Container>
+              
             );
           })
       ) : (
         <h4>Loading....</h4>
       )}
+      </Container>
       <Button>Create New Building</Button>{" "}
       <Button>Create New Room</Button>
     </>
