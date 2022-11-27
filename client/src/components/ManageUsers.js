@@ -31,7 +31,7 @@ function ManageUsers() {
         {schoolData.length !== 0?(
           schoolData.map((school_user) => {
             return(
-            <tr>
+            <tr key={school_user.id}>
               <td>{school_user.full_name}</td>
               <td>{school_user.email}</td>
               <td>
