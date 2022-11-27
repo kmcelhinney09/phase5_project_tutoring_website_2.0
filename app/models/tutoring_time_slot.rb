@@ -31,4 +31,5 @@ class TutoringTimeSlot < ApplicationRecord
     booked_slots = self.booked_slots
     open_tutee_slots = self.tutee_capacity - self.num_of_tutees
   end
+
 end

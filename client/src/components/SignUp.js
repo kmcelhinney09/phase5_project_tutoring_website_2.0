@@ -9,6 +9,7 @@ function SignUp({ closeForm }) {
     full_name: "",
     school: "",
     grade: "",
+    time_zone: "",
     password: "",
     password_confirmation: "",
   });
@@ -81,6 +82,18 @@ function SignUp({ closeForm }) {
           onChange={handleFormOnChange}
           name="grade"
         />
+        <Form.Select aria-label="Select Time Zone" name="time-zone">
+          <option>Time Zone</option>
+          <option value="Hawaii">Hawaii</option>
+          <option value="Alaska">Alaska</option>
+          <option value="Pacific Time (US & Canada)">Pacific Time (US)</option>
+          <option value="Mountain Time (US & Canada)">
+            Mountain Time (US)
+          </option>
+          <option value="Arizona">Arizona</option>
+          <option value="Central Time (US & Canada)">Central Time (US)</option>
+          <option value="Eastern Time (US & Canada)">Eastern Time (US)</option>
+        </Form.Select>
         <Form.Control
           type="password"
           placeholder="Password"

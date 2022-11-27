@@ -5,10 +5,10 @@ class BookedSlotSerializer < ActiveModel::Serializer
     date = object.tutoring_time_slot.start_time.strftime("%A, %b %d")
   end
   def start_time
-    start_time = object.tutoring_time_slot.start_time.strftime(" %l %M %p")
+    start_time = object.tutoring_time_slot.start_time.strftime("%l:%M %p")
   end
   def end_time
-    end_time = object.tutoring_time_slot.end_time.strftime(" %l %M %p")
+    end_time = object.tutoring_time_slot.end_time.strftime("%l:%M %p")
   end
 
   def location

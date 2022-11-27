@@ -1,5 +1,6 @@
 puts 'Creating Tutoring Time Slots'
 day = 10
+Time.zone = 'Pacific Time (US & Canada)'
 4.times do
 start_time = Time.zone.parse("2022-12-#{day} 15:30:00")
 TutoringTimeSlot.create!(created_by:6, 
@@ -58,6 +59,7 @@ end
     day = day + 1
   end
 
+Time.zone ='Central Time (US & Canada)'
   day = 10
 4.times do
 start_time = Time.zone.parse("2022-12-#{day} 15:30:00")
@@ -116,3 +118,5 @@ end
     open_status: false)
     day = day + 1
   end
+
+  Time.zone =nil
