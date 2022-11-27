@@ -82,7 +82,6 @@ function useProvideAuth() {
 
   return {
     currentUser,
-    setCurrentUser,
     login,
     logout,
     signup,

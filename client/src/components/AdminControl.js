@@ -9,7 +9,6 @@ import ManageUsers from "./ManageUsers";
 
 function AdminControl() {
   const user = useAuth().currentUser;
-  console.log(user.id);
   return (
     <>
       {user.id ? (
