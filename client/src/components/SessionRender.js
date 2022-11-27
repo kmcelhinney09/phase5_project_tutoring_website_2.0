@@ -35,7 +35,6 @@ function SessionRender() {
                     </td>
                     <td>{slot.tutor.full_name}</td>
                     <td>{slot.tutor.subjects_covered}</td>
-
                     <td>
                       <Button>Drop Session</Button>
                     </td>

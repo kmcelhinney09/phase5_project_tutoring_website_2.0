@@ -1,22 +1,15 @@
-import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthProvider";
 import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Nav from "react-bootstrap/esm/Nav";
 import UserInfo from "./UserInfo";
-import { useParams } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import TutoringSignUp from "./TutoringSignUp";
 import AdminControl from "./AdminControl";
 
 function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
   const user = useAuth().currentUser;
-  const { id } = useParams();
-  // const [key, setKey] = useState("dashboard");
-
-  console.log("ID =", id);
-  console.log("Key =", dashboardKey);
 
   return (
     <>

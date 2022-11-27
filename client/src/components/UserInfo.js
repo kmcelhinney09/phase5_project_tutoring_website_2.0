@@ -7,7 +7,6 @@ import NotesRender from "./NotesRender";
 
 function UserInfo() {
   const user = useAuth().currentUser;
-  console.log(user)
   return (
     <Container>
       <Row>
