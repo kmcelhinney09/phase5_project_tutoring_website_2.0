@@ -3,7 +3,6 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
-import TutoringSlotRender from "./TutoringSlotRender";
 
 function ManageTimeSlots() {
   const user = useAuth().currentUser
@@ -35,11 +34,13 @@ function ManageTimeSlots() {
                               <Table responsive="md">
                                 <thead>
                                   <tr>
-                                    <th className="text-center">Session</th>
+                                    <th>Session</th>
                                     <th className="text-center">Start Time</th>
                                     <th className="text-center">End Time</th>
-                                    <th className="text-center">Open Slots</th>
+                                    <th className="text-center">Tutor Capacity</th>
+                                    <th className="text-center">Tutee Capacity</th>
                                     <th className="text-center">Status</th>
+                                    <th className="text_center">Actions</th>
                                   </tr>
                                 </thead>
                                 {user.school.tutoring_time_slots
@@ -52,9 +53,15 @@ function ManageTimeSlots() {
                                         {slot.room_id === rooms.id
                                           ? (<tr>
                                             <td>{new Date(slot.start_time).toDateString()}</td>
-                                            <td>{new Date(slot.start_time).toTimeString()}</td>
-                                            <td>{new Date(slot.end_time).toUTCString()}</td>                                            <td>four</td>
-                                            <td>five</td>
+                                            <td className="text-center">{new Date(slot.start_time).toLocaleTimeString()}</td>
+                                            <td className="text-center">{new Date(slot.end_time).toLocaleTimeString()}</td>                                            
+                                            <td className="text-center">{slot.tutor_capacity}</td>
+                                            <td className="text-center">{slot.tutee_capacity}</td>
+                                            <td className="text-center">{slot.booked_status?'Full':'Open'}</td>
+                                            <td>
+                                              <Button>Edit</Button>
+                                              <Button>View</Button>
+                                            </td>
                                           </tr>)
                                           : null}
                                       </tbody>
