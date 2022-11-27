@@ -13,11 +13,11 @@ class TutoringTimeSlotSerializer < ActiveModel::Serializer
   end
 
   def start_time
-    start_time = object.start_time.strftime(" %l %M %p")
+    start_time = object.start_time.strftime("%l:%M%p")
   end
 
   def end_time
-    end_time = object.end_time.strftime(" %l %M %p")
+    end_time = object.end_time.strftime("%l:%M%p")
   end
 
   

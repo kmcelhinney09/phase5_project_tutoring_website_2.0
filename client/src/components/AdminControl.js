@@ -45,7 +45,7 @@ function AdminControl() {
                         <ManageSchool />
                       </Tab.Pane>
                       <Tab.Pane eventKey="timeSlots">
-                        <ManageSchool />
+                        <ManageTimeSlots />
                       </Tab.Pane>
                       <Tab.Pane eventKey="manageUsers">
                         <ManageSchool />
