@@ -31,6 +31,30 @@ function ViewTutoringTimeSlot() {
       return null;
     }
   }
+  function render_booked_slots(slots_info) {
+    let slot_details;
+    slots_info.length !== 0
+      ? (slot_details = tutoringSlotInfo.booked_slots.map((slot) => {
+          return (
+            <tr key={slot.id}>
+              <td>{slot.tutor.full_name}</td>
+              <td>{slot.tutee.full_name}</td>
+              <td>{slot.created_at}</td>
+              <td>
+                <Button>Drop Session</Button>
+              </td>
+            </tr>
+          );
+        }))
+      : (slot_details = (
+          <tr>
+            <td>
+              <strong>No Booked Sessions</strong>
+            </td>
+          </tr>
+        ));
+    return slot_details;
+  }
 
   return (
     <Container>
@@ -75,20 +99,13 @@ function ViewTutoringTimeSlot() {
             </tr>
           </thead>
           <tbody>
-            {tutoringSlotInfo.boooked_slot ? (
-              tutoringSlotInfo.booked_slots.map((slot) => {
-                return (
-                  <tr key={slot.id}>
-                    <td>{slot.tutor.full_name}</td>
-                    <td>{slot.tutee.full_name}</td>
-                    <td>{slot.created_at}</td>
-                    <td><Button>Drop Session</Button></td>
-                  </tr>
-                );
-              })
+            {tutoringSlotInfo.booked_slots ? (
+              render_booked_slots(tutoringSlotInfo.booked_slots)
             ) : (
               <tr>
-                <td><strong>No Booked Sessions</strong></td>
+                <td>
+                  <strong>Loading...</strong>
+                </td>
               </tr>
             )}
           </tbody>
