@@ -4,9 +4,11 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import SessionRender from "./SessionRender";
 import NotesRender from "./NotesRender";
+import SessionsTutored from "./SessionsTutored";
 
 function UserInfo() {
   const user = useAuth().currentUser;
+  console.log(user)
   return (
     <Container>
       <Row>
@@ -20,6 +22,7 @@ function UserInfo() {
       <Row>
         <SessionRender />
       </Row>
+      {user.role === "tutor"? <SessionsTutored/>:null}
       <Row>
         <NotesRender />
       </Row>

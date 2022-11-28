@@ -63,6 +63,7 @@ function useProvideAuth() {
       if (res.ok) {
         setIsLoggedIn(false);
         setCurrentUser(null);
+        //TODO: Create a redirect to home
       }
     });
   }

@@ -4,7 +4,6 @@ class UsersController < ApplicationController
 
   
   def show
-    #TODO: Create admin varification
     current_user = User.find(session[:user_id])
     render json: current_user, status: :ok
   end
