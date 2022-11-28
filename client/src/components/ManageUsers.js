@@ -35,7 +35,8 @@ function ManageUsers() {
               <td>{school_user.email}</td>
               <td>
                 <Button>Edit</Button>{" "}
-                <Button>Delete</Button>
+                <Button>Delete</Button>{" "}
+                <Button>Reset Password</Button>
               </td>
             </tr>
             )
