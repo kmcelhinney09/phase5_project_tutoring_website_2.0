@@ -89,7 +89,7 @@ function ManageTimeSlots() {
                                               className="mb-2"
                                               onClick={() =>
                                                 navigate(
-                                                  `/tutoring_time_slots//${slot.id}`,
+                                                  `/tutoring_time_slots/${slot.id}`,
                                                   { replace: true }
                                                 )
                                               }

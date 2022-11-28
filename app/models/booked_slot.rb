@@ -12,4 +12,9 @@ class BookedSlot < ApplicationRecord
     end
     {id:tutor.id, full_name:tutor.full_name, subjects_covered:subjects * ", "}
   end
+
+  def tutee
+    tutee = User.find(self.tutee_id)
+    {id:tutee.id, full_name:tutee.full_name}
+  end
 end
