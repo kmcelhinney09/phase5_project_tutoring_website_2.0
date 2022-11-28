@@ -33,7 +33,8 @@ function SessionsTutored() {
                     </td>
                     <td>{slot.tutee.full_name}</td>
                     <td>
-                      <Button>Drop Session</Button>
+                      <Button>Drop Session</Button>{" "}
+                      <Button>Leave Note</Button>
                     </td>
                   </tr>
                 );
