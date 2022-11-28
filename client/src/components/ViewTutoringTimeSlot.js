@@ -78,7 +78,7 @@ function ViewTutoringTimeSlot() {
             {tutoringSlotInfo.boooked_slot ? (
               tutoringSlotInfo.booked_slots.map((slot) => {
                 return (
-                  <tr>
+                  <tr key={slot.id}>
                     <td>{slot.tutor.full_name}</td>
                     <td>{slot.tutee.full_name}</td>
                     <td>{slot.created_at}</td>
