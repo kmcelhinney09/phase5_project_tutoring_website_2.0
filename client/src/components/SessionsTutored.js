@@ -7,6 +7,8 @@ import Button from "react-bootstrap/esm/Button";
 function SessionsTutored() {
   const booked_as_tutor = useAuth().currentUser.booked_as_tutor;
   console.log(booked_as_tutor)
+  //TODO: Make Dropsession butotn functional
+  //TODO: Make Leave Note Button functional
   return (
     <Container>
       <Row>
@@ -33,8 +35,8 @@ function SessionsTutored() {
                     </td>
                     <td>{slot.tutee.full_name}</td>
                     <td>
-                      <Button>Drop Session</Button>{" "}
-                      <Button>Leave Note</Button>
+                      <Button variant="success" className="mb-2">Drop Session</Button>{" "}
+                      <Button variant="success" className="mb-2">Leave Note</Button>
                     </td>
                   </tr>
                 );

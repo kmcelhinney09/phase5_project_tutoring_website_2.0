@@ -3,41 +3,39 @@ import { useAuth } from "../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function CreateBuilding({ closeForm, school_id }) {
+function CreateRoom({ closeForm, building_id }) {
   const auth = useAuth();
   const user = auth.currentUser;
 
-  const [createBuilding, setCreateBuilding] = useState(false);
-  const [buildingForm, setBuildingForm] = useState([]);
+  const [roomForm, setRoomForm] = useState({
+    name: "",
+    building_id: building_id,
+  });
 
-  function handleBuildingFormOnChange(e) {
+  function handleRoomFormOnChange(e) {
     let value = e.target.value;
-    setBuildingForm({ name: value, school_id: school_id });
-    let new_building = {
-      building: { name: value, school_id: school_id },
-      rooms: [],
-    };
-    setCreateBuilding(new_building);
+    setRoomForm({ ...roomForm, name: value });
   }
 
-  function handleCreateBuildingSubmit(e) {
+  function handleCreateRoomSubmit(e) {
     e.preventDefault();
     let locations = user.school.locations;
-    locations.push(createBuilding);
     console.log(locations);
-    let new_user = user;
-    new_user.school.locations = locations;
-    auth.updateCurrentUser(new_user);
+    locations.map((location) => {
+      if (location.building.id === building_id) {
+        location.rooms.push(roomForm);
+      }
+    });
     closeForm();
 
-    fetch("/building", {
+    fetch("/room", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(buildingForm),
+      body: JSON.stringify(roomForm),
     }).then((res) => {
       if (res.ok) {
-        res.json().then((building) => {
-          console.log(building)
+        res.json().then((room) => {
+          console.log(room)
         });
       } else {
         // res.json().then((e) => setErrors(Object.entries(e.error)));
@@ -50,13 +48,13 @@ function CreateBuilding({ closeForm, school_id }) {
     <div className="color-overlay d-flex justify-content-center align-items-center">
       <Form
         className="rounded p-3 p-sm-4"
-        onSubmit={(e) => handleCreateBuildingSubmit(e)}
+        onSubmit={(e) => handleCreateRoomSubmit(e)}
       >
         <Form.Control
           type="text"
-          placeholder="Building Name"
-          value={createBuilding.name}
-          onChange={handleBuildingFormOnChange}
+          placeholder="Room Name"
+          value={roomForm.name}
+          onChange={handleRoomFormOnChange}
           name="name"
         />
         <br />
@@ -75,4 +73,4 @@ function CreateBuilding({ closeForm, school_id }) {
   );
 }
 
-export default CreateBuilding;
+export default CreateRoom;

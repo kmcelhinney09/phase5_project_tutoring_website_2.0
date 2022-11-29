@@ -16,7 +16,9 @@ function ManageUsers() {
       }
     });
   }, [user.school.id]);
-
+//TODO: Make Edit Button Funcational
+//TODO: Make Delete Button Functional
+//TODO: Make Password Reset Button Functional
   return (
     <Table striped bordered hover>
       <thead>
@@ -34,9 +36,9 @@ function ManageUsers() {
               <td>{school_user.full_name}</td>
               <td>{school_user.email}</td>
               <td>
-                <Button>Edit</Button>{" "}
-                <Button>Delete</Button>{" "}
-                <Button>Reset Password</Button>
+                <Button variant="success">Edit</Button>{" "}
+                <Button variant="success">Delete</Button>{" "}
+                <Button variant="success">Reset Password</Button>
               </td>
             </tr>
             )

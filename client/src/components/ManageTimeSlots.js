@@ -9,11 +9,14 @@ function ManageTimeSlots() {
   const user = useAuth().currentUser;
   const navigate = useNavigate();
   console.log(user);
-
+//TODO: Make Edit button functional
+//TODO: Make Remove button functional
+//TODO: Make Create new button functional
   return (
     <>
       <h3> Current Resources</h3>
       <Container>
+      <Button variant="success">Create New Tutoring Session</Button>
         {user.id ? (
           user.school.locations
             .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
@@ -82,10 +85,14 @@ function ManageTimeSlots() {
                                               : "Open"}
                                           </td>
                                           <td>
-                                            <Button className="mb-2">
+                                            <Button
+                                              className="mb-2"
+                                              variant="success"
+                                            >
                                               Edit
                                             </Button>{" "}
                                             <Button
+                                              variant="success"
                                               className="mb-2"
                                               onClick={() =>
                                                 navigate(
@@ -95,6 +102,12 @@ function ManageTimeSlots() {
                                               }
                                             >
                                               View
+                                            </Button>{" "}
+                                            <Button
+                                              className="mb-2"
+                                              variant="success"
+                                            >
+                                              Remove
                                             </Button>
                                           </td>
                                         </tr>
@@ -113,8 +126,7 @@ function ManageTimeSlots() {
         ) : (
           <h4>Loading....</h4>
         )}
-      </Container>
-      <Button>Create New Building</Button> <Button>Create New Room</Button>
+      </Container> 
     </>
   );
 }

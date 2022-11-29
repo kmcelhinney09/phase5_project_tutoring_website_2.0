@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 function NotesRender() {
   const user = useAuth().currentUser;
-  
+  //TODO: Make generic to render any array of notes passed
   return (
     <Container>
       <h4>Notes:</h4>

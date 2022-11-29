@@ -6,18 +6,49 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
 import Modal from "react-bootstrap/Modal";
 import CreateBuilding from "./CreateBuilding";
+import CreateRoom from "./CreateRoom";
+import EditRoom from "./EditRoom";
 
 function ManageSchool() {
   const user = useAuth().currentUser;
-  const [showCreateBuilding, setShowCreateBuilding] = useState(false);
-  const [showCreateRoom, setShowCreateRoom] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalBody, setModalBody] = useState("");
 
-  const handleCloseCreateBuilding = () => setShowCreateBuilding(false);
-  const handleShowCreateBuilding = () => setShowCreateBuilding(true);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
-  const handleCloseCreateRoom = () => setShowCreateRoom(false);
-  const handleShowCreateRoom = () => setShowCreateRoom(true);
-
+  function handleModalAction(modal_type, id = 0, resources_name = []) {
+    if (modal_type === "create room") {
+      setModalTitle("Create Room");
+      setModalBody(
+        <CreateRoom closeForm={handleCloseModal} resource_id={id} />
+      );
+    } else if (modal_type === "create building") {
+      setModalTitle("Create Building");
+      setModalBody(
+        <CreateBuilding
+          closeForm={handleCloseModal}
+          school_id={user.school.id}
+        />
+      );
+    } else {
+      setModalTitle(modal_type);
+      setModalBody(
+        <EditRoom
+          closeForm={handleCloseModal}
+          room_id={id}
+          resources_name={resources_name}
+        />
+      );
+    }
+    handleShowModal();
+  }
+  //TODO: Put Create Room under edit building (bilding.room.create)
+  // TODO: Make Room Remove button functional
+  //TODO: Make Remove bilding button functional
+  //TODO: Make Edit building button functional
+  
   return (
     <>
       <h3> Current Resources</h3>
@@ -46,7 +77,22 @@ function ManageSchool() {
                             <tr key={room.id}>
                               <td>{room.name}</td>
                               <td className="text-center">
-                                <Button>Edit</Button>
+                                <Button
+                                  variant="success"
+                                  onClick={() =>
+                                    handleModalAction(
+                                      `Edit ${room.name}`,
+                                      room.id,
+                                      [buildingInfo.building.name, room.name]
+                                    )
+                                  }
+                                >
+                                  Edit
+                                </Button>{" "}
+                                <Button variant="success">
+                                  {" "}
+                                  Remove Room
+                                </Button>
                               </td>
                             </tr>
                           );
@@ -54,52 +100,39 @@ function ManageSchool() {
                     </tbody>
                   </Table>
                 </Row>
-                <Button className="mb-2">Create New Room</Button>
-                <Modal
-                  show={showCreateBuilding}
-                  onHide={handleCloseCreateBuilding}
+                <Button
+                  className="mb-2"
+                  variant="success"
+                  onClick={() =>
+                    handleModalAction("create room", buildingInfo.building.id)
+                  }
                 >
-                  <Modal.Header>
-                    <Modal.Title>Create New Building</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <CreateBuilding
-                      closeForm={handleCloseCreateBuilding}
-                      school_id={user.school.id}
-                    />
-                  </Modal.Body>
-                </Modal>
-                <Modal
-                  show={showCreateBuilding}
-                  onHide={handleCloseCreateBuilding}
-                />
-                <Modal
-                  show={showCreateBuilding}
-                  onHide={handleCloseCreateBuilding}
-                >
-                  <Modal.Header>
-                    <Modal.Title>Create New Room</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <CreateBuilding
-                      closeForm={handleCloseCreateBuilding}
-                      school_id={user.school.id}
-                    />
-                  </Modal.Body>
-                </Modal>
-                <Modal
-                  show={showCreateBuilding}
-                  onHide={handleCloseCreateBuilding}
-                />
+                  Create New Room
+                </Button>{" "}
+                <Button className="mb-2" variant="success">
+                  Edit Building
+                </Button>{" "}
+                <Button className="mb-2" variant="success">
+                  Remove Building
+                </Button>
               </Container>
             );
           })
       ) : (
         <h4>Loading....</h4>
       )}
-      <Button variant="success" onClick={handleShowCreateBuilding}>
+      <Button
+        variant="success"
+        onClick={() => handleModalAction("create building")}
+      >
         Create New Building
-      </Button>
+      </Button>{" "}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header>
+          <Modal.Title>{modalTitle}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalBody}</Modal.Body>
+      </Modal>
     </>
   );
 }

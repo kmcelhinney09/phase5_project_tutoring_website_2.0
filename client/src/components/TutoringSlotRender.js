@@ -18,7 +18,7 @@ function TutoringSlotRender({ slot_info }) {
       }),
     });
   }
-
+//TODO: Make Signup button functional for both Tutoring Signup and Tutor session sign up
   return (
     <>
       {slot_info.tutors.length !== 0?(slot_info.tutors.map((tutor) => {

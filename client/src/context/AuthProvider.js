@@ -82,7 +82,7 @@ function useProvideAuth() {
   }
 
   function updateCurrentUser(new_user) {
-    setCurrentUser(new_user)
+    setCurrentUser(new_user);
   }
 
   return {
