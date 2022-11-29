@@ -8,7 +8,7 @@ import SessionsTutored from "./SessionsTutored";
 
 function UserInfo() {
   const user = useAuth().currentUser;
-  console.log(user)
+ 
   return (
     <Container>
       <Row>

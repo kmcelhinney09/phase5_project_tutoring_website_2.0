@@ -1,11 +1,23 @@
 import { useAuth } from "../context/AuthProvider";
+import { useState } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
+import Modal from "react-bootstrap/Modal";
+import CreateBuilding from "./CreateBuilding";
 
 function ManageSchool() {
   const user = useAuth().currentUser;
+  const [showCreateBuilding, setShowCreateBuilding] = useState(false);
+  const [showCreateRoom, setShowCreateRoom] = useState(false);
+
+  const handleCloseCreateBuilding = () => setShowCreateBuilding(false);
+  const handleShowCreateBuilding = () => setShowCreateBuilding(true);
+
+  const handleCloseCreateRoom = () => setShowCreateRoom(false);
+  const handleShowCreateRoom = () => setShowCreateRoom(true);
+
   return (
     <>
       <h3> Current Resources</h3>
@@ -42,13 +54,52 @@ function ManageSchool() {
                     </tbody>
                   </Table>
                 </Row>
+                <Button className="mb-2">Create New Room</Button>
+                <Modal
+                  show={showCreateBuilding}
+                  onHide={handleCloseCreateBuilding}
+                >
+                  <Modal.Header>
+                    <Modal.Title>Create New Building</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <CreateBuilding
+                      closeForm={handleCloseCreateBuilding}
+                      school_id={user.school.id}
+                    />
+                  </Modal.Body>
+                </Modal>
+                <Modal
+                  show={showCreateBuilding}
+                  onHide={handleCloseCreateBuilding}
+                />
+                <Modal
+                  show={showCreateBuilding}
+                  onHide={handleCloseCreateBuilding}
+                >
+                  <Modal.Header>
+                    <Modal.Title>Create New Room</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <CreateBuilding
+                      closeForm={handleCloseCreateBuilding}
+                      school_id={user.school.id}
+                    />
+                  </Modal.Body>
+                </Modal>
+                <Modal
+                  show={showCreateBuilding}
+                  onHide={handleCloseCreateBuilding}
+                />
               </Container>
             );
           })
       ) : (
         <h4>Loading....</h4>
       )}
-      <Button>Create New Building</Button> <Button>Create New Room</Button>
+      <Button variant="success" onClick={handleShowCreateBuilding}>
+        Create New Building
+      </Button>
     </>
   );
 }

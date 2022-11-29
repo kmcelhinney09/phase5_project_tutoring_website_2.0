@@ -22,7 +22,7 @@ class UsersController < ApplicationController
     current_user = User.find(session[:user_id])
   end
   
-  #error handleing
+  #error handling
   def render_unprocessable_entity(invalid)
     render json:{error: invalid.record.errors}, status: :unprocessable_entity
   end

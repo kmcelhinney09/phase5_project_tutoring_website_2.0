@@ -81,12 +81,17 @@ function useProvideAuth() {
     });
   }
 
+  function updateCurrentUser(new_user) {
+    setCurrentUser(new_user)
+  }
+
   return {
     currentUser,
     login,
     logout,
     signup,
     auto,
+    updateCurrentUser,
     errors,
     isLoading,
     isLoggedIn,

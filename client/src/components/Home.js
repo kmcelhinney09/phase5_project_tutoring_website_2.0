@@ -8,7 +8,7 @@ import Modal from "react-bootstrap/Modal";
 import SignUp from "./SignUp";
 import Login from "./Login";
 
-function Home({ loggedin, setLoggedin }) {
+function Home() {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
 
@@ -61,7 +61,7 @@ function Home({ loggedin, setLoggedin }) {
           <Modal.Title>Sign-Up for Tutoring</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <SignUp closeForm={handleCloseSignUp} setLoggedin={setLoggedin} />
+          <SignUp closeForm={handleCloseSignUp} />
         </Modal.Body>
       </Modal>
 
@@ -70,7 +70,7 @@ function Home({ loggedin, setLoggedin }) {
           <Modal.Title>Login to Tutoring</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Login closeForm={handleCloseLogin} setLoggedin={setLoggedin} />
+          <Login closeForm={handleCloseLogin}/>
         </Modal.Body>
       </Modal>
     </>
