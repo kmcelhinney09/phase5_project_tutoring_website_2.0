@@ -21,14 +21,16 @@ function CreateRoom({ closeForm, building_id }) {
     e.preventDefault();
     let new_user = JSON.parse(JSON.stringify(user));
     let locations = new_user.school.locations;
-    
-    locations.map((location) => {
+
+    let updated_locations = locations.map((location) => {
       if (location.building.id === building_id) {
         location.rooms.push(roomForm);
       }
+      return location
     });
-    closeForm();
+    new_user.school.locations = updated_locations
     auth.updateCurrentUser(new_user);
+    closeForm();
 
     fetch("/room", {
       method: "POST",
@@ -37,8 +39,20 @@ function CreateRoom({ closeForm, building_id }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((room) => {
-          console.log(room)
+          let locations = new_user.school.locations;
+
+          let new_locations = locations.map((location) => {
+            return location.rooms.map((local_room) => {
+              if (room.name === local_room.name) {
+                local_room = room;
+              }
+              return local_room;
+            });
+          });
+          new_user.school.locations = new_locations;
+          auth.updateCurrentUser(new_user);
         });
+        auth.auto();
       } else {
         // res.json().then((e) => setErrors(Object.entries(e.error)));
         res.json().then((e) => console.log(Object.entries(e.error)));

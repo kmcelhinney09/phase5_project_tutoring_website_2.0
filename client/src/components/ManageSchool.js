@@ -1,5 +1,5 @@
 import { useAuth } from "../context/AuthProvider";
-import { useState } from "react";
+import { useState, useEffect, useInsertionEffect } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
@@ -11,7 +11,7 @@ import EditRoom from "./EditRoom";
 
 function ManageSchool() {
   const auth = useAuth();
-  const user = useAuth().currentUser;
+  let user = auth.currentUser; 
 
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -19,6 +19,7 @@ function ManageSchool() {
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
+
 
   function handleModalAction(modal_type, id = 0, resources_name = []) {
     
