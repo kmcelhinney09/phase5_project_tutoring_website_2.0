@@ -20,6 +20,12 @@ class RoomController < ApplicationController
     render json: room, status: :accepted
   end
 
+  def destroy 
+    room = Room.find_by(id:params[:id])
+    room.destroy
+    head :no_content
+  end
+
   private
   #error handling
   def render_unprocessable_entity(invalid)

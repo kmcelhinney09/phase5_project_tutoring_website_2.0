@@ -10,7 +10,9 @@ import CreateRoom from "./CreateRoom";
 import EditRoom from "./EditRoom";
 
 function ManageSchool() {
+  const auth = useAuth();
   const user = useAuth().currentUser;
+
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
@@ -44,11 +46,42 @@ function ManageSchool() {
     }
     handleShowModal();
   }
-  //TODO: Put Create Room under edit building (bilding.room.create)
-  // TODO: Make Room Remove button functional
+
+  function handleRemoveRoom(room_id) {
+    let new_user = JSON.parse(JSON.stringify(user));
+    let locations = new_user.school.locations;
+    let new_rooms = [];
+    let saved_index;
+    let removed_room_building;
+
+    locations.forEach((location) => {
+      location.rooms.forEach((room, index) => {
+        // console.log(location.rooms)
+        if (room.id === room_id) {
+          new_rooms = [...location.rooms];
+          removed_room_building = location.building.id;
+          saved_index = index;
+        }
+      });
+      if (new_rooms.length !== 0) {
+        new_rooms.splice(saved_index, 1);
+        locations.map((location) => {
+          if (location.building.id === removed_room_building) {
+            location.rooms = new_rooms;
+          }
+        });
+      }
+    });
+    auth.updateCurrentUser(new_user);
+
+    fetch(`/room/${room_id}`, {
+      method: "DELETE",
+    })
+  }
+  //TODO: Fix and Put Create Room under edit building (bilding.room.create) Building id isn't getting where needed.
   //TODO: Make Remove bilding button functional
   //TODO: Make Edit building button functional
-  
+
   return (
     <>
       <h3> Current Resources</h3>
@@ -89,7 +122,10 @@ function ManageSchool() {
                                 >
                                   Edit
                                 </Button>{" "}
-                                <Button variant="success">
+                                <Button
+                                  variant="success"
+                                  onClick={() => handleRemoveRoom(room.id)}
+                                >
                                   {" "}
                                   Remove Room
                                 </Button>
