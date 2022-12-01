@@ -9,40 +9,41 @@ function CreateRoom({ closeForm, building_id }) {
 
   const [roomForm, setRoomForm] = useState({
     name: "",
-    building_id:0,
+    building_id: 0,
   });
 
   function handleRoomFormOnChange(e) {
     let value = e.target.value;
-    setRoomForm({name: value, building_id: building_id });
+    setRoomForm({ name: value, building_id: building_id });
   }
 
   function handleCreateRoomSubmit(e) {
     e.preventDefault();
     let new_user = JSON.parse(JSON.stringify(user));
     let locations = new_user.school.locations;
-    console.log(locations);
-    // locations.map((location) => {
-    //   if (location.building.id === building_id) {
-    //     location.rooms.push(roomForm);
-    //   }
-    // });
-    // closeForm();
+    
+    locations.map((location) => {
+      if (location.building.id === building_id) {
+        location.rooms.push(roomForm);
+      }
+    });
+    closeForm();
+    auth.updateCurrentUser(new_user);
 
-    // fetch("/room", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(roomForm),
-    // }).then((res) => {
-    //   if (res.ok) {
-    //     res.json().then((room) => {
-    //       console.log(room)
-    //     });
-    //   } else {
-    //     // res.json().then((e) => setErrors(Object.entries(e.error)));
-    //     res.json().then((e) => console.log(Object.entries(e.error)));
-    //   }
-    // });
+    fetch("/room", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(roomForm),
+    }).then((res) => {
+      if (res.ok) {
+        res.json().then((room) => {
+          console.log(room)
+        });
+      } else {
+        // res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => console.log(Object.entries(e.error)));
+      }
+    });
   }
 
   return (

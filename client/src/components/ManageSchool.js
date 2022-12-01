@@ -21,12 +21,15 @@ function ManageSchool() {
   const handleShowModal = () => setShowModal(true);
 
   function handleModalAction(modal_type, id = 0, resources_name = []) {
+    
     if (modal_type === "create room") {
+      console.log("Manage Building Id: ",id)
       setModalTitle("Create Room");
       setModalBody(
-        <CreateRoom closeForm={handleCloseModal} resource_id={id} />
+        <CreateRoom closeForm={handleCloseModal} building_id={id} />
       );
     } else if (modal_type === "create building") {
+      
       setModalTitle("Create Building");
       setModalBody(
         <CreateBuilding
@@ -78,9 +81,9 @@ function ManageSchool() {
       method: "DELETE",
     })
   }
-  //TODO: Fix and Put Create Room under edit building (bilding.room.create) Building id isn't getting where needed.
   //TODO: Make Remove bilding button functional
   //TODO: Make Edit building button functional
+  //TODO: Put Create Room under edit building (bilding.room.create) Building id isn't getting where needed.
 
   return (
     <>
@@ -136,6 +139,7 @@ function ManageSchool() {
                     </tbody>
                   </Table>
                 </Row>
+                
                 <Button
                   className="mb-2"
                   variant="success"
