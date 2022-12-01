@@ -6,6 +6,12 @@ class BuildingController < ApplicationController
     render json: building, status: :created
   end
 
+  def destroy
+    building = Building.find_by(id:params[:id])
+    building.destroy
+    head :no_content
+  end
+
   private
   #error handling
   def render_unprocessable_entity(invalid)

@@ -1,5 +1,5 @@
 import { useAuth } from "../context/AuthProvider";
-import { useState, useEffect, useInsertionEffect } from "react";
+import { useState } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
@@ -8,10 +8,11 @@ import Modal from "react-bootstrap/Modal";
 import CreateBuilding from "./CreateBuilding";
 import CreateRoom from "./CreateRoom";
 import EditRoom from "./EditRoom";
+import EditBuilding from "./EditBuilding";
 
 function ManageSchool() {
   const auth = useAuth();
-  let user = auth.currentUser; 
+  let user = auth.currentUser;
 
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -20,22 +21,29 @@ function ManageSchool() {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-
   function handleModalAction(modal_type, id = 0, resources_name = []) {
-    
+    console.log(resources_name[0])
     if (modal_type === "create room") {
-      console.log("Manage Building Id: ",id)
       setModalTitle("Create Room");
       setModalBody(
         <CreateRoom closeForm={handleCloseModal} building_id={id} />
       );
     } else if (modal_type === "create building") {
-      
       setModalTitle("Create Building");
       setModalBody(
         <CreateBuilding
           closeForm={handleCloseModal}
           school_id={user.school.id}
+        />
+      );
+    } else if (modal_type === "edit building") {
+      setModalTitle("Edit Building");
+      setModalBody(
+        <EditBuilding
+          closeForm={handleCloseModal}
+          building_id={id}
+          school_id={user.school.id}
+          building_name={resources_name[0]}
         />
       );
     } else {
@@ -80,9 +88,25 @@ function ManageSchool() {
 
     fetch(`/room/${room_id}`, {
       method: "DELETE",
-    })
+    });
   }
-  //TODO: Make Remove bilding button functional
+
+  function handleRemoveBuilding(building_id) {
+    let new_user = JSON.parse(JSON.stringify(user));
+    let locations = new_user.school.locations;
+    let building_index;
+    locations.forEach((location, index) => {
+      if (location.building.id === building_id) {
+        building_index = index;
+      }
+    });
+    locations.splice(building_index, 1);
+    auth.updateCurrentUser(new_user);
+
+    fetch(`/building/${building_id}`, {
+      method: "DELETE",
+    });
+  }
   //TODO: Make Edit building button functional
   //TODO: Put Create Room under edit building (bilding.room.create) Building id isn't getting where needed.
 
@@ -140,7 +164,6 @@ function ManageSchool() {
                     </tbody>
                   </Table>
                 </Row>
-                
                 <Button
                   className="mb-2"
                   variant="success"
@@ -150,10 +173,24 @@ function ManageSchool() {
                 >
                   Create New Room
                 </Button>{" "}
-                <Button className="mb-2" variant="success">
+                <Button
+                  className="mb-2"
+                  variant="success"
+                  onClick={() =>
+                    handleModalAction(
+                      "edit building",
+                      buildingInfo.building.id,
+                      [buildingInfo.building.name]
+                    )
+                  }
+                >
                   Edit Building
                 </Button>{" "}
-                <Button className="mb-2" variant="success">
+                <Button
+                  className="mb-2"
+                  variant="success"
+                  onClick={() => handleRemoveBuilding(buildingInfo.building.id)}
+                >
                   Remove Building
                 </Button>
               </Container>

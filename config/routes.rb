@@ -4,12 +4,13 @@ Rails.application.routes.draw do
   resources :schools
   resources :users
   resources :room, only: [:create, :update, :destroy]
+  resources :building, only: [:create, :update, :destroy]
 
   get "/auth", to: 'users#show'
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
   get "/school/:id/tutoring", to: "schools#tutoring"
-  post "/building", to: "building#create"
+  # post "/building", to: "building#create"
   # post "/room", to:"room#create"
   # patch "/room", to: "room#update"
   
