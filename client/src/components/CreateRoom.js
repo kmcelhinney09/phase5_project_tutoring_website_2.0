@@ -26,9 +26,9 @@ function CreateRoom({ closeForm, building_id }) {
       if (location.building.id === building_id) {
         location.rooms.push(roomForm);
       }
-      return location
+      return location;
     });
-    new_user.school.locations = updated_locations
+    new_user.school.locations = updated_locations;
     auth.updateCurrentUser(new_user);
     closeForm();
 

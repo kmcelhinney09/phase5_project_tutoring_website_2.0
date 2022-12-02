@@ -22,13 +22,12 @@ function CreateBuilding({ closeForm, school_id }) {
 
   function handleCreateBuildingSubmit(e) {
     e.preventDefault();
-    let locations = user.school.locations;
+    let new_user = JSON.parse(JSON.stringify(auth.currentUser));
+    let locations = new_user.school.locations;
     locations.push(createBuilding);
-    let new_user = user;
     new_user.school.locations = locations;
     auth.updateCurrentUser(new_user);
     closeForm();
-//TODO: Fix this mess!!! need new user then update user and so you update user after building is returned
     fetch("/building", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -36,7 +35,7 @@ function CreateBuilding({ closeForm, school_id }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((building) => {
-          console.log(building)
+          console.log(building);
           auth.auto();
         });
       } else {

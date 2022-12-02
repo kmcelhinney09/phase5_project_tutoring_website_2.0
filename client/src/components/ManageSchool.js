@@ -107,8 +107,7 @@ function ManageSchool() {
       method: "DELETE",
     });
   }
-  //TODO: Make Edit building button functional
-  //TODO: Put Create Room under edit building (bilding.room.create) Building id isn't getting where needed.
+  
 
   return (
     <>
