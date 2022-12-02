@@ -6,6 +6,13 @@ class BuildingController < ApplicationController
     render json: building, status: :created
   end
 
+  def update
+    building = Building.find_by(id:params[:id])
+    building.name = params[:name]
+    building.save!
+    render json: building, status: :accepted
+  end
+
   def destroy
     building = Building.find_by(id:params[:id])
     building.destroy
@@ -19,7 +26,7 @@ class BuildingController < ApplicationController
   end
 
   def user_params
-    params.permit(:name, :school_id)
+    params.permit(:id, :name, :school_id)
   end
 
   def current_user

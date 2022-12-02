@@ -33,7 +33,7 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
     let new_user = JSON.parse(JSON.stringify(auth.currentUser))
     
     let locations = [...auth.currentUser.school.locations];
-    
+
     if (roomForm.name !== resources_name[1]) {
       locations.map((location) => {
         location.rooms.map((room) => {
@@ -73,7 +73,7 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
     }
     closeForm();
 
-    fetch("/room", {
+    fetch(`/room/${room_id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(roomForm),
