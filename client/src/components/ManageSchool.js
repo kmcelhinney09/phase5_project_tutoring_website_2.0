@@ -20,7 +20,6 @@ function ManageSchool() {
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
-
   function handleModalAction(modal_type, id = 0, resources_name = []) {
     console.log(resources_name[0])
     if (modal_type === "create room") {

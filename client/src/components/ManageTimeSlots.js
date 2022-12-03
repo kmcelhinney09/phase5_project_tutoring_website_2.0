@@ -1,22 +1,36 @@
 import { useAuth } from "../context/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { createRoutesFromChildren, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
 
 function ManageTimeSlots() {
-  const user = useAuth().currentUser;
+  const auth = useAuth();
+  const user = auth.currentUser;
   const navigate = useNavigate();
   console.log(user);
-//TODO: Make Edit button functional
-//TODO: Make Remove button functional
-//TODO: Make Create new button functional
+  //TODO: Make Edit button functional
+  //TODO: Make Create new button functional
+
+  function handleRemoveTutoringSlot(slot_index,slot_id) {
+    console.log(slot_index);
+    let new_user = JSON.parse(JSON.stringify(user));
+    let time_slots = new_user.school.tutoring_time_slots;
+    time_slots.splice(slot_index,1)
+    auth.updateCurrentUser(new_user)
+
+    fetch(`/tutoring_time_slots/${slot_id}`, {
+      method: "DELETE",
+    });
+
+  }
+
   return (
     <>
       <h3> Current Resources</h3>
       <Container>
-      <Button variant="success">Create New Tutoring Session</Button>
+        <Button variant="success">Create New Tutoring Session</Button>
         {user.id ? (
           user.school.locations
             .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
@@ -51,9 +65,13 @@ function ManageTimeSlots() {
                               </thead>
                               {user.school.tutoring_time_slots
                                 .sort((a, b) =>
-                                  a.date_sort > b.date_sort ? -1 : 1
+                                new Date(
+                                  a.start_time
+                                ).getTime() > new Date(
+                                  b.start_time
+                                ).getTime() ? 1 : -1
                                 )
-                                .map((slot) => {
+                                .map((slot,index) => {
                                   return (
                                     <tbody key={slot.id}>
                                       {slot.room_id === rooms.id ? (
@@ -106,6 +124,11 @@ function ManageTimeSlots() {
                                             <Button
                                               className="mb-2"
                                               variant="success"
+                                              onClick={() =>
+                                                handleRemoveTutoringSlot(
+                                                  index, slot.id
+                                                )
+                                              }
                                             >
                                               Remove
                                             </Button>
@@ -126,7 +149,7 @@ function ManageTimeSlots() {
         ) : (
           <h4>Loading....</h4>
         )}
-      </Container> 
+      </Container>
     </>
   );
 }

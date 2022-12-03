@@ -5,6 +5,12 @@ class TutoringTimeSlotsController < ApplicationController
     render json: time_slot, status: :ok
   end
 
+  def destroy
+    tutoring_time_slot = TutoringTimeSlot.find_by(id:params[:id])
+    tutoring_time_slot.destroy
+    head :no_content
+  end
+
   private
   
   def current_user
