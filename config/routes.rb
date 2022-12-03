@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   get "/auth", to: 'users#show'
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
-  get "/school/:id/tutoring", to: "schools#tutoring"
   # post "/building", to: "building#create"
   # post "/room", to:"room#create"
   # patch "/room", to: "room#update"
