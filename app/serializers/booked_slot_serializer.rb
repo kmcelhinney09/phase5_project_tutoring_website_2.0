@@ -1,5 +1,5 @@
 class BookedSlotSerializer < ActiveModel::Serializer
-  attributes :id, :date, :start_time, :end_time, :location, :tutor, :tutee, :created_at
+  attributes :id, :date, :start_time, :end_time, :location, :tutor, :tutee, :created_at, :date_sort
   
   def date
     date = object.tutoring_time_slot.start_time.strftime("%A, %b %d")
@@ -12,6 +12,10 @@ class BookedSlotSerializer < ActiveModel::Serializer
   end
   def created_at
     created_at = object.created_at.strftime("%A, %b%d -%l:%M %p")
+  end
+
+  def date_sort
+    date_sort = object.tutoring_time_slot.start_time.to_f
   end
 
   def location

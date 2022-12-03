@@ -25,7 +25,9 @@ function SessionRender() {
           </thead>
           <tbody>
             {user.booked_slots.length !== 0 ? (
-              user.booked_slots.map((slot) => {
+              user.booked_slots.sort((a, b) =>
+              a.date_sort > b.date_sort ? 1 : -1
+            ).map((slot) => {
                 return (
                   <tr key={slot.id}>
                     <td>{slot.location}</td>
