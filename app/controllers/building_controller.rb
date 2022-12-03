@@ -9,7 +9,6 @@ class BuildingController < ApplicationController
   def update
     building = Building.find_by(id:params[:id])
     building.name = params[:name]
-    building.save!
     render json: building, status: :accepted
   end
 

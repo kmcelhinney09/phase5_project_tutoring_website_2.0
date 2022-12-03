@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :authorized, only: :create
+  rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
 
   def create
     user = User.find_by(email: params[:email])
@@ -24,6 +25,11 @@ class SessionsController < ApplicationController
     if session.include?(:user_id)
       current_user = User.find(session[:user_id])
     end
+  end
+
+  #error handling
+  def render_unprocessable_entity(invalid)
+    render json:{error: invalid.record.errors}, status: :unprocessable_entity
   end
 
 end
