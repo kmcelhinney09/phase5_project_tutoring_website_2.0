@@ -2,7 +2,17 @@ class UsersController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
   skip_before_action :authorized, only: :create
 
-  
+  def index
+    user = User.find_by(id:session[:user_id])
+    if user.role == "admin"
+      users_list = User.where(school_id:user.school_id)
+      users = users_list.map{|userInfo| {id:userInfo.id, full_name:userInfo.full_name, email:userInfo.email}}
+      render json: users, status: :ok
+    else
+      render json: {error: {users: "Not Authorized"}}, status: :unauthorized
+    end
+  end
+
   def show
     current_user = User.find(session[:user_id])
     render json: current_user, status: :ok
