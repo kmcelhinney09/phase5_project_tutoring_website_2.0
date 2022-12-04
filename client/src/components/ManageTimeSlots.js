@@ -1,6 +1,6 @@
 import { useAuth } from "../context/AuthProvider";
 import { useState } from "react";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
@@ -21,41 +21,38 @@ function ManageTimeSlots() {
   const handleShowModal = () => setShowModal(true);
   console.log(user);
 
-  //TODO: Make Edit button functional
+  //TODO: Make Edit button functional make seperate page include all slot info plus tutors and tutee's signed up (able to drop them)
 
-
-  function handleRemoveTutoringSlot(slot_index,slot_id) {
+  function handleRemoveTutoringSlot(slot_index, slot_id) {
     console.log(slot_index);
     let new_user = JSON.parse(JSON.stringify(user));
     let time_slots = new_user.school.tutoring_time_slots;
-    time_slots.splice(slot_index,1)
-    auth.updateCurrentUser(new_user)
+    time_slots.splice(slot_index, 1);
+    auth.updateCurrentUser(new_user);
 
     fetch(`/tutoring_time_slots/${slot_id}`, {
       method: "DELETE",
     });
-
   }
 
   function handleModalAction(modal_type, id = 0, resources_name = []) {
     if (modal_type === "createSlot") {
       setModalTitle("Create Tutoring Time Slot");
-      setModalBody(
-        <CreatTutoringTimeSlots closeForm={handleCloseModal}/>
-      );
+      setModalBody(<CreatTutoringTimeSlots closeForm={handleCloseModal} />);
+    }
+    handleShowModal();
   }
-  handleShowModal();
-}
 
   return (
     <>
       <h3> Current Resources</h3>
       <Container>
-        <Button variant="success" onClick={() =>
-                                    handleModalAction(
-                                      "createSlot"
-                                    )
-                                  }>Create New Tutoring Session</Button>
+        <Button
+          variant="success"
+          onClick={() => handleModalAction("createSlot")}
+        >
+          Create New Tutoring Session
+        </Button>
         {user.id ? (
           user.school.locations
             .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
@@ -91,13 +88,12 @@ function ManageTimeSlots() {
                               </thead>
                               {user.school.tutoring_time_slots
                                 .sort((a, b) =>
-                                new Date(
-                                  a.start_time
-                                ).getTime() > new Date(
-                                  b.start_time
-                                ).getTime() ? 1 : -1
+                                  new Date(a.start_time).getTime() >
+                                  new Date(b.start_time).getTime()
+                                    ? 1
+                                    : -1
                                 )
-                                .map((slot,index) => {
+                                .map((slot, index) => {
                                   return (
                                     <tbody key={slot.id}>
                                       {slot.room_id === rooms.id ? (
@@ -137,6 +133,12 @@ function ManageTimeSlots() {
                                             <Button
                                               className="mb-2"
                                               variant="success"
+                                              onClick={() =>
+                                                navigate(
+                                                  `/tutoring_time_slots/${slot.id}/edit`,
+                                                  { replace: true }
+                                                )
+                                              }
                                             >
                                               Edit
                                             </Button>{" "}
@@ -157,7 +159,8 @@ function ManageTimeSlots() {
                                               variant="success"
                                               onClick={() =>
                                                 handleRemoveTutoringSlot(
-                                                  index, slot.id
+                                                  index,
+                                                  slot.id
                                                 )
                                               }
                                             >

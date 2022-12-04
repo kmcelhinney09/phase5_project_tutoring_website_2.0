@@ -15,6 +15,7 @@ import Home from "./components/Home";
 import UserDashboard from "./components/UserDashboard";
 import PrivateRoutes from "./components/PrivateRoutes";
 import ViewTutoringTimeSlot from "./components/ViewTutoringTimeSlot";
+import EditTutoringTimeSlots from "./components/ManageTimeSlots/EditTutoringTimeSlots";
 
 function App() {
   const auth = useAuth();
@@ -111,6 +112,10 @@ function App() {
             <Route
               path={"/tutoring_time_slots/:id"}
               element={<ViewTutoringTimeSlot />}
+            />
+            <Route
+              path={"/tutoring_time_slots/:id/edit"}
+              element={<EditTutoringTimeSlots />}
             />
           </Route>
           <Route
