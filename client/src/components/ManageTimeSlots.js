@@ -22,7 +22,7 @@ function ManageTimeSlots() {
   console.log(user);
 
   //TODO: Make Edit button functional
-  //TODO: Make Create new button functional
+
 
   function handleRemoveTutoringSlot(slot_index,slot_id) {
     console.log(slot_index);
