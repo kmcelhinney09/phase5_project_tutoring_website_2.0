@@ -4,6 +4,7 @@ class TutoringTimeSlotSerializer < ActiveModel::Serializer
   belongs_to :school
   belongs_to :room
 
+  
   def date_sort
     object.start_time.to_f()
   end

@@ -39,6 +39,7 @@ function CreateRoom({ closeForm, building_id }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((room) => {
+          //TODO: I Don't know what this is doing clean it up
           let locations = new_user.school.locations;
 
           let new_locations = locations.map((location) => {

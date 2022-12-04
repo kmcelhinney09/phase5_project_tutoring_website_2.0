@@ -1,15 +1,26 @@
 import { useAuth } from "../context/AuthProvider";
-import { createRoutesFromChildren, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import {useNavigate } from "react-router-dom";
+import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
+import CreatTutoringTimeSlots from "./ManageTimeSlots/CreatTutoringTimeSlots";
 
 function ManageTimeSlots() {
   const auth = useAuth();
   const user = auth.currentUser;
   const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalBody, setModalBody] = useState("");
+
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
   console.log(user);
+
   //TODO: Make Edit button functional
   //TODO: Make Create new button functional
 
@@ -26,11 +37,25 @@ function ManageTimeSlots() {
 
   }
 
+  function handleModalAction(modal_type, id = 0, resources_name = []) {
+    if (modal_type === "createSlot") {
+      setModalTitle("Create Tutoring Time Slot");
+      setModalBody(
+        <CreatTutoringTimeSlots closeForm={handleCloseModal}/>
+      );
+  }
+  handleShowModal();
+}
+
   return (
     <>
       <h3> Current Resources</h3>
       <Container>
-        <Button variant="success">Create New Tutoring Session</Button>
+        <Button variant="success" onClick={() =>
+                                    handleModalAction(
+                                      "createSlot"
+                                    )
+                                  }>Create New Tutoring Session</Button>
         {user.id ? (
           user.school.locations
             .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
@@ -150,6 +175,12 @@ function ManageTimeSlots() {
           <h4>Loading....</h4>
         )}
       </Container>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header>
+          <Modal.Title>{modalTitle}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalBody}</Modal.Body>
+      </Modal>
     </>
   );
 }
