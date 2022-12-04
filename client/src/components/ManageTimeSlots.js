@@ -84,7 +84,8 @@ function ManageTimeSlots() {
                                   <th className="text-center">
                                     Tutee Capacity
                                   </th>
-                                  <th className="text-center">Status</th>
+                                  <th className="text-center">Booked Status</th>
+                                  <th className="text-center">Tutor Status</th>
                                   <th className="text_center">Actions</th>
                                 </tr>
                               </thead>
@@ -126,6 +127,11 @@ function ManageTimeSlots() {
                                             {slot.booked_status
                                               ? "Full"
                                               : "Open"}
+                                          </td>
+                                          <td className="text-center">
+                                            {slot.open_status
+                                              ? "Tutors signed up"
+                                              : "No Tutors"}
                                           </td>
                                           <td>
                                             <Button
