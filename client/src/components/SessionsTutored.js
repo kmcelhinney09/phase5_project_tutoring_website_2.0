@@ -7,7 +7,7 @@ import Button from "react-bootstrap/esm/Button";
 function SessionsTutored() {
   const booked_as_tutor = useAuth().currentUser.booked_as_tutor;
   console.log(booked_as_tutor)
-  //TODO: Make Dropsession butotn functional
+  //TODO: Make Drop session butotn functional
   //TODO: Make Leave Note Button functional
   return (
     <Container>
