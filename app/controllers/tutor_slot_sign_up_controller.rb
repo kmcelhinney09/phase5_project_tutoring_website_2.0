@@ -2,6 +2,7 @@ class TutorSlotSignUpController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
 
   def destroy
+    #TODO:Create Update Open Status method in Model
     tutor_slot = TutorSlotSignUp.find_by(id:params[:id])
     tutor_slot.destroy
     head :no_content

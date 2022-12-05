@@ -1,8 +1,8 @@
 class TutoringTimeSlot < ApplicationRecord
-  has_many :booked_slots
+  has_many :booked_slots, dependent: :destroy
   belongs_to :room
   belongs_to :school
-  has_many :tutor_slot_sign_ups
+  has_many :tutor_slot_sign_ups, dependent: :destroy
   has_many :tutors, through: :tutor_slot_sign_ups
 
   def num_of_tutees
