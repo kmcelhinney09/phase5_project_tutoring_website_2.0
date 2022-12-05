@@ -1,43 +1,48 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function CreateBuilding({ closeForm, school_id }) {
+function CreateRoom({ closeForm, building_id }) {
   const auth = useAuth();
   const user = auth.currentUser;
 
-  const [createBuilding, setCreateBuilding] = useState(false);
-  const [buildingForm, setBuildingForm] = useState([]);
+  const [roomForm, setRoomForm] = useState({
+    name: "",
+    building_id: 0,
+  });
 
-  function handleBuildingFormOnChange(e) {
+  function handleRoomFormOnChange(e) {
     let value = e.target.value;
-    setBuildingForm({ name: value, school_id: school_id });
-    let new_building = {
-      building: { name: value, school_id: school_id },
-      rooms: [],
-    };
-    setCreateBuilding(new_building);
+    setRoomForm({ name: value, building_id: building_id });
   }
 
-  function handleCreateBuildingSubmit(e) {
+  function handleCreateRoomSubmit(e) {
     e.preventDefault();
-    let new_user = JSON.parse(JSON.stringify(auth.currentUser));
+    let new_user = JSON.parse(JSON.stringify(user));
     let locations = new_user.school.locations;
-    locations.push(createBuilding);
-    new_user.school.locations = locations;
+
+    let updated_locations = locations.map((location) => {
+      if (location.building.id === building_id) {
+        location.rooms.push(roomForm);
+      }
+      return location;
+    });
+    new_user.school.locations = updated_locations;
     auth.updateCurrentUser(new_user);
     closeForm();
-    fetch("/building", {
+
+    fetch("/room", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(buildingForm),
+      body: JSON.stringify(roomForm),
     }).then((res) => {
       if (res.ok) {
-        res.json().then((building) => {
-          console.log(building);
+        res.json().then((room) => {
+          console.log(room)
           auth.auto();
         });
+        
       } else {
         // res.json().then((e) => setErrors(Object.entries(e.error)));
         res.json().then((e) => console.log(Object.entries(e.error)));
@@ -49,13 +54,13 @@ function CreateBuilding({ closeForm, school_id }) {
     <div className="color-overlay d-flex justify-content-center align-items-center">
       <Form
         className="rounded p-3 p-sm-4"
-        onSubmit={(e) => handleCreateBuildingSubmit(e)}
+        onSubmit={(e) => handleCreateRoomSubmit(e)}
       >
         <Form.Control
           type="text"
-          placeholder="Building Name"
-          value={createBuilding.name}
-          onChange={handleBuildingFormOnChange}
+          placeholder="Room Name"
+          value={roomForm.name}
+          onChange={handleRoomFormOnChange}
           name="name"
         />
         <br />
@@ -74,4 +79,4 @@ function CreateBuilding({ closeForm, school_id }) {
   );
 }
 
-export default CreateBuilding;
+export default CreateRoom;

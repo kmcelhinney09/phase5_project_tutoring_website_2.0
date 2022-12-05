@@ -14,7 +14,7 @@ import Button from "react-bootstrap/esm/Button";
 import Home from "./components/Home";
 import UserDashboard from "./components/UserDashboard";
 import PrivateRoutes from "./components/PrivateRoutes";
-import ViewTutoringTimeSlot from "./components/ViewTutoringTimeSlot";
+import ViewTutoringTimeSlot from "./components/ManageTimeSlots/ViewTutoringTimeSlot";
 
 function App() {
   const auth = useAuth();
@@ -29,11 +29,11 @@ function App() {
     auth.logout();
   }
 
-  function handle_dashboard_key_change(key) {
+  function handleDashboardKeyChange(key) {
     setDashboardKey(key);
   }
 
-  function handle_user_view() {
+  function handleUserView() {
     let navigation;
     if (user.role === "admin") {
       navigation = <Navigate to={`/admin/${auth.currentUser.id}`} />;
@@ -76,7 +76,7 @@ function App() {
               element={
                 <UserDashboard
                   dashboardKey={"adminControl"}
-                  handle_dashboard_key_change={handle_dashboard_key_change}
+                  handleDashboardKeyChange={handleDashboardKeyChange}
                 />
               }
             />
@@ -85,7 +85,7 @@ function App() {
               element={
                 <UserDashboard
                   dashboardKey={"tutoring"}
-                  handle_dashboard_key_change={handle_dashboard_key_change}
+                  handleDashboardKeyChange={handleDashboardKeyChange}
                 />
               }
             />
@@ -94,7 +94,7 @@ function App() {
               element={
                 <UserDashboard
                   dashboardKey={"sessionSignup"}
-                  handle_dashboard_key_change={handle_dashboard_key_change}
+                  handleDashboardKeyChange={handleDashboardKeyChange}
                 />
               }
             />
@@ -103,7 +103,7 @@ function App() {
               element={
                 <UserDashboard
                   dashboardKey={dashboardKey}
-                  handle_dashboard_key_change={handle_dashboard_key_change}
+                  handleDashboardKeyChange={handleDashboardKeyChange}
                 />
               }
             />
@@ -114,7 +114,7 @@ function App() {
           </Route>
           <Route
             path="/"
-            element={auth.isLoggedIn ? handle_user_view() : <Home />}
+            element={auth.isLoggedIn ? handleUserView() : <Home />}
           />
         </Routes>
       </div>

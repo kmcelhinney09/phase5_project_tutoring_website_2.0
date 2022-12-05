@@ -1,4 +1,4 @@
-import { useAuth } from "../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
@@ -6,8 +6,8 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
-import CreateTutoringTimeSlots from "./ManageTimeSlots/CreateTutoringTimeSlots";
-import EditTutoringTimeSlots from "./ManageTimeSlots/EditTutoringTimeSlots";
+import CreateTutoringTimeSlots from "./CreateTutoringTimeSlots";
+import EditTutoringTimeSlots from "./EditTutoringTimeSlots";
 
 function ManageTimeSlots() {
   const auth = useAuth();
@@ -34,13 +34,19 @@ function ManageTimeSlots() {
     });
   }
 
-  function handleModalAction(modal_type, id = 0, resources = [], index=0) {
+  function handleModalAction(modal_type, id = 0, resources = [], index = 0) {
     if (modal_type === "createSlot") {
       setModalTitle("Create Tutoring Time Slot");
       setModalBody(<CreateTutoringTimeSlots closeForm={handleCloseModal} />);
-    }else if(modal_type === "editSlot"){
+    } else if (modal_type === "editSlot") {
       setModalTitle("Edit Tutoring Time Slot");
-      setModalBody(<EditTutoringTimeSlots closeForm={handleCloseModal} slotInfo={resources} index={index}/>);
+      setModalBody(
+        <EditTutoringTimeSlots
+          closeForm={handleCloseModal}
+          slotInfo={resources}
+          index={index}
+        />
+      );
     }
     handleShowModal();
   }
@@ -138,7 +144,9 @@ function ManageTimeSlots() {
                                               onClick={() =>
                                                 handleModalAction(
                                                   "editSlot",
-                                                  slot.id,slot,index
+                                                  slot.id,
+                                                  slot,
+                                                  index
                                                 )
                                               }
                                             >

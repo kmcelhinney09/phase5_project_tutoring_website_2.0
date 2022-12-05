@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
 
@@ -19,15 +19,14 @@ function ManageUsers() {
     });
   }, [user.school.id]);
 
-
-  function handleDeleteUser(userId, userIndex){
+  function handleDeleteUser(userId, userIndex) {
     let newSchoolData = JSON.parse(JSON.stringify(schoolData));
-    newSchoolData.splice(userIndex,1)
-    setSchoolData(newSchoolData)
-    
+    newSchoolData.splice(userIndex, 1);
+    setSchoolData(newSchoolData);
+
     fetch(`/users/${userId}`, {
       method: "DELETE",
-    })
+    });
   }
   //TODO: Make Edit Button Funcational
   //TODO: Make Password Reset Button Functional
@@ -42,14 +41,19 @@ function ManageUsers() {
       </thead>
       <tbody>
         {schoolData.length !== 0 ? (
-          schoolData.map((schoolUser,index) => {
+          schoolData.map((schoolUser, index) => {
             return (
               <tr key={schoolUser.id}>
                 <td>{schoolUser.full_name}</td>
                 <td>{schoolUser.email}</td>
                 <td>
                   <Button variant="success">Edit</Button>{" "}
-                  <Button variant="success" onClick={() => handleDeleteUser(schoolUser.id, index)}>Delete</Button>{" "}
+                  <Button
+                    variant="success"
+                    onClick={() => handleDeleteUser(schoolUser.id, index)}
+                  >
+                    Delete
+                  </Button>{" "}
                   <Button variant="success">Reset Password</Button>
                 </td>
               </tr>

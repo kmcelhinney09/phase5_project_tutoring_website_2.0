@@ -10,7 +10,7 @@ import TutoringSignUp from "./TutoringSignUp";
 import AdminControl from "./AdminControl";
 import SessionSignUp from "./SessionSignUp";
 
-function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
+function UserDashboard({ dashboardKey, handleDashboardKeyChange }) {
   const user = useAuth().currentUser;
 
   const [tutoringInfo, setTutoringInfo] = useState(false);
@@ -32,7 +32,7 @@ function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
           <Tab.Container
             id="left-tabs-example"
             activeKey={dashboardKey}
-            onSelect={(k) => handle_dashboard_key_change(k)}
+            onSelect={(k) => handleDashboardKeyChange(k)}
           >
             <Row>
               <Col sm={3}>
