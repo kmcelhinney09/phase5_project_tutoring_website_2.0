@@ -10,6 +10,12 @@ class TutoringTimeSlotsController < ApplicationController
     render json: time_slot, status: :created
   end
 
+  def update
+    time_slot = TutoringTimeSlot.find_by(id:params[:id])
+    time_slot.update(tutoring_time_slot_params)
+    render json: time_slot, status: :accepted
+  end
+
   def destroy
     tutoring_time_slot = TutoringTimeSlot.find_by(id:params[:id])
     tutoring_time_slot.destroy
@@ -28,6 +34,6 @@ class TutoringTimeSlotsController < ApplicationController
   end
 
   def tutoring_time_slot_params
-    params.permit(:tutor_capacity, :tutee_capacity, :start_time, :end_time, :school_id, :room_id, :booked_status, :open_status, :created_by)
+    params.permit(:id, :tutor_capacity, :tutee_capacity, :start_time, :end_time, :school_id, :room_id, :booked_status, :open_status, :created_by)
   end
 end

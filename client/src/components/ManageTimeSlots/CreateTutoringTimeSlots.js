@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function CreatTutoringTimeSlots({ closeForm }) {
+function CreateTutoringTimeSlots({ closeForm }) {
   const auth = useAuth();
   const user = auth.currentUser;
   console.log(user);
@@ -21,11 +21,11 @@ function CreatTutoringTimeSlots({ closeForm }) {
   function handleSlotFormOnChange(e) {
     let value = e.target.value;
     let name = e.target.name;
-    if (name === "room"){
+    if (name === "room") {
       value = value.split(",");
     }
-    if (name==="tutee_capacity" || name==="tutor_capacity"){
-      value = parseInt(value)
+    if (name === "tutee_capacity" || name === "tutor_capacity") {
+      value = parseInt(value);
     }
     console.log("Name:", name, "Value: ", value);
     setSlotForm({ ...slotForm, [name]: value });
@@ -33,23 +33,24 @@ function CreatTutoringTimeSlots({ closeForm }) {
 
   function handleCreateSlotSubmit(e) {
     e.preventDefault();
-    let new_user = JSON.parse(JSON.stringify(user))
-    console.log(slotForm)
-    let start_time = `${slotForm.date} ${slotForm.start_time}`
-    let end_time = `${slotForm.date} ${slotForm.end_time}`
+    let new_user = JSON.parse(JSON.stringify(user));
+    console.log(slotForm);
+    //TODO: Try using date.toJSON() to send data to db
+    let start_time = `${slotForm.date} ${slotForm.start_time}`;
+    let end_time = `${slotForm.date} ${slotForm.end_time}`;
     const new_time_slot = {
       created_by: user.id,
       tutor_capacity: slotForm.tutor_capacity,
       tutee_capacity: slotForm.tutee_capacity,
       start_time: start_time,
       end_time: end_time,
-      open_status:false,
-      booked_status:false,
+      open_status: false,
+      booked_status: false,
       school_id: user.school.id,
-      room_id: parseInt(slotForm.room[0])
-    }
-    new_user.school.tutoring_time_slots.push(new_time_slot)
-    console.log(new_time_slot)
+      room_id: parseInt(slotForm.room[0]),
+    };
+    new_user.school.tutoring_time_slots.push(new_time_slot);
+    console.log(new_time_slot);
     auth.updateCurrentUser(new_user);
     closeForm();
 
@@ -174,4 +175,4 @@ function CreatTutoringTimeSlots({ closeForm }) {
   );
 }
 
-export default CreatTutoringTimeSlots;
+export default CreateTutoringTimeSlots;

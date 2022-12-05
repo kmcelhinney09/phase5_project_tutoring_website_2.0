@@ -6,7 +6,8 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
-import CreatTutoringTimeSlots from "./ManageTimeSlots/CreatTutoringTimeSlots";
+import CreateTutoringTimeSlots from "./ManageTimeSlots/CreateTutoringTimeSlots";
+import EditTutoringTimeSlots from "./ManageTimeSlots/EditTutoringTimeSlots";
 
 function ManageTimeSlots() {
   const auth = useAuth();
@@ -35,10 +36,13 @@ function ManageTimeSlots() {
     });
   }
 
-  function handleModalAction(modal_type, id = 0, resources_name = []) {
+  function handleModalAction(modal_type, id = 0, resources = [], index=0) {
     if (modal_type === "createSlot") {
       setModalTitle("Create Tutoring Time Slot");
-      setModalBody(<CreatTutoringTimeSlots closeForm={handleCloseModal} />);
+      setModalBody(<CreateTutoringTimeSlots closeForm={handleCloseModal} />);
+    }else if(modal_type === "editSlot"){
+      setModalTitle("Edit Tutoring Time Slot");
+      setModalBody(<EditTutoringTimeSlots closeForm={handleCloseModal} slotInfo={resources} index={index}/>);
     }
     handleShowModal();
   }
@@ -134,9 +138,9 @@ function ManageTimeSlots() {
                                               className="mb-2"
                                               variant="success"
                                               onClick={() =>
-                                                navigate(
-                                                  `/tutoring_time_slots/${slot.id}/edit`,
-                                                  { replace: true }
+                                                handleModalAction(
+                                                  "editSlot",
+                                                  slot.id,slot,index
                                                 )
                                               }
                                             >

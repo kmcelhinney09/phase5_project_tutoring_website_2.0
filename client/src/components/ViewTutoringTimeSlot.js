@@ -31,6 +31,7 @@ function ViewTutoringTimeSlot() {
       return null;
     }
   }
+
   function render_booked_slots(slots_info) {
     let slot_details;
     slots_info.length !== 0
@@ -55,7 +56,7 @@ function ViewTutoringTimeSlot() {
         ));
     return slot_details;
   }
-
+//TODO: Render Tutors/Drop button so that they can be droped from Time Slot
   return (
     <Container>
       <Row>

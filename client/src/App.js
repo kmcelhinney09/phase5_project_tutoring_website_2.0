@@ -15,7 +15,6 @@ import Home from "./components/Home";
 import UserDashboard from "./components/UserDashboard";
 import PrivateRoutes from "./components/PrivateRoutes";
 import ViewTutoringTimeSlot from "./components/ViewTutoringTimeSlot";
-import EditTutoringTimeSlots from "./components/ManageTimeSlots/EditTutoringTimeSlots";
 
 function App() {
   const auth = useAuth();
@@ -33,6 +32,7 @@ function App() {
   function handle_dashboard_key_change(key) {
     setDashboardKey(key);
   }
+
 
   function handle_user_view() {
     let navigation;
@@ -113,11 +113,7 @@ function App() {
               path={"/tutoring_time_slots/:id"}
               element={<ViewTutoringTimeSlot />}
             />
-            <Route
-              path={"/tutoring_time_slots/:id/edit"}
-              element={<EditTutoringTimeSlots />}
-            />
-          </Route>
+            </Route>
           <Route
             path="/"
             element={auth.isLoggedIn ? handle_user_view() : <Home />}
