@@ -39,21 +39,10 @@ function CreateRoom({ closeForm, building_id }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((room) => {
-          //TODO: I Don't know what this is doing clean it up
-          let locations = new_user.school.locations;
-
-          let new_locations = locations.map((location) => {
-            return location.rooms.map((local_room) => {
-              if (room.name === local_room.name) {
-                local_room = room;
-              }
-              return local_room;
-            });
-          });
-          new_user.school.locations = new_locations;
-          auth.updateCurrentUser(new_user);
+          console.log(room)
+          auth.auto();
         });
-        auth.auto();
+        
       } else {
         // res.json().then((e) => setErrors(Object.entries(e.error)));
         res.json().then((e) => console.log(Object.entries(e.error)));
