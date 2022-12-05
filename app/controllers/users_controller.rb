@@ -18,11 +18,10 @@ class UsersController < ApplicationController
     render json: current_user, status: :ok
   end
 
-  def create
-    #TODO: Look at eleminating params= user_params I don't think you need them
-    params = user_params
+  def create    
     school_id = School.find_by(name:params[:school]).id
-    user = User.create!(full_name:params[:full_name],email:params[:email],school_id:school_id,password:params[:password],time_zone:params[:time_zone],grade:params[:grade], role:params[:role])
+    user = User.create!(user_params)
+    user.school_id = school_id
     session[:user_id] = user.id
     render json: user, status: :created
   end
