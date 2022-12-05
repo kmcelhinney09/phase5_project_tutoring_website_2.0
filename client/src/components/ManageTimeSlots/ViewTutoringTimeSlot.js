@@ -7,11 +7,11 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
 
 function ViewTutoringTimeSlot() {
-  const auth = useAuth();
+  // const auth = useAuth();
   const [tutoringSlotInfo, setTutoringSlotInfo] = useState(false);
   const [refresh,setRefresh] = useState(false);
   const { id } = useParams();
-//TODO: refactor to use Time Slot Form
+
   useEffect(() => {
     fetch(`/tutoring_time_slots/${id}`).then((res) => {
       if (res.ok) {

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import TimeSlotForm from "./TimeSlotForm";
 
 function CreateTutoringTimeSlots({ closeForm }) {
   const auth = useAuth();
@@ -11,25 +10,12 @@ function CreateTutoringTimeSlots({ closeForm }) {
     date: "",
     start_time: "",
     end_time: "",
-    room: [],
-    building: [],
+    room:"",
+    building: "",
     tutor_capacity: 0,
     tutee_capacity: 0,
   });
-  const [roomSelection, setRoomSelection] = useState("");
 
-  function handleSlotFormOnChange(e) {
-    let value = e.target.value;
-    let name = e.target.name;
-    if (name === "room") {
-      value = value.split(",");
-    }
-    if (name === "tutee_capacity" || name === "tutor_capacity") {
-      value = parseInt(value);
-    }
-    console.log("Name:", name, "Value: ", value);
-    setSlotForm({ ...slotForm, [name]: value });
-  }
 
   function handleCreateSlotSubmit(e) {
     e.preventDefault();
@@ -37,6 +23,17 @@ function CreateTutoringTimeSlots({ closeForm }) {
     console.log(slotForm);
     let start_time = `${slotForm.date} ${slotForm.start_time}`;
     let end_time = `${slotForm.date} ${slotForm.end_time}`;
+    let room_id
+
+    new_user.school.locations.forEach((location) => {
+      console.log("Locaiton: ", location.building.name);
+      location.rooms.forEach((room) => {
+        if (room.name === slotForm.room) {
+          room_id = room.id;
+        }
+      });
+    });
+
     const new_time_slot = {
       created_by: user.id,
       tutor_capacity: slotForm.tutor_capacity,
@@ -46,7 +43,7 @@ function CreateTutoringTimeSlots({ closeForm }) {
       open_status: false,
       booked_status: false,
       school_id: user.school.id,
-      room_id: parseInt(slotForm.room[0]),
+      room_id: room_id,
     };
     new_user.school.tutoring_time_slots.push(new_time_slot);
     console.log(new_time_slot);
@@ -70,108 +67,14 @@ function CreateTutoringTimeSlots({ closeForm }) {
     });
   }
 
-  function handleGetRooms(e) {
-    let value = e.target.value;
-    const name = e.target.name;
-    value = value.split(",");
-    if (value[1] === "Select a building") {
-      setRoomSelection(false);
-    } else {
-      let rooms;
-      const locations = user.school.locations;
-      locations.forEach((location) => {
-        console.log(location.building.id === parseInt(value[0]));
-        if (location.building.id === parseInt(value[0])) {
-          rooms = location.rooms;
-        }
-      });
-      console.log("Rooms: ", rooms);
-
-      const room_options = rooms.map((room) => {
-        return [room.id, room.name];
-      });
-      room_options.unshift([0, "Select A Room"]);
-      setRoomSelection(room_options);
-      setSlotForm({ ...slotForm, [name]: value });
-    }
-  }
-
-  return (
-    <div className="color-overlay d-flex justify-content-center align-items-center">
-      <Form
-        className="rounded p-3 p-sm-4"
-        onSubmit={(e) => handleCreateSlotSubmit(e)}
-      >
-        <Form.Control
-          type="date"
-          onChange={handleSlotFormOnChange}
-          value={slotForm.date}
-          name="date"
-        />
-        <Form.Control
-          type="time"
-          value={slotForm.start_time}
-          onChange={handleSlotFormOnChange}
-          name="start_time"
-        />
-        <Form.Control
-          type="time"
-          value={slotForm.end_time}
-          onChange={handleSlotFormOnChange}
-          name="end_time"
-        />
-        <Form.Select onChange={handleGetRooms} name="building">
-          <option value={[0, "Select a building"]}>Select a building</option>
-          {user.id
-            ? user.school.locations.map((location) => {
-                return (
-                  <option
-                    key={location.building.id}
-                    value={[location.building.id, location.building.name]}
-                  >
-                    {location.building.name}
-                  </option>
-                );
-              })
-            : null}
-        </Form.Select>
-        <Form.Select onChange={handleSlotFormOnChange} name="room">
-          {roomSelection ? (
-            roomSelection.map((room) => {
-              return (
-                <option key={room[0]} value={[room[0], room[1]]}>
-                  {room[1]}
-                </option>
-              );
-            })
-          ) : (
-            <option>Pick a Building First</option>
-          )}
-        </Form.Select>
-        <Form.Control
-          type="number"
-          onChange={handleSlotFormOnChange}
-          name="tutor_capacity"
-        />
-        <Form.Control
-          type="number"
-          onChange={handleSlotFormOnChange}
-          name="tutee_capacity"
-        />
-        <br />
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>{" "}
-        <Button variant="primary" onClick={closeForm}>
-          Cancel
-        </Button>
-        <br />
-        <Form.Text className="text-danger">
-          <ul></ul>
-        </Form.Text>
-      </Form>
-    </div>
-  );
+  return(
+    <TimeSlotForm
+      slotForm={slotForm}
+      setSlotForm={setSlotForm}
+      handleSlotSubmit={handleCreateSlotSubmit}
+      closeForm={closeForm}
+    />
+  )
 }
 
 export default CreateTutoringTimeSlots;
