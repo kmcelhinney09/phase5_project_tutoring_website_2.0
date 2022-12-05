@@ -32,7 +32,7 @@ function ManageUsers() {
     if (modal_type === "editUser") {
     } else if (modal_type === "resetPassword") {
       setModalTitle("Update User Passward");
-      setModalBody(<ResetPassward userId={id} />);
+      setModalBody(<ResetPassward closeForm={handleCloseModal} userId={id} />);
     } else if (modal_type === "deleteUser") {
     }
 

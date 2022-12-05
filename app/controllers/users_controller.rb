@@ -32,6 +32,12 @@ class UsersController < ApplicationController
     head :no_content
   end
 
+  def password_reset
+    user = User.find_by(id:params[:id])
+    user.update(user_params)
+    head :no_content
+  end
+
   private
   
   def current_user
@@ -44,6 +50,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(:id,:email,:password,:full_name,:school,:time_zone, :grade, :role)
+    params.permit(:id,:email,:password, :password_confirmation, :full_name,:school,:time_zone, :grade, :role)
   end
 end

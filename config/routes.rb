@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   get "/auth", to: 'users#show'
   post "/login", to: "sessions#create"
+  patch "/admin/password_reset/:id", to: "users#password_reset"
   delete "/logout", to: "sessions#destroy"
   # post "/building", to: "building#create"
   # post "/room", to:"room#create"
