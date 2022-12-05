@@ -10,8 +10,14 @@ class TutoringTimeSlot < ApplicationRecord
     tutee_list = booked.map(&:tutee_id)
     num_tutee = tutee_list.uniq.count
   end
+
+  def num_tutors
+    signed_up = self.tutor_slot_sign_ups
+    tutor_list = signed_up.map(&:tutor_id)
+    num_tutors = tutor_list.uniq.count
+  end
   
-  def booked_update
+  def booked_status_update
     num_tutee = self.num_of_tutees
     tutee_capacity = self.tutee_capacity
     if num_tutee >= tutee_capacity
@@ -21,10 +27,12 @@ class TutoringTimeSlot < ApplicationRecord
     end
   end
 
-  def num_tutors
-    signed_up = self.tutor_slot_sign_ups
-    tutor_list = signed_up.map(&:tutor_id)
-    num_tutors = tutor_list.uniq.count
+  def open_status_update
+    if self.num_tutors > 0
+      self.open_status = true
+    else
+      self.open_status = false
+    end
   end
 
   def tutee_space

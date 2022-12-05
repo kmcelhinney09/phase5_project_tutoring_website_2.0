@@ -2,9 +2,11 @@ class TutorSlotSignUpController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
 
   def destroy
-    #TODO:Create Update Open Status method in Model
-    tutor_slot = TutorSlotSignUp.find_by(id:params[:id])
-    tutor_slot.destroy
+    tutor_sign_up = TutorSlotSignUp.find_by(id:params[:id])
+    tutor_time_slot = TutoringTimeSlot.find_by(tutor_sign_up.tutoring_time_slot_id)
+    tutor_sign_up.destroy
+    tutor_time_slot.open_status_update
+    tutor_time_slot.booked_status_update
     head :no_content
   end
   

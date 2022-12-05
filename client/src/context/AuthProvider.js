@@ -63,7 +63,7 @@ function useProvideAuth() {
       if (res.ok) {
         setIsLoggedIn(false);
         setCurrentUser(null);
-        //TODO: Create a redirect to home
+        //TODO: Create a redirect to home useNavigate from react router dom see ManageTimeSlots
       }
     });
   }
