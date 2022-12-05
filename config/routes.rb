@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :users
   resources :room, only: [:create, :update, :destroy]
   resources :building, only: [:create, :update, :destroy]
+  resources :tutor_slot_sign_up, only: [:create, :destroy]
+  resources :booked_slot, only: [:create, :destroy]
 
   get "/auth", to: 'users#show'
   post "/login", to: "sessions#create"

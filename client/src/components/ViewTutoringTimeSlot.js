@@ -20,29 +20,45 @@ function ViewTutoringTimeSlot() {
     });
   }, [id]);
 
-  function render_tutors(tutor_list) {
-    if (tutoringSlotInfo) {
-      let tutors = [];
-      tutor_list.forEach((tutor) => {
-        tutors.push(`${tutor.full_name}: ${tutor.subjects_covered}`);
-      });
-      return tutors.join(", \n");
-    } else {
-      return null;
-    }
+  function handleDropTutor(tutor_id, tutor_index){
+    let new_slot = JSON.parse(JSON.stringify(tutoringSlotInfo));
+    let tutors = new_slot.tutors
+    let tutor_signup_id
+    tutors.splice(tutor_index,1)
+    setTutoringSlotInfo(new_slot)
+    console.log(new_slot)
+    tutoringSlotInfo.tutor_slot_sign_ups.forEach((sign_up) => {
+      if(sign_up.tutor_id === tutor_id){
+        tutor_signup_id = sign_up.id
+      }
+    })
+    fetch(`/tutor_slot_sign_up/${tutor_signup_id}`, {
+      method: "DELETE",
+    });
+  }
+
+  function handleDropBookedSession(session_id, session_index){
+    let new_booked_slot = JSON.parse(JSON.stringify(tutoringSlotInfo));
+    new_booked_slot.booked_slots.splice(session_index,1)
+    console.log(new_booked_slot)
+    setTutoringSlotInfo(new_booked_slot)
+
+    fetch(`/booked_slot/${session_id}`, {
+      method: "DELETE",
+    });
   }
 
   function render_booked_slots(slots_info) {
     let slot_details;
     slots_info.length !== 0
-      ? (slot_details = tutoringSlotInfo.booked_slots.map((slot) => {
+      ? (slot_details = tutoringSlotInfo.booked_slots.map((slot,index) => {
           return (
             <tr key={slot.id}>
               <td>{slot.tutor.full_name}</td>
               <td>{slot.tutee.full_name}</td>
               <td>{slot.created_at}</td>
               <td>
-                <Button>Drop Session</Button>
+                <Button onClick={() => handleDropBookedSession(slot.id,index)}>Drop Booked Session</Button>
               </td>
             </tr>
           );
@@ -56,7 +72,7 @@ function ViewTutoringTimeSlot() {
         ));
     return slot_details;
   }
-//TODO: Render Tutors/Drop button so that they can be droped from Time Slot
+  //TODO: Render Tutors/Drop button so that they can be droped from Time Slot
   return (
     <Container>
       <Row>
@@ -70,7 +86,6 @@ function ViewTutoringTimeSlot() {
             <tr>
               <th>Tutor Capacity</th>
               <th>Tutee Capacity</th>
-              <th>Tutors Signed Up</th>
               <th>Remaining Tutee space</th>
             </tr>
           </thead>
@@ -78,14 +93,43 @@ function ViewTutoringTimeSlot() {
             <tr>
               <td>{tutoringSlotInfo.tutor_capacity}</td>
               <td>{tutoringSlotInfo.tutee_capacity}</td>
-              <td>
-                <pre>{render_tutors(tutoringSlotInfo.tutors)}</pre>
-              </td>
               <td>{tutoringSlotInfo.tutee_space}</td>
             </tr>
           </tbody>
         </Table>
       </Row>
+      <Row>
+        <h4>Tutors Signed Up</h4>
+      </Row>
+      <Row>
+        <Table responsive="md" bordered hover>
+          <thead>
+            <tr>
+              <th>Tutor Name</th>
+              <th>Subjects Covered</th>
+              <th>Grade Level</th>
+              <th>actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tutoringSlotInfo
+              ? tutoringSlotInfo.tutors.map((tutor,index) => {
+                  return (
+                    <tr key={tutor.id}>
+                      <td>{tutor.full_name}</td>
+                      <td>{tutor.subjects_covered}</td>
+                      <td>{tutor.grade}</td>
+                      <td>
+                        <Button onClick={() => handleDropTutor(tutor.id, index)}>Drop Tutor</Button>
+                      </td>
+                    </tr>
+                  );
+                })
+              : null}
+          </tbody>
+        </Table>
+      </Row>
+
       <Row>
         <h4>Sign Ups for Time Slot</h4>
       </Row>

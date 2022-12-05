@@ -1,5 +1,5 @@
 class TutoringTimeSlotSerializer < ActiveModel::Serializer
-  attributes :id, :created_by, :tutors, :tutee_space, :tutee_capacity, :tutor_capacity, :booked_status, :date, :start_time, :end_time, :room_id, :date_sort, :open_status, :location_render, :date_sort  
+  attributes :id, :created_by, :tutors, :tutee_space, :tutee_capacity, :tutor_capacity, :booked_status, :date, :start_time, :end_time, :room_id, :date_sort, :open_status, :location_render, :date_sort, :tutor_slot_sign_ups  
   has_many :booked_slots
   belongs_to :school
   belongs_to :room
@@ -39,7 +39,7 @@ class TutoringTimeSlotSerializer < ActiveModel::Serializer
         subjects.push(sub.name)
       end
 
-      tutor_data.push({id:tutor.id, full_name:tutor.full_name, subjects_covered:subjects * ", "})
+      tutor_data.push({id:tutor.id, full_name:tutor.full_name, grade:tutor.grade, subjects_covered:subjects * ", "})
     end
     tutor_data
   end

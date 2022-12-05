@@ -22,8 +22,6 @@ function ManageTimeSlots() {
   const handleShowModal = () => setShowModal(true);
   console.log(user);
 
-  //TODO: Make Edit button functional make seperate page include all slot info plus tutors and tutee's signed up (able to drop them)
-
   function handleRemoveTutoringSlot(slot_index, slot_id) {
     console.log(slot_index);
     let new_user = JSON.parse(JSON.stringify(user));
