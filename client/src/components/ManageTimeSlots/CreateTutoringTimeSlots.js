@@ -35,7 +35,6 @@ function CreateTutoringTimeSlots({ closeForm }) {
     e.preventDefault();
     let new_user = JSON.parse(JSON.stringify(user));
     console.log(slotForm);
-    //TODO: Try using date.toJSON() to send data to db
     let start_time = `${slotForm.date} ${slotForm.start_time}`;
     let end_time = `${slotForm.date} ${slotForm.end_time}`;
     const new_time_slot = {

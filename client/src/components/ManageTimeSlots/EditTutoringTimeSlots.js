@@ -21,9 +21,9 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
 
   useEffect(() => {
     let settingSlot = {
-      date: new Date(slotInfo.start_time).toJSON().slice(0, 10),
-      start_time: new Date(slotInfo.start_time).toJSON().slice(11, 19),
-      end_time: new Date(slotInfo.end_time).toJSON().slice(11, 19),
+      date: slotInfo.start_time.slice(0,10),
+      start_time: slotInfo.start_time.slice(11, 19),
+      end_time: slotInfo.end_time.slice(11, 19),
       room: getBuilding()[0],
       building: getBuilding()[1],
       tutor_capacity: slotInfo.tutor_capacity,
@@ -55,10 +55,8 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
     let room_id;
     console.log("Slot Form INFO: ", slotForm);
 
-    const start_time = new Date(
-      `${slotForm.date} ${slotForm.start_time}`
-    ).toJSON();
-    const end_time = new Date(`${slotForm.date} ${slotForm.end_time}`).toJSON();
+    const start_time = `${slotForm.date} ${slotForm.start_time}`;
+    const end_time = `${slotForm.date} ${slotForm.end_time}`;
 
     new_user.school.locations.forEach((location) => {
       console.log("Locaiton: ", location.building.name);

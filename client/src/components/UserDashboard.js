@@ -23,7 +23,7 @@ function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
         });
       }
     });
-  }, [user.school.id]);
+  }, [user.school.id, dashboardKey]);
 
   return (
     <>
