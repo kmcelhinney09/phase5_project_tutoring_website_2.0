@@ -45,10 +45,27 @@ function ManageUsers() {
       setModalTitle("Update User Passward");
       setModalBody(<ResetPassward closeForm={handleCloseModal} userId={id} />);
     } else if (modal_type === "deleteUser") {
-      //TODO: implement delet user confirm in modal pop up
+      setModalTitle("Delete User");
+      setModalBody(confirmDeleteUserModal(id, resources[0], index));
     }
 
     handleShowModal();
+  }
+
+  function confirmDeleteUserModal(userId, userName, userIndex) {
+    return(
+    <>
+      <h4>{`Are you sure you want to ${userName}`}</h4>
+      <br />
+      <Button variant="primary" type="submit" onClick={() => {handleDeleteUser(userId, userIndex)}}>
+        Yes
+      </Button>{" "}
+      <Button variant="primary" onClick={handleCloseModal}>
+        Close
+      </Button>
+      <br />
+    </>
+    )
   }
 
   function handleDeleteUser(userId, userIndex) {
@@ -59,8 +76,9 @@ function ManageUsers() {
     fetch(`/users/${userId}`, {
       method: "DELETE",
     });
+    handleCloseModal();
   }
-  //TODO: Make Edit Button Funcational
+  
   console.log(schoolData);
   return (
     <>
@@ -101,7 +119,14 @@ function ManageUsers() {
                       </Button>{" "}
                       <Button
                         variant="success"
-                        onClick={() => handleDeleteUser(schoolUser.id, index)}
+                        onClick={() =>
+                          handleModalAction(
+                            "deleteUser",
+                            schoolUser.id,
+                            [schoolUser.full_name],
+                            index
+                          )
+                        }
                       >
                         Delete
                       </Button>{" "}
