@@ -6,7 +6,13 @@ class UsersController < ApplicationController
     user = User.find_by(id:session[:user_id])
     if user.role == "admin"
       users_list = User.where(school_id:user.school_id)
-      users = users_list.map{|userInfo| {id:userInfo.id, full_name:userInfo.full_name, email:userInfo.email}}
+      users = users_list.map{|userInfo| {id:userInfo.id, 
+        full_name:userInfo.full_name, 
+        email:userInfo.email, 
+        role:userInfo.role, 
+        grade:userInfo.grade
+        }
+      }
       render json: users, status: :ok
     else
       render json: {error: {users: "Not Authorized"}}, status: :unauthorized
@@ -24,6 +30,12 @@ class UsersController < ApplicationController
     user.school_id = school_id
     session[:user_id] = user.id
     render json: user, status: :created
+  end
+  
+  def update
+    user = User.find_by(id:params[:id])
+    user.update(user_params)
+    render json: user, status: :accepted
   end
 
   def destroy
