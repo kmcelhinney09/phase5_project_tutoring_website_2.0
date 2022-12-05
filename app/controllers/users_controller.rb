@@ -19,11 +19,18 @@ class UsersController < ApplicationController
   end
 
   def create
+    #TODO: Look at eleminating params= user_params I don't think you need them
     params = user_params
     school_id = School.find_by(name:params[:school]).id
     user = User.create!(full_name:params[:full_name],email:params[:email],school_id:school_id,password:params[:password],time_zone:params[:time_zone],grade:params[:grade], role:params[:role])
     session[:user_id] = user.id
     render json: user, status: :created
+  end
+
+  def destroy
+    user = User.find_by(id:params[:id])
+    user.destroy
+    head :no_content
   end
 
   private
@@ -38,6 +45,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(:email,:password,:full_name,:school,:time_zone, :grade, :role)
+    params.permit(:id,:email,:password,:full_name,:school,:time_zone, :grade, :role)
   end
 end

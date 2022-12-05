@@ -18,8 +18,18 @@ function ManageUsers() {
       }
     });
   }, [user.school.id]);
+
+
+  function handleDeleteUser(userId, userIndex){
+    let newSchoolData = JSON.parse(JSON.stringify(schoolData));
+    newSchoolData.splice(userIndex,1)
+    setSchoolData(newSchoolData)
+    
+    fetch(`/users/${userId}`, {
+      method: "DELETE",
+    })
+  }
   //TODO: Make Edit Button Funcational
-  //TODO: Make Delete Button Functional
   //TODO: Make Password Reset Button Functional
   return (
     <Table striped bordered hover>
@@ -32,14 +42,14 @@ function ManageUsers() {
       </thead>
       <tbody>
         {schoolData.length !== 0 ? (
-          schoolData.map((school_user) => {
+          schoolData.map((schoolUser,index) => {
             return (
-              <tr key={school_user.id}>
-                <td>{school_user.full_name}</td>
-                <td>{school_user.email}</td>
+              <tr key={schoolUser.id}>
+                <td>{schoolUser.full_name}</td>
+                <td>{schoolUser.email}</td>
                 <td>
                   <Button variant="success">Edit</Button>{" "}
-                  <Button variant="success">Delete</Button>{" "}
+                  <Button variant="success" onClick={() => handleDeleteUser(schoolUser.id, index)}>Delete</Button>{" "}
                   <Button variant="success">Reset Password</Button>
                 </td>
               </tr>
