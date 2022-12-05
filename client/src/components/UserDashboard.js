@@ -53,7 +53,7 @@ function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
                     </Nav.Item>
                   )}
                   <Nav.Item>
-                    <LinkContainer to="/user/tutoring">
+                    <LinkContainer to="/tutoring_time_slots">
                       <Nav.Link eventKey="tutoring">Tutoring Sign-up</Nav.Link>
                     </LinkContainer>
                   </Nav.Item>
@@ -77,11 +77,16 @@ function UserDashboard({ dashboardKey, handle_dashboard_key_change }) {
                     <UserInfo />
                   </Tab.Pane>
                   <Tab.Pane eventKey="tutoring">
-                    <TutoringSignUp tutoringInfo={tutoringInfo}
-                    callingComponent={'TutoringSignUp'}/>
+                    <TutoringSignUp
+                      tutoringInfo={tutoringInfo}
+                      callingComponent={"TutoringSignUp"}
+                    />
                   </Tab.Pane>
                   <Tab.Pane eventKey="sessionSignup">
-                    <SessionSignUp tutoringInfo={tutoringInfo} callingComponent={'SessionSignUp'}/>
+                    <SessionSignUp
+                      tutoringInfo={tutoringInfo}
+                      callingComponent={"SessionSignUp"}
+                    />
                   </Tab.Pane>
                 </Tab.Content>
               </Col>

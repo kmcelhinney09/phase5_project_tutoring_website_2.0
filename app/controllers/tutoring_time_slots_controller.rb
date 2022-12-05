@@ -1,5 +1,13 @@
 class TutoringTimeSlotsController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
+  
+  def index
+    user = User.find_by(id:session[:user_id])
+    school_id = user.school_id
+    tutoring_slots = TutoringTimeSlot.where(school_id:school_id)
+    render json: tutoring_slots, status: :ok
+  end
+  
   def show
     time_slot = TutoringTimeSlot.find_by(id:params[:id])
     render json: time_slot, status: :ok

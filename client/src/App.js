@@ -33,7 +33,6 @@ function App() {
     setDashboardKey(key);
   }
 
-
   function handle_user_view() {
     let navigation;
     if (user.role === "admin") {
@@ -82,8 +81,7 @@ function App() {
               }
             />
             <Route
-              //TODO:Make more Restful /tutoring to show all slots use school in controler
-              path={"/user/tutoring"}
+              path={"/tutoring_time_slots"}
               element={
                 <UserDashboard
                   dashboardKey={"tutoring"}
@@ -113,7 +111,7 @@ function App() {
               path={"/tutoring_time_slots/:id"}
               element={<ViewTutoringTimeSlot />}
             />
-            </Route>
+          </Route>
           <Route
             path="/"
             element={auth.isLoggedIn ? handle_user_view() : <Home />}

@@ -4,7 +4,7 @@ import Table from "react-bootstrap/Table";
 import TutoringSlotRender from "./TutoringSlotRender";
 
 function TutoringSignUp({ tutoringInfo, callingComponent }) {
-  
+
   function handle_closed_sessions(session) {
     if (callingComponent === "TutoringSignUp") {
       if (session.open_status === true) {
@@ -22,7 +22,7 @@ function TutoringSignUp({ tutoringInfo, callingComponent }) {
   }
   return (
     <>
-      {tutoringInfo.id ? (
+      {tutoringInfo.id? (
         <Container>
           <Row>
             <h1>{tutoringInfo.name}</h1>
