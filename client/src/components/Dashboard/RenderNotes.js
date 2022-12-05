@@ -1,17 +1,15 @@
-import { useAuth } from "../context/AuthProvider";
+import React from 'react'
 import Container from "react-bootstrap/esm/Container";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
+import Button from 'react-bootstrap/esm/Button';
 
-function NotesRender() {
-  const user = useAuth().currentUser;
-  //TODO: Make generic to render any array of notes passed
-  return (
+function RenderNotes({ notesData, userRole, handleDelete="" }) {
+   return (
     <Container>
-      <h4>Notes:</h4>
       <Row xs={1} md={2} className="g-4">
-        {user.tutor_notes.length !== 0? (user.tutor_notes.map((note) => {
+        {notesData.length !== 0? (notesData.map((note,index) => {
           return (
             <Col key={note.id}>
               <Card border="success">
@@ -19,6 +17,11 @@ function NotesRender() {
                   <Card.Title>{note.tutor_name} says:</Card.Title>
                   <Card.Text>{note.tutor_note}</Card.Text>
                 </Card.Body>
+                {userRole==='tutor'?(
+                  <Card.Footer>
+                  <Button onClick={() => handleDelete(note.id, index)}>Delete</Button>
+                </Card.Footer>
+                ):null}
               </Card>
             </Col>
           );
@@ -28,4 +31,4 @@ function NotesRender() {
   );
 }
 
-export default NotesRender;
+export default RenderNotes

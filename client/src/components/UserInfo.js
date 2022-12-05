@@ -3,12 +3,25 @@ import { useAuth } from "../context/AuthProvider";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import SessionRender from "./SessionRender";
-import NotesRender from "./NotesRender";
 import SessionsTutored from "./SessionsTutored";
+import RenderNotes from "./Dashboard/RenderNotes";
 
 function UserInfo() {
-  const user = useAuth().currentUser;
- //TODO: Create Notes Created for Tutor
+  const auth = useAuth();
+  const user = auth.currentUser;
+
+  function handleDeleteWrittenNotes(noteId, noteIndex) {
+    let new_user = JSON.parse(JSON.stringify(user));
+    let new_written_notes = new_user.written_notes
+    new_written_notes.splice(noteIndex, 1);
+    console.log(new_user);
+    auth.updateCurrentUser(new_user);
+
+    fetch(`/tutor_note/${noteId}`, {
+      method: "DELETE",
+    });
+  }
+
   return (
     <Container>
       <Row>
@@ -22,10 +35,20 @@ function UserInfo() {
       <Row>
         <SessionRender />
       </Row>
-      {user.role === "tutor"? <SessionsTutored/>:null}
+      {user.role === "tutor" ? <SessionsTutored /> : null}
       <Row>
-        <NotesRender />
+        <h4>Notes from Tutors:</h4>
+        <RenderNotes notesData={user.tutor_notes} userRole={user.role} />
       </Row>
+      {user.role === "tutor" ?(
+      <Row>
+      <h4>Written Notes:</h4>
+        <RenderNotes
+          notesData={user.written_notes}
+          userRole={user.role}
+          handleDelete={handleDeleteWrittenNotes}
+        />
+      </Row>):null}
     </Container>
   );
 }

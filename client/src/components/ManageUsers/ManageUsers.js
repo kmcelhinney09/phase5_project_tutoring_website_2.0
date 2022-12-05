@@ -79,7 +79,6 @@ function ManageUsers() {
     handleCloseModal();
   }
   
-  console.log(schoolData);
   return (
     <>
       <Table striped bordered hover>

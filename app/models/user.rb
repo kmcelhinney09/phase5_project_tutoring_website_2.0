@@ -22,4 +22,9 @@ class User < ApplicationRecord
     notes = TutorNote.where(tutee_id:self.id).to_a
     tutor_notes_arry = notes.map{|note| {id:note.id, tutor_name:note.tutor.full_name, tutor_note:note.note}}
   end
+
+  def notes_belong_to_tutor
+    notes = TutorNote.where(tutor_id:self.id).to_a
+    tutor_notes_arry = notes.map{|note| {id:note.id, tutor_name:note.tutor.full_name, tutor_note:note.note}}
+  end
 end
