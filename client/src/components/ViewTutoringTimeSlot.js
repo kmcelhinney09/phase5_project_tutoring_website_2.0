@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthProvider"
 import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
@@ -6,7 +7,9 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
 
 function ViewTutoringTimeSlot() {
+  const auth = useAuth();
   const [tutoringSlotInfo, setTutoringSlotInfo] = useState(false);
+  const [refresh,setRefresh] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -15,10 +18,11 @@ function ViewTutoringTimeSlot() {
         res.json().then((data) => {
           console.log("TutoringTimeSlostData: ", data);
           setTutoringSlotInfo(data);
+          setRefresh(false);
         });
       }
     });
-  }, [id]);
+  }, [id, refresh]);
 
   function handleDropTutor(tutor_id, tutor_index){
     let new_slot = JSON.parse(JSON.stringify(tutoringSlotInfo));
@@ -34,7 +38,11 @@ function ViewTutoringTimeSlot() {
     })
     fetch(`/tutor_slot_sign_up/${tutor_signup_id}`, {
       method: "DELETE",
-    });
+    }).then(res => {
+      if(res.ok){
+        setRefresh(true)
+      }
+    })
   }
 
   function handleDropBookedSession(session_id, session_index){
@@ -45,6 +53,10 @@ function ViewTutoringTimeSlot() {
 
     fetch(`/booked_slot/${session_id}`, {
       method: "DELETE",
+    }).then(res => {
+      if(res.ok){
+        setRefresh(true)
+      }
     });
   }
 
@@ -72,7 +84,6 @@ function ViewTutoringTimeSlot() {
         ));
     return slot_details;
   }
-  //TODO: Render Tutors/Drop button so that they can be droped from Time Slot
   return (
     <Container>
       <Row>

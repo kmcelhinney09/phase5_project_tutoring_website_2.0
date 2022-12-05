@@ -3,6 +3,7 @@ class BookedSlot < ApplicationRecord
   # belongs_to :booked_tutor, class_name:"User", foreign_key: 'tutor_id'
   # belongs_to :booked_tutee, class_name:"User", foreign_key: 'tutor_id'
   belongs_to :tutoring_time_slot
+  belongs_to :tutor_slot_sign_up
 
   def tutor
     tutor = User.find(tutor_id)
