@@ -49,7 +49,7 @@ function ManageUsers() {
     });
   }
   //TODO: Make Edit Button Funcational
-  //TODO: Make Password Reset Button Functional
+
   return (
     <>
       <Table striped bordered hover>
@@ -62,7 +62,8 @@ function ManageUsers() {
         </thead>
         <tbody>
           {schoolData.length !== 0 ? (
-            schoolData.map((schoolUser, index) => {
+            schoolData.sort((a, b) => (a.id > b.id ? 1 : -1))
+            .map((schoolUser, index) => {
               return (
                 <tr key={schoolUser.id}>
                   <td>{schoolUser.full_name}</td>
