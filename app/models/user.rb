@@ -18,7 +18,7 @@ class User < ApplicationRecord
   validate :password_special_char
   validate :password_contains_number
   validates :email, uniqueness: true
-  validates :full_name, :email, :time_zone presence: true
+  validates :full_name, :email, :time_zone, presence: true
 
   after_initialize do
     if self.new_record?

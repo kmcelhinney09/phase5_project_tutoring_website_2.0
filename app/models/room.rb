@@ -1,5 +1,5 @@
 class Room < ApplicationRecord
-  validates :name, :buiilding_id, presence: true
+  validates :name, :building_id, presence: true
   validates :name, uniqueness: { case_sensitive: false }
   belongs_to :building
   has_many :tutoring_time_slots, dependent: :destroy

@@ -44,7 +44,7 @@ TutoringTimeSlot.create!(created_by:6,
   open_status: false)
   day = day + 1
 end
-
+day = 17
 4.times do
   start_time = Time.zone.parse("2022-12-#{day} 15:30:00")
   TutoringTimeSlot.create!(created_by:6, 
