@@ -69,7 +69,7 @@ function SessionsTutored() {
                     .sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1))
                     .map((signUp, index) => {
                       return (
-                        <tr>
+                        <tr key={signUp.id + 10}>
                           <td>{signUp.location}</td>
                           <td>{signUp.date}</td>
                           <td>
@@ -115,7 +115,7 @@ function SessionsTutored() {
                     .sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1))
                     .map((slot, index) => {
                       return (
-                        <tr key={slot.id}>
+                        <tr key={slot.id.toString() + slot.tutee.full_name}>
                           <td>{slot.location}</td>
                           <td>{slot.date}</td>
                           <td>

@@ -12,7 +12,6 @@ function TutoringSignUp({
   handleDashboardKeyChange,
 }) {
   const user = useAuth().currentUser;
-
   const [errors, setErrors] = useState([]);
 
   function handleSetErrors(inputErrors){

@@ -99,7 +99,7 @@ function ManageUsers() {
   
   return (
     <>
-    <ul>{renderErrors()}</ul>
+    {renderErrors.length !==0?(<ul>{renderErrors()}</ul>):null}
       <Table striped bordered hover>
         <thead>
           <tr>

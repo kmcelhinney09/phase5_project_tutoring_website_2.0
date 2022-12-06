@@ -25,5 +25,13 @@ Dir[Rails.root.join('db/seeds/*.rb')].sort.each do |file|
   puts "Processing #{file.split('/').last}"
   require file
   end
+  
+#need to make sure that open_status and booked_status are correct
+  all = TutoringTimeSlot.all
+  all.each do |slot|
+    slot.booked_status_update
+    slot.open_status_update
+  end
+
 
 puts "The Field Is Planted"
