@@ -35,7 +35,7 @@ function TutoringSlotRender({
       },
     };
     updatedBookedSlots.push(newBooking);
-    console.log(updatedBookedSlots);
+
     auth.updateCurrentUser(newUser);
 
     fetch("/booked_slot", {
@@ -63,7 +63,20 @@ function TutoringSlotRender({
     });
   }
 
-  function handleTutorSignUp(slotId) {
+  function handleTutorSignUp(sessionInfo) {
+    let newUser = JSON.parse(JSON.stringify(user));
+    console.log("New User: ", newUser);
+    let signUps = newUser.tutor_sign_ups;
+    const newSignUp = {
+      date: slotInfo.date,
+      date_sort: slotInfo.date_sort,
+      end_time: slotInfo.end_time,
+      location: slotInfo.location_render,
+      start_time: slotInfo.start_time,
+    };
+    signUps.push(newSignUp);
+    auth.updateCurrentUser(newUser);
+
     fetch("/tutor_slot_sign_up", {
       method: "POST",
       headers: {
@@ -96,6 +109,7 @@ function TutoringSlotRender({
               slot_status = (
                 <td>
                   <Button
+                    variant="success"
                     onClick={() =>
                       handleBookTutoring(
                         tutor.id,
@@ -112,13 +126,8 @@ function TutoringSlotRender({
               slot_status = (
                 <td>
                   <Button
-                    onClick={() =>
-                      handleTutorSignUp(
-                        tutor.id,
-                        tutor.full_name,
-                        tutor.subjects_covered
-                      )
-                    }
+                    variant="success"
+                    onClick={() => handleTutorSignUp(slotInfo)}
                   >
                     Sign-up
                   </Button>
@@ -150,7 +159,12 @@ function TutoringSlotRender({
           <td className="text-center">{slotInfo.end_time}</td>
           <td className="text-center">{slotInfo.tutee_space}</td>
           <td>
-            <Button>Sign up</Button>
+            <Button
+              variant="success"
+              onClick={() => handleTutorSignUp(slotInfo)}
+            >
+              Sign up
+            </Button>
           </td>
         </tr>
       )}

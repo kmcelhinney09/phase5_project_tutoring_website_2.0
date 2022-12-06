@@ -10,8 +10,9 @@ function TutoringSignUp({
   callingComponent,
   handleDashboardKeyChange,
 }) {
-  const user = useAuth();
+  const user = useAuth().currentUser;
   
+
   function handle_closed_sessions(session) {
     if (callingComponent === "TutoringSignUp") {
       if (session.open_status === true) {
@@ -27,23 +28,24 @@ function TutoringSignUp({
       }
     } else {
       if (session.tutors.length < session.tutor_capacity) {
-        let tutors = session.tutors
-        tutors.forEach((tutor) => {
-          if (tutor.id === user.id){
-            return null
-          } else{
-            return (
-              <TutoringSlotRender
-                slotInfo={session}
-                handleDashboardKeyChange={handleDashboardKeyChange}
-                callingComponent={callingComponent}
-              />
-            )
+        let tutorsIds = []
+        session.tutors.forEach((tutor)=> {
+          if(!tutorsIds.includes(tutor.id)){
+            tutorsIds.push(tutor.id)
           }
         })
-       
-      } else {
-        return null;
+        if(!tutorsIds.includes(user.id)){
+          return (
+            <TutoringSlotRender
+              slotInfo={session}
+              handleDashboardKeyChange={handleDashboardKeyChange}
+              callingComponent={callingComponent}
+            />
+          );
+        }else{
+          return null
+        }
+        
       }
     }
   }

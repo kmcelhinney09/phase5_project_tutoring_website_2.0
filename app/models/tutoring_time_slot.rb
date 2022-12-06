@@ -23,6 +23,7 @@ class TutoringTimeSlot < ApplicationRecord
     else
       self.booked_status = false
     end
+    self.save!
   end
 
   def open_status_update
@@ -31,6 +32,7 @@ class TutoringTimeSlot < ApplicationRecord
     else
       self.open_status = false
     end
+    self.save!
   end
 
   def tutee_space

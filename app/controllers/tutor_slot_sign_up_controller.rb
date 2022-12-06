@@ -1,6 +1,11 @@
 class TutorSlotSignUpController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
 
+  def create
+    new_signup = TutorSlotSignUp.create!(tutor_sign_up_params)
+    render json: new_signup, status: :created
+  end
+
   def destroy
     tutor_sign_up = TutorSlotSignUp.find_by(id:params[:id])
     tutor_time_slot = TutoringTimeSlot.find_by(id:tutor_sign_up.tutoring_time_slot_id)
@@ -10,7 +15,7 @@ class TutorSlotSignUpController < ApplicationController
     head :no_content
   end
   
-  
+
   private
   
   def current_user

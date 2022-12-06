@@ -12,8 +12,8 @@ function SessionRender() {
   function handleDropSession(sessionId, sessionIndex) {
     let newUser = JSON.parse(JSON.stringify(user));
     let updatedBookedSlots = newUser.booked_slots;
-    updatedBookedSlots.splice(sessionIndex,1)
-    auth.updateCurrentUser(newUser)
+    updatedBookedSlots.splice(sessionIndex, 1);
+    auth.updateCurrentUser(newUser);
 
     fetch(`/booked_slot/${sessionId}`, {
       method: "DELETE",
@@ -51,6 +51,7 @@ function SessionRender() {
                       <td>{slot.tutor.subjects_covered}</td>
                       <td>
                         <Button
+                          variant="success"
                           onClick={() => handleDropSession(slot.id, index)}
                         >
                           Drop Session

@@ -1,6 +1,8 @@
 import React, { useState, useContext, createContext } from "react";
+
 // Code help found at https://hhpendleton.medium.com/useauth-265512bbde3c from Henry Pendleton
 const authContext = createContext();
+
 
 export function ProvideAuth({ children }) {
   const auth = useProvideAuth();
@@ -63,7 +65,6 @@ function useProvideAuth() {
       if (res.ok) {
         setIsLoggedIn(false);
         setCurrentUser(null);
-        //TODO: Create a redirect to home useNavigate from react router dom see ManageTimeSlots
       }
     });
   }
