@@ -80,12 +80,14 @@ function UserDashboard({ dashboardKey, handleDashboardKeyChange }) {
                     <TutoringSignUp
                       tutoringInfo={tutoringInfo}
                       callingComponent={"TutoringSignUp"}
+                      handleDashboardKeyChange={handleDashboardKeyChange}
                     />
                   </Tab.Pane>
                   <Tab.Pane eventKey="sessionSignup">
                     <SessionSignUp
                       tutoringInfo={tutoringInfo}
                       callingComponent={"SessionSignUp"}
+                      handleDashboardKeyChange={handleDashboardKeyChange}
                     />
                   </Tab.Pane>
                 </Tab.Content>

@@ -3,18 +3,18 @@ import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import TutoringSlotRender from "./TutoringSlotRender";
 
-function TutoringSignUp({ tutoringInfo, callingComponent }) {
+function TutoringSignUp({ tutoringInfo, callingComponent, handleDashboardKeyChange }) {
 
   function handle_closed_sessions(session) {
     if (callingComponent === "TutoringSignUp") {
       if (session.open_status === true) {
-        return <TutoringSlotRender slot_info={session} />;
+        return <TutoringSlotRender slotInfo={session} handleDashboardKeyChange={handleDashboardKeyChange} />;
       } else {
         return null;
       }
     } else {
       if (session.tutors.length < session.tutor_capacity) {
-        return <TutoringSlotRender slot_info={session} />;
+        return <TutoringSlotRender slotInfo={session} handleDashboardKeyChange={handleDashboardKeyChange} />;
       } else {
         return null;
       }

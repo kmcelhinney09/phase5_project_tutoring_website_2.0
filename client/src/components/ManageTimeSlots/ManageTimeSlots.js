@@ -20,10 +20,9 @@ function ManageTimeSlots() {
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
-  console.log(user);
+  
 
   function handleRemoveTutoringSlot(slot_index, slot_id) {
-    console.log(slot_index);
     let new_user = JSON.parse(JSON.stringify(user));
     let time_slots = new_user.school.tutoring_time_slots;
     time_slots.splice(slot_index, 1);

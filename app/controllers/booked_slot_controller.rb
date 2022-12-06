@@ -1,11 +1,19 @@
 class BookedSlotController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
 
+  def create
+    booked_slot = BookedSlot.create!(booked_slot_params)
+    time_slot = TutoringTimeSlot.find_by(id:params[:tutoring_time_slot_id])
+    time_slot.booked_status_update
+    render json: booked_slot, status: :created
+  end
+
   def destroy
     booked_slot = BookedSlot.find_by(id:params[:id])
     booked_slot.destroy
     head :no_content
   end
+
   private
   
   def current_user
@@ -18,6 +26,6 @@ class BookedSlotController < ApplicationController
   end
 
   def booked_slot_params
-    params.permit(:id,:tutor_id,:tutoring_time_slot_id, :tutee_id)
+    params.permit(:id,:tutor_id,:tutoring_time_slot_id, :tutee_id, :tutor_slot_sign_up_id)
   end
 end

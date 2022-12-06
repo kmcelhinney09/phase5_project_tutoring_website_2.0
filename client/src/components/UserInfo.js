@@ -9,7 +9,7 @@ import RenderNotes from "./Dashboard/RenderNotes";
 function UserInfo() {
   const auth = useAuth();
   const user = auth.currentUser;
-
+  console.log(user)
   function handleDeleteWrittenNotes(noteId, noteIndex) {
     let new_user = JSON.parse(JSON.stringify(user));
     let new_written_notes = new_user.written_notes
