@@ -8,7 +8,6 @@ function TutoringSlotRender({ slotInfo, handleDashboardKeyChange }) {
   const navigate = useNavigate();
   let slot_status;
   
-  console.log(slotInfo)
   function handle_book_tutoring(tutorId, tutorName, tutorSubjects) {
     let signUpSlot
     let newUser = JSON.parse(JSON.stringify(user));

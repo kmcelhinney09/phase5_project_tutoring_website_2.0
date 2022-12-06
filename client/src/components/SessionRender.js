@@ -6,8 +6,26 @@ import Table from "react-bootstrap/esm/Table";
 import Button from "react-bootstrap/esm/Button";
 
 function SessionRender() {
-  const user = useAuth().currentUser;
-  
+  const auth = useAuth();
+  const user = auth.currentUser;
+
+  function handleDropSession(sessionId, sessionIndex) {
+    console.log(
+      "Droped Session: ",
+      sessionId,
+      " And it's index: ",
+      sessionIndex
+    );
+    let newUser = JSON.parse(JSON.stringify(user));
+    let updatedBookedSlots = newUser.booked_slots;
+    updatedBookedSlots.splice(sessionIndex,1)
+    auth.updateCurrentUser(newUser)
+
+    fetch(`/booked_slot/${sessionId}`, {
+      method: "DELETE",
+    });
+  }
+
   return (
     <Container>
       <Row>
@@ -25,27 +43,32 @@ function SessionRender() {
           </thead>
           <tbody>
             {user.booked_slots.length !== 0 ? (
-              user.booked_slots.sort((a, b) =>
-              a.date_sort > b.date_sort ? 1 : -1
-            ).map((slot) => {
-                return (
-                  <tr key={slot.id}>
-                    <td>{slot.location}</td>
-                    <td>{slot.date}</td>
-                    <td>
-                      {slot.start_time}-{slot.end_time}
-                    </td>
-                    <td>{slot.tutor.full_name}</td>
-                    <td>{slot.tutor.subjects_covered}</td>
-                    <td>
-                      <Button>Drop Session</Button>
-                    </td>
-                  </tr>
-                );
-              })
-            ) : (<tr>
-              <td>No Current Sessions</td>
-            </tr>
+              user.booked_slots
+                .sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1))
+                .map((slot, index) => {
+                  return (
+                    <tr key={slot.id}>
+                      <td>{slot.location}</td>
+                      <td>{slot.date}</td>
+                      <td>
+                        {slot.start_time}-{slot.end_time}
+                      </td>
+                      <td>{slot.tutor.full_name}</td>
+                      <td>{slot.tutor.subjects_covered}</td>
+                      <td>
+                        <Button
+                          onClick={() => handleDropSession(slot.id, index)}
+                        >
+                          Drop Session
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })
+            ) : (
+              <tr>
+                <td>No Current Sessions</td>
+              </tr>
             )}
           </tbody>
         </Table>
