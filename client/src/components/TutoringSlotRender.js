@@ -2,7 +2,11 @@ import { useAuth } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 
-function TutoringSlotRender({ slotInfo, handleDashboardKeyChange }) {
+function TutoringSlotRender({
+  slotInfo,
+  handleDashboardKeyChange,
+  callingComponent,
+}) {
   const auth = useAuth();
   const user = auth.currentUser;
   const navigate = useNavigate();
@@ -59,26 +63,68 @@ function TutoringSlotRender({ slotInfo, handleDashboardKeyChange }) {
     });
   }
 
+  function handleTutorSignUp(slotId) {
+    fetch("/tutor_slot_sign_up", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tutor_id: user.id,
+        tutoring_time_slot_id: slotInfo.id,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        res.json().then((tutorSignUp) => {
+          console.log(tutorSignUp);
+          handleDashboardKeyChange("dashboard");
+          navigate(`/user/${user.id}`, { replace: true });
+        });
+      } else {
+        // res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => console.log(Object.entries(e.error)));
+      }
+    });
+  }
+
   return (
     <>
       {slotInfo.tutors.length !== 0 ? (
         slotInfo.tutors.map((tutor) => {
           if (slotInfo.booked_status === false) {
-            slot_status = (
-              <td>
-                <Button
-                  onClick={() =>
-                    handleBookTutoring(
-                      tutor.id,
-                      tutor.full_name,
-                      tutor.subjects_covered
-                    )
-                  }
-                >
-                  Sign-up
-                </Button>
-              </td>
-            );
+            if (callingComponent === "TutoringSignUp") {
+              slot_status = (
+                <td>
+                  <Button
+                    onClick={() =>
+                      handleBookTutoring(
+                        tutor.id,
+                        tutor.full_name,
+                        tutor.subjects_covered
+                      )
+                    }
+                  >
+                    Sign-up
+                  </Button>
+                </td>
+              );
+            } else {
+              slot_status = (
+                <td>
+                  <Button
+                    onClick={() =>
+                      handleTutorSignUp(
+                        tutor.id,
+                        tutor.full_name,
+                        tutor.subjects_covered
+                      )
+                    }
+                  >
+                    Sign-up
+                  </Button>
+                </td>
+              );
+            }
           } else {
             slot_status = <td className="text-danger">Full</td>;
           }

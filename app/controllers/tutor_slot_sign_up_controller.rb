@@ -3,7 +3,7 @@ class TutorSlotSignUpController < ApplicationController
 
   def destroy
     tutor_sign_up = TutorSlotSignUp.find_by(id:params[:id])
-    tutor_time_slot = TutoringTimeSlot.find_by(tutor_sign_up.tutoring_time_slot_id)
+    tutor_time_slot = TutoringTimeSlot.find_by(id:tutor_sign_up.tutoring_time_slot_id)
     tutor_sign_up.destroy
     tutor_time_slot.open_status_update
     tutor_time_slot.booked_status_update

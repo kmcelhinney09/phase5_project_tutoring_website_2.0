@@ -1,20 +1,47 @@
+import { useAuth } from "../context/AuthProvider";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import TutoringSlotRender from "./TutoringSlotRender";
+import UserDashboard from "./UserDashboard";
 
-function TutoringSignUp({ tutoringInfo, callingComponent, handleDashboardKeyChange }) {
-
+function TutoringSignUp({
+  tutoringInfo,
+  callingComponent,
+  handleDashboardKeyChange,
+}) {
+  const user = useAuth();
+  
   function handle_closed_sessions(session) {
     if (callingComponent === "TutoringSignUp") {
       if (session.open_status === true) {
-        return <TutoringSlotRender slotInfo={session} handleDashboardKeyChange={handleDashboardKeyChange} />;
+        return (
+          <TutoringSlotRender
+            slotInfo={session}
+            handleDashboardKeyChange={handleDashboardKeyChange}
+            callingComponent={callingComponent}
+          />
+        );
       } else {
         return null;
       }
     } else {
       if (session.tutors.length < session.tutor_capacity) {
-        return <TutoringSlotRender slotInfo={session} handleDashboardKeyChange={handleDashboardKeyChange} />;
+        let tutors = session.tutors
+        tutors.forEach((tutor) => {
+          if (tutor.id === user.id){
+            return null
+          } else{
+            return (
+              <TutoringSlotRender
+                slotInfo={session}
+                handleDashboardKeyChange={handleDashboardKeyChange}
+                callingComponent={callingComponent}
+              />
+            )
+          }
+        })
+       
       } else {
         return null;
       }
@@ -22,7 +49,7 @@ function TutoringSignUp({ tutoringInfo, callingComponent, handleDashboardKeyChan
   }
   return (
     <>
-      {tutoringInfo.id? (
+      {tutoringInfo.id ? (
         <Container>
           <Row>
             <h1>{tutoringInfo.name}</h1>

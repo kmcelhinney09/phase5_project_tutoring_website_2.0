@@ -38,4 +38,27 @@ class TutoringTimeSlot < ApplicationRecord
     open_tutee_slots = self.tutee_capacity - self.num_of_tutees
   end
 
+  def location_render
+    room = self.room
+    building = room.building
+    location = building.name + " - " +room.name
+  end
+
+  def date_render
+    date = self.start_time.strftime("%A, %b %d")
+  end
+  def start_time_render
+    start_time = self.start_time.strftime("%l:%M %p")
+  end
+  def end_time_render
+    end_time = self.end_time.strftime("%l:%M %p")
+  end
+  def created_at_render
+    created_at = self.created_at.strftime("%A, %b%d -%l:%M %p")
+  end
+
+  def date_sort_render
+    date_sort = self.start_time.to_f
+  end
+
 end

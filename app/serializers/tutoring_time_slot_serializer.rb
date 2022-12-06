@@ -45,9 +45,7 @@ class TutoringTimeSlotSerializer < ActiveModel::Serializer
   end
 
   def location_render
-    room = object.room
-    building = room.building
-   location = building.name + " - " +room.name
+    location = object.location_render
   end
 
 end
