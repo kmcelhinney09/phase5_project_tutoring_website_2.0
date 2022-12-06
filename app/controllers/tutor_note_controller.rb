@@ -1,6 +1,11 @@
 class TutorNoteController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
 
+  def create
+    note = TutorNote.create!(tutor_note_params)
+    render json: note, status: :created
+  end
+
   def destroy
     note = TutorNote.find_by(id:params[:id])
     note.destroy
@@ -20,6 +25,6 @@ class TutorNoteController < ApplicationController
   end
 
   def tutor_note_params
-    params.permit(:id,:tutor_id,:note)
+    params.permit(:id,:tutor_id,:note, :tutee_id)
   end
 end

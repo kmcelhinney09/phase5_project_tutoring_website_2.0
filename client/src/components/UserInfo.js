@@ -35,12 +35,12 @@ function UserInfo() {
       <Row>
         <SessionRender />
       </Row>
-      {user.role === "tutor" ? <SessionsTutored /> : null}
+      {user.role === "tutor" || user.role==="admin"? <SessionsTutored /> : null}
       <Row>
         <h4>Notes from Tutors:</h4>
         <RenderNotes notesData={user.tutor_notes} userRole={user.role} />
       </Row>
-      {user.role === "tutor" ?(
+      {user.role === "tutor" || user.role==="admin"?(
       <Row>
       <h4>Written Notes:</h4>
         <RenderNotes

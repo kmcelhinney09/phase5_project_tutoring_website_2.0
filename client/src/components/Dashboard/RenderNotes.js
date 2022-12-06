@@ -17,7 +17,7 @@ function RenderNotes({ notesData, userRole, handleDelete="" }) {
                   <Card.Title>{note.tutor_name} says:</Card.Title>
                   <Card.Text>{note.tutor_note}</Card.Text>
                 </Card.Body>
-                {userRole==='tutor'?(
+                {userRole ==='tutor' || userRole ==="admin"?(
                   <Card.Footer>
                   <Button onClick={() => handleDelete(note.id, index)}>Delete</Button>
                 </Card.Footer>

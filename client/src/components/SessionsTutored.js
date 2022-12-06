@@ -1,55 +1,105 @@
-import { useAuth } from "../context/AuthProvider"
+import { useAuth } from "../context/AuthProvider";
+import { useState, useEffect } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/esm/Table";
 import Button from "react-bootstrap/esm/Button";
+import Modal from "react-bootstrap/esm/Modal";
+import LeaveNote from "./Dashboard/LeaveNote";
 
 function SessionsTutored() {
-  const booked_as_tutor = useAuth().currentUser.booked_as_tutor;
-  console.log(booked_as_tutor)
-  //TODO: Make Drop session butotn functional
-  //TODO: Make Leave Note Button functional
+  const auth = useAuth();
+  const user = auth.currentUser;
+  const [showModal, setShowModal] = useState(false);
+  const [tuteeId, setTuteeId] = useState(0);
+
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
+
+  function handleDropBookedSession(session_id, session_index) {
+    let new_user = JSON.parse(JSON.stringify(user));
+    let new_booked_slots = new_user.booked_as_tutor;
+    new_booked_slots.splice(session_index, 1);
+    auth.updateCurrentUser(new_user);
+
+    fetch(`/booked_slot/${session_id}`, {
+      method: "DELETE",
+    }).then((res) => {
+      if (res.ok) {
+        auth.auto();
+      }
+    });
+  }
+
+  function handleAddNote(tuteeID) {
+    setTuteeId(tuteeID)
+    handleShowModal();
+  }
+
   return (
-    <Container>
-      <Row>
-        <h4>Sessions as Tutor</h4>
-        <Table responsive="md">
-          <thead>
-            <tr>
-              <th>Location</th>
-              <th>Session</th>
-              <th>Time</th>
-              <th>Tutee</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {booked_as_tutor.length !== 0 ? (
-              booked_as_tutor.map((slot) => {
-                return (
-                  <tr key={slot.id}>
-                    <td>{slot.location}</td>
-                    <td>{slot.date}</td>
-                    <td>
-                      {slot.start_time}-{slot.end_time}
-                    </td>
-                    <td>{slot.tutee.full_name}</td>
-                    <td>
-                      <Button variant="success" className="mb-2">Drop Session</Button>{" "}
-                      <Button variant="success" className="mb-2">Leave Note</Button>
-                    </td>
-                  </tr>
-                );
-              })
-            ) : (<tr>
-              <td>No Current Sessions</td>
-            </tr>
-            )}
-          </tbody>
-        </Table>
-      </Row>
-    </Container>
-  )
+    <>
+      <Container>
+        <Row>
+          <h4>Sessions as Tutor</h4>
+          <Table responsive="md">
+            <thead>
+              <tr>
+                <th>Location</th>
+                <th>Session</th>
+                <th>Time</th>
+                <th>Tutee</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {user.booked_as_tutor.length !== 0 ? (
+                user.booked_as_tutor.map((slot, index) => {
+                  return (
+                    <tr key={slot.id}>
+                      <td>{slot.location}</td>
+                      <td>{slot.date}</td>
+                      <td>
+                        {slot.start_time}-{slot.end_time}
+                      </td>
+                      <td>{slot.tutee.full_name}</td>
+                      <td>
+                        <Button
+                          variant="success"
+                          className="mb-2"
+                          onClick={() =>
+                            handleDropBookedSession(slot.id, index)
+                          }
+                        >
+                          Drop Session
+                        </Button>{" "}
+                        <Button
+                          variant="success"
+                          className="mb-2"
+                          onClick={() => handleAddNote(slot.tutee.id)}
+                        >
+                          Leave Note
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td>No Current Sessions</td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+        </Row>
+      </Container>
+      <Modal size="lg" show={showModal} onHide={handleCloseModal}>
+        <Modal.Header>
+          <Modal.Title>Leave Note</Modal.Title>
+        </Modal.Header>
+        <Modal.Body><LeaveNote closeForm={handleCloseModal} tuteeId={tuteeId}/></Modal.Body>
+      </Modal>
+    </>
+  );
 }
 
-export default SessionsTutored
+export default SessionsTutored;

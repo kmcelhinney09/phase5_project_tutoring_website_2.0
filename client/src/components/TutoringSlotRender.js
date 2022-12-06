@@ -19,7 +19,7 @@ function TutoringSlotRender({ slot_info }) {
     });
   }
 //TODO: Make Signup button functional for both Tutoring Signup and Tutor session sign up
-//TODO: Make user create in ruby controlers calls open_status_update and booked_status_update
+//TODO: Make create in ruby controlers calls open_status_update and booked_status_update
   return (
     <>
       {slot_info.tutors.length !== 0?(slot_info.tutors.map((tutor) => {
