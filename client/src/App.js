@@ -12,7 +12,7 @@ import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/esm/Button";
 import Home from "./components/Home";
-import UserDashboard from "./components/UserDashboard";
+import UserDashboard from "./components/Dashboard/UserDashboard";
 import PrivateRoutes from "./components/PrivateRoutes";
 import ViewTutoringTimeSlot from "./components/ManageTimeSlots/ViewTutoringTimeSlot";
 

@@ -1,4 +1,4 @@
-import { useAuth } from "../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
@@ -11,7 +11,6 @@ function TutoringSignUp({
   handleDashboardKeyChange,
 }) {
   const user = useAuth().currentUser;
-  
 
   function handle_closed_sessions(session) {
     if (callingComponent === "TutoringSignUp") {
@@ -28,13 +27,13 @@ function TutoringSignUp({
       }
     } else {
       if (session.tutors.length < session.tutor_capacity) {
-        let tutorsIds = []
-        session.tutors.forEach((tutor)=> {
-          if(!tutorsIds.includes(tutor.id)){
-            tutorsIds.push(tutor.id)
+        let tutorsIds = [];
+        session.tutors.forEach((tutor) => {
+          if (!tutorsIds.includes(tutor.id)) {
+            tutorsIds.push(tutor.id);
           }
-        })
-        if(!tutorsIds.includes(user.id)){
+        });
+        if (!tutorsIds.includes(user.id)) {
           return (
             <TutoringSlotRender
               slotInfo={session}
@@ -42,10 +41,9 @@ function TutoringSignUp({
               callingComponent={callingComponent}
             />
           );
-        }else{
-          return null
+        } else {
+          return null;
         }
-        
       }
     }
   }

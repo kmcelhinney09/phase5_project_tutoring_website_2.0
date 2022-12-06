@@ -1,4 +1,4 @@
-import { useAuth } from "../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import { useState, useEffect } from "react";
 import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/esm/Row";

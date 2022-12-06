@@ -1,11 +1,11 @@
-import { useAuth } from "../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import { useState, useEffect } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/esm/Table";
 import Button from "react-bootstrap/esm/Button";
 import Modal from "react-bootstrap/esm/Modal";
-import LeaveNote from "./Dashboard/LeaveNote";
+import LeaveNote from "./LeaveNote";
 
 function SessionsTutored() {
   const auth = useAuth();

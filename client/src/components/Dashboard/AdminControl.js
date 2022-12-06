@@ -1,11 +1,11 @@
-import { useAuth } from "../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Nav from "react-bootstrap/esm/Nav";
-import ManageSchool from "./ManageSchool/ManageSchool";
-import ManageTimeSlots from "./ManageTimeSlots/ManageTimeSlots";
-import ManageUsers from "./ManageUsers/ManageUsers";
+import ManageSchool from "../ManageSchool/ManageSchool";
+import ManageTimeSlots from "../ManageTimeSlots/ManageTimeSlots";
+import ManageUsers from "../ManageUsers/ManageUsers";
 
 function AdminControl() {
   const user = useAuth().currentUser;
