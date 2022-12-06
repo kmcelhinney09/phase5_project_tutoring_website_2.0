@@ -39,6 +39,7 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
   function handleEditBuildingSubmit(e) {
     e.preventDefault();
     setErrors([]);
+    //https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/
     let new_user = JSON.parse(JSON.stringify(user));
     let locations = JSON.parse(JSON.stringify(new_user.school.locations));
 

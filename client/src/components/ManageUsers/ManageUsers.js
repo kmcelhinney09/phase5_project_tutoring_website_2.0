@@ -99,8 +99,8 @@ function ManageUsers() {
   
   return (
     <>
+    <ul>{renderErrors()}</ul>
       <Table striped bordered hover>
-        <ul>{renderErrors()}</ul>
         <thead>
           <tr>
             <th>User Name</th>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import TimeSlotForm from "./TimeSlotForm";
 
@@ -6,31 +6,17 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
   const auth = useAuth();
   const user = auth.currentUser;
   const locations = user.school.locations;
-  console.log("User: ", user);
   const [slotForm, setSlotForm] = useState({
-    date: "",
-    start_time: "",
-    end_time: "",
-    room: "",
-    building: "",
-    tutor_capacity: 0,
-    tutee_capacity: 0,
-  });
-
-  const [errors, setErrors] = useState([])
-
-  useEffect(() => {
-    let settingSlot = {
-      date: slotInfo.start_time.slice(0,10),
+    date: slotInfo.start_time.slice(0,10),
       start_time: slotInfo.start_time.slice(11, 19),
       end_time: slotInfo.end_time.slice(11, 19),
       room: getBuilding()[0],
       building: getBuilding()[1],
       tutor_capacity: slotInfo.tutor_capacity,
       tutee_capacity: slotInfo.tutee_capacity,
-    };
-    setSlotForm(settingSlot);
-  }, [slotInfo]);
+  });
+
+  const [errors, setErrors] = useState([])
 
   function getBuilding() {
     let building;
@@ -74,7 +60,7 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
       room_id: room_id,
     };
     updated_time_slots.forEach((slot) => {
-      if (slot.id == slotInfo.id) {
+      if (slot.id === slotInfo.id) {
         slot.tutee_capacity = edited_time_slot.tutee_capacity;
         slot.tutor_capacity = edited_time_slot.tutor_capacity;
         slot.start_time = edited_time_slot.start_time;
@@ -92,7 +78,6 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((slot) => {
-          console.log(slot);
           auth.auto();
         });
       } else {

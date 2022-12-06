@@ -75,7 +75,7 @@ function ManageSchool() {
       });
       if (new_rooms.length !== 0) {
         new_rooms.splice(saved_index, 1);
-        locations.map((location) => {
+        locations.forEach((location) => {
           if (location.building.id === removed_room_building) {
             location.rooms = new_rooms;
           }

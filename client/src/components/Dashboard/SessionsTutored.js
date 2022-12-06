@@ -1,5 +1,5 @@
 import { useAuth } from "../../context/AuthProvider";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/esm/Table";

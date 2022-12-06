@@ -38,7 +38,7 @@ function ResetPassward({ closeForm, userId }) {
     const name = e.target.name;
     const checked = e.target.checked;
 
-    if (name == "confirm_reset") {
+    if (name === "confirm_reset") {
       setPasswordForm({ ...passwordForm, [name]: checked });
     } else {
       setPasswordForm({ ...passwordForm, [name]: value });

@@ -46,20 +46,17 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
     let updated_room_building;
     let new_rooms;
     let updated_rooms;
-    let new_locations;
 
     //https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/
-    let new_user = JSON.parse(JSON.stringify(auth.currentUser));
-
     let locations = [...auth.currentUser.school.locations];
 
     if (roomForm.name !== resources_name[1]) {
-      locations.map((location) => {
-        location.rooms.map((room) => {
+      locations.forEach((location) => {
+        location.rooms.forEach((room) => {
           if (room.id === roomForm.id) {
-            room.name = roomForm.name;
+            room.name = roomForm.name
           }
-        });
+        })
       });
     }
     if (roomForm.building_name !== resources_name[0]) {
@@ -81,12 +78,12 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
           updated_rooms = [...location.rooms, saved_room];
         }
       });
-      new_locations = locations.map((location) => {
+      locations.forEach((location) => {
         if (location.building.id === removed_room_building) {
-          location.rooms = new_rooms;
+          location.rooms = new_rooms
         }
         if (location.building.id === updated_room_building) {
-          location.rooms = updated_rooms;
+          location.rooms = updated_rooms
         }
       });
     }
