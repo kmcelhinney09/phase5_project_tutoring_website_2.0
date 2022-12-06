@@ -10,8 +10,8 @@ class BookedSlotController < ApplicationController
 
   def destroy
     booked_slot = BookedSlot.find_by(id:params[:id])
+    time_slot = TutoringTimeSlot.find_by(id:booked_slot.tutoring_time_slot_id)
     booked_slot.destroy
-    time_slot = TutoringTimeSlot.find_by(id:params[:tutoring_time_slot_id])
     time_slot.booked_status_update
     head :no_content
   end

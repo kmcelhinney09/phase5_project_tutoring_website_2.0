@@ -7,16 +7,16 @@ function TutoringSlotRender({ slotInfo, handleDashboardKeyChange }) {
   const user = auth.currentUser;
   const navigate = useNavigate();
   let slot_status;
-  
-  function handle_book_tutoring(tutorId, tutorName, tutorSubjects) {
-    let signUpSlot
+
+  function handleBookTutoring(tutorId, tutorName, tutorSubjects) {
+    let signUpSlot;
     let newUser = JSON.parse(JSON.stringify(user));
     let updatedBookedSlots = newUser.booked_slots;
     slotInfo.tutor_slot_sign_ups.forEach((signUp) => {
-      if (signUp.tutor_id === tutorId){
-        signUpSlot = signUp.id
+      if (signUp.tutor_id === tutorId) {
+        signUpSlot = signUp.id;
       }
-    })
+    });
     let newBooking = {
       date: slotInfo.date,
       date_sort: slotInfo.date_sort,
@@ -49,7 +49,7 @@ function TutoringSlotRender({ slotInfo, handleDashboardKeyChange }) {
       if (res.ok) {
         res.json().then((bookedSlot) => {
           console.log(bookedSlot);
-          handleDashboardKeyChange("dashboard")
+          handleDashboardKeyChange("dashboard");
           navigate(`/user/${user.id}`, { replace: true });
         });
       } else {
@@ -68,7 +68,7 @@ function TutoringSlotRender({ slotInfo, handleDashboardKeyChange }) {
               <td>
                 <Button
                   onClick={() =>
-                    handle_book_tutoring(
+                    handleBookTutoring(
                       tutor.id,
                       tutor.full_name,
                       tutor.subjects_covered

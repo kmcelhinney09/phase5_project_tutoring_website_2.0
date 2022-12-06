@@ -10,12 +10,6 @@ function SessionRender() {
   const user = auth.currentUser;
 
   function handleDropSession(sessionId, sessionIndex) {
-    console.log(
-      "Droped Session: ",
-      sessionId,
-      " And it's index: ",
-      sessionIndex
-    );
     let newUser = JSON.parse(JSON.stringify(user));
     let updatedBookedSlots = newUser.booked_slots;
     updatedBookedSlots.splice(sessionIndex,1)

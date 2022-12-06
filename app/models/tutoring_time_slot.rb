@@ -18,9 +18,7 @@ class TutoringTimeSlot < ApplicationRecord
   end
   
   def booked_status_update
-    num_tutee = self.num_of_tutees
-    tutee_capacity = self.tutee_capacity
-    if num_tutee >= tutee_capacity
+    if self.num_of_tutees >= self.tutee_capacity
       self.booked_status = true
     else
       self.booked_status = false

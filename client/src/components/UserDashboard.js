@@ -8,7 +8,6 @@ import UserInfo from "./UserInfo";
 import { LinkContainer } from "react-router-bootstrap";
 import TutoringSignUp from "./TutoringSignUp";
 import AdminControl from "./AdminControl";
-import SessionSignUp from "./SessionSignUp";
 
 function UserDashboard({ dashboardKey, handleDashboardKeyChange }) {
   const user = useAuth().currentUser;
@@ -84,7 +83,7 @@ function UserDashboard({ dashboardKey, handleDashboardKeyChange }) {
                     />
                   </Tab.Pane>
                   <Tab.Pane eventKey="sessionSignup">
-                    <SessionSignUp
+                    <TutoringSignUp
                       tutoringInfo={tutoringInfo}
                       callingComponent={"SessionSignUp"}
                       handleDashboardKeyChange={handleDashboardKeyChange}
