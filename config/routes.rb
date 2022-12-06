@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :tutor_slot_sign_up, only: [:create, :destroy]
   resources :booked_slot, only: [:create, :destroy]
   resources :tutor_note, only: [:create, :destroy]
+  resources :subject, only: [:create, :destroy]
 
   get "/auth", to: 'users#show'
   post "/login", to: "sessions#create"

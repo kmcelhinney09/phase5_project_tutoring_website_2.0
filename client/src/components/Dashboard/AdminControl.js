@@ -24,7 +24,7 @@ function AdminControl() {
                   <Nav variant="pills" className="flex-column">
                     <Nav.Item>
                       <Nav.Link eventKey="schoolResources">
-                        Manage Buildings and Rooms
+                        Manage School
                       </Nav.Link>
                     </Nav.Item>
                     <Nav.Item>

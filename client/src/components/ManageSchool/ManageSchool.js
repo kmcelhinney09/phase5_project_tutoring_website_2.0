@@ -9,11 +9,12 @@ import CreateBuilding from "./CreateBuilding";
 import CreateRoom from "./CreateRoom";
 import EditRoom from "./EditRoom";
 import EditBuilding from "./EditBuilding";
+import AddSubject from "./AddSubject";
 
 function ManageSchool() {
   const auth = useAuth();
   let user = auth.currentUser;
-
+  console.log(user);
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
@@ -45,8 +46,8 @@ function ManageSchool() {
           building_name={resources_name[0]}
         />
       );
-    } else {
-      setModalTitle(modal_type);
+    } else if(modal_type === "Edit Room") {
+      setModalTitle("Edit Room");
       setModalBody(
         <EditRoom
           closeForm={handleCloseModal}
@@ -54,6 +55,11 @@ function ManageSchool() {
           resources_name={resources_name}
         />
       );
+    } else if(modal_type === "Create Subject"){
+      setModalTitle("Add Subject");
+      setModalBody(
+        <AddSubject closeForm={handleCloseModal}/>
+      )
     }
     handleShowModal();
   }
@@ -106,9 +112,26 @@ function ManageSchool() {
     });
   }
 
+  function handleRemoveSubject(subjectId, subjectIndex){
+    let newUser = JSON.parse(JSON.stringify(user));
+    let updatedSubject = newUser.school.subjects
+    updatedSubject.splice(subjectIndex,1)
+    auth.updateCurrentUser(newUser)
+
+    fetch(`/subject/${subjectId}`, {
+      method: "DELETE",
+    });
+  }
+
   return (
     <>
       <h3> Current Resources</h3>
+      <Button
+        variant="success"
+        onClick={() => handleModalAction("create building")}
+      >
+        Create New Building
+      </Button>{" "}
       {user.id ? (
         user.school.locations
           .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
@@ -138,7 +161,7 @@ function ManageSchool() {
                                   variant="success"
                                   onClick={() =>
                                     handleModalAction(
-                                      `Edit ${room.name}`,
+                                      `Edit Room`,
                                       room.id,
                                       [buildingInfo.building.name, room.name]
                                     )
@@ -195,12 +218,32 @@ function ManageSchool() {
       ) : (
         <h4>Loading....</h4>
       )}
-      <Button
-        variant="success"
-        onClick={() => handleModalAction("create building")}
-      >
-        Create New Building
-      </Button>{" "}
+      {user.id ? (
+        <>
+          <h4>School Subjects</h4>
+          <Button variant="success" onClick={() => handleModalAction("Create Subject")}>Add Subject</Button>
+          <Table responsive="md" striped bordered hover>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th className="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {user.school.subjects.map((subject,index) => {
+                return (
+                  <tr>
+                    <td>{subject.name}</td>
+                    <td><Button variant="success" onClick={() => handleRemoveSubject(subject.id,index)}>Drop Subject</Button></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </>
+      ) : (
+        <h4>Loading....</h4>
+      )}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header>
           <Modal.Title>{modalTitle}</Modal.Title>
