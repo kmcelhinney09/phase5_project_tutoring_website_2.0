@@ -46,12 +46,13 @@ function SessionsTutored() {
     setTuteeId(tuteeID);
     handleShowModal();
   }
-
+//TODO: create add subject to tutor with dropdown of school subjects
   return (
     <>
       <Container>
         <Row>
           <h4>Sessions as Tutor</h4>
+          <Button>Add Subject to Tutor</Button>
           <Row>
             <h5>Slots Signup For</h5>
             <Table responsive="md">
