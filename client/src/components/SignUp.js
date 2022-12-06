@@ -14,8 +14,8 @@ function SignUp({ closeForm }) {
     password_confirmation: "",
   });
 
-  const [errors, setErrors] = useState([]);
   const auth = useAuth();
+  const errors = auth.errors
 
   function renderErrors() {
     const error_text = errors.map((error, index) => {

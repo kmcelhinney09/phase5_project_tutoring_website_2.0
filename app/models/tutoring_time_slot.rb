@@ -1,4 +1,6 @@
 class TutoringTimeSlot < ApplicationRecord
+  validates :start_time, :end_time, :school_id, :room_id, presence: true
+
   has_many :booked_slots, dependent: :destroy
   belongs_to :room
   belongs_to :school

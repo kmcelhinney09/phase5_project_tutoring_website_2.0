@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
+  before_save {self.email = email.downcase}
   enum role: [:tutee, :tutor, :admin]
 
   belongs_to :school
@@ -11,11 +12,40 @@ class User < ApplicationRecord
   has_many :tutor_notes, class_name: "TutorNote", foreign_key:'tutor_id', dependent: :destroy
   has_many :tutee_notes, class_name: "TutorNote", foreign_key:'tutee_id', dependent: :destroy
 
+  #Password validation from chowderhead found on DEV.to here: https://dev.to/nodefiend/rails-password-validation-29kj
+  validate :password_lower_case
+  validate :password_uppercase
+  validate :password_special_char
+  validate :password_contains_number
+  validates :email, uniqueness: true
+  validates :full_name, :email, presence: true
 
   after_initialize do
     if self.new_record?
       self.role ||= :tutee
     end
+  end
+
+  def password_uppercase
+    return if !!password.match(/\p{Upper}/)
+    errors.add :password, ' must contain at least 1 uppercase '
+  end
+
+  def password_lower_case
+    return if !!password.match(/\p{Lower}/)
+    errors.add :password, ' must contain at least 1 lowercase '
+  end
+
+  def password_special_char
+    special = "?<>',?[]}{=-)(*&^%$#`~{}!"
+    regex = /[#{special.gsub(/./){|char| "\\#{char}"}}]/
+    return if password =~ regex
+    errors.add :password, ' must contain special character'
+  end
+
+  def password_contains_number
+    return if password.count("0-9") > 0
+    errors.add :password, ' must contain at least one number'
   end
 
   def notes_from_tutor

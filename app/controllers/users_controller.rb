@@ -46,12 +46,12 @@ class UsersController < ApplicationController
 
   def password_reset
     user = User.find_by(id:params[:id])
-    user.update(user_params)
-    head :no_content
+    user.update!(user_params)
+    render json: user, status: :accepted
   end
 
   private
-  
+
   def current_user
     current_user = User.find(session[:user_id])
   end

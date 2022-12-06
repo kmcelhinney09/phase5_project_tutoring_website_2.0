@@ -11,6 +11,7 @@ function ResetPassward({ closeForm, userId }) {
     confirm_reset: false,
   });
   const [passwordResetMessage, setPasswordResetMessage] = useState("");
+  const [errors, setErrors] = useState([]);
 
   function handleClose(){
     setPasswordResetMessage("")
@@ -31,6 +32,7 @@ function ResetPassward({ closeForm, userId }) {
 
   function handleResetPasswordSubmit(e) {
     e.preventDefault();
+    setErrors([])
     if (passwordForm.confirm_reset){
       let restPassword = {
         password:passwordForm.password, 
@@ -43,10 +45,15 @@ function ResetPassward({ closeForm, userId }) {
         body: JSON.stringify(restPassword),
       }).then((res) => {
         if (res.ok) {
+          res.json().then((user) => {
+            console.log(user)
             setPasswordResetMessage("Password was successfully reset")
+          });
         } else {
-          // res.json().then((e) => setErrors(Object.entries(e.error)));
-          res.json().then((e) => console.log(Object.entries(e.error)));
+          res.json().then((e) => {
+            setErrors(Object.entries(e.error))
+            console.log(Object.entries(e.error))
+          });
         }
       });
     }else{
@@ -96,7 +103,23 @@ function ResetPassward({ closeForm, userId }) {
         </Button>
         <br />
         <Form.Text className="text-danger">
-          <ul></ul>
+          <ul>
+          {errors.length !==0?(
+            errors.map((error, index) => {
+              return(
+                <li key={index}>{error[0]}
+                <ul>
+                  {error[1].map((errorInfo) => {
+                    return(
+                      <li>{errorInfo}</li>
+                    )
+                  })}
+                </ul>
+                </li>
+              )
+            })
+          ):null}
+          </ul>
         </Form.Text>
       </Form>
     </div>
