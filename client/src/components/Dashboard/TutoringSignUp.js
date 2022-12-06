@@ -1,9 +1,10 @@
 import { useAuth } from "../../context/AuthProvider";
+import { useState } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import TutoringSlotRender from "./TutoringSlotRender";
-import UserDashboard from "./UserDashboard";
+
 
 function TutoringSignUp({
   tutoringInfo,
@@ -11,6 +12,28 @@ function TutoringSignUp({
   handleDashboardKeyChange,
 }) {
   const user = useAuth().currentUser;
+
+  const [errors, setErrors] = useState([]);
+
+  function handleSetErrors(inputErrors){
+    setErrors(inputErrors)
+  }
+
+  function renderErrors() {
+    const error_text = errors.map((error, index) => {
+      return (
+        <li key={index}>
+          {error[0]}
+          <ul>
+            {error[1].map((text) => (
+              <li>{text}</li>
+            ))}
+          </ul>
+        </li>
+      );
+    });
+    return error_text;
+  }
 
   function handle_closed_sessions(session) {
     if (callingComponent === "TutoringSignUp") {
@@ -20,6 +43,7 @@ function TutoringSignUp({
             slotInfo={session}
             handleDashboardKeyChange={handleDashboardKeyChange}
             callingComponent={callingComponent}
+            setErrors={handleSetErrors}
           />
         );
       } else {
@@ -39,6 +63,7 @@ function TutoringSignUp({
               slotInfo={session}
               handleDashboardKeyChange={handleDashboardKeyChange}
               callingComponent={callingComponent}
+              setErrors={handleSetErrors}
             />
           );
         } else {
@@ -53,6 +78,7 @@ function TutoringSignUp({
         <Container>
           <Row>
             <h1>{tutoringInfo.name}</h1>
+            <ul>{renderErrors()}</ul>
           </Row>
           <Row>
             {tutoringInfo.locations

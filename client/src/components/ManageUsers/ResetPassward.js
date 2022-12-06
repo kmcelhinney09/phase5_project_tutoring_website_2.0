@@ -4,7 +4,6 @@ import FormGroup from "react-bootstrap/esm/FormGroup";
 import Form from "react-bootstrap/Form";
 
 function ResetPassward({ closeForm, userId }) {
-  
   const [passwordForm, setPasswordForm] = useState({
     password: "",
     password_confirmation: "",
@@ -13,31 +12,47 @@ function ResetPassward({ closeForm, userId }) {
   const [passwordResetMessage, setPasswordResetMessage] = useState("");
   const [errors, setErrors] = useState([]);
 
-  function handleClose(){
-    setPasswordResetMessage("")
+  function handleClose() {
+    setPasswordResetMessage("");
     closeForm();
   }
 
+  function renderErrors() {
+    const error_text = errors.map((error, index) => {
+      return (
+        <li key={index}>
+          {error[0]}
+          <ul>
+            {error[1].map((text) => (
+              <li>{text}</li>
+            ))}
+          </ul>
+        </li>
+      );
+    });
+    return error_text;
+  }
+
   function handleResetPasswordOnChange(e) {
-    const value = e.target.value
-    const name = e.target.name
-    const checked = e.target.checked
-    
-    if (name == "confirm_reset"){
-      setPasswordForm({...passwordForm, [name]:checked})
-    }else{
-      setPasswordForm({...passwordForm, [name]:value})
+    const value = e.target.value;
+    const name = e.target.name;
+    const checked = e.target.checked;
+
+    if (name == "confirm_reset") {
+      setPasswordForm({ ...passwordForm, [name]: checked });
+    } else {
+      setPasswordForm({ ...passwordForm, [name]: value });
     }
   }
 
   function handleResetPasswordSubmit(e) {
     e.preventDefault();
-    setErrors([])
-    if (passwordForm.confirm_reset){
+    setErrors([]);
+    if (passwordForm.confirm_reset) {
       let restPassword = {
-        password:passwordForm.password, 
-        password_confirmation: passwordForm.password_confirmation
-      }
+        password: passwordForm.password,
+        password_confirmation: passwordForm.password_confirmation,
+      };
 
       fetch(`/admin/password_reset/${userId}`, {
         method: "PATCH",
@@ -46,21 +61,17 @@ function ResetPassward({ closeForm, userId }) {
       }).then((res) => {
         if (res.ok) {
           res.json().then((user) => {
-            console.log(user)
-            setPasswordResetMessage("Password was successfully reset")
+            setPasswordResetMessage("Password was successfully reset");
           });
         } else {
           res.json().then((e) => {
-            setErrors(Object.entries(e.error))
-            console.log(Object.entries(e.error))
+            setErrors(Object.entries(e.error));
           });
         }
       });
-    }else{
-      setPasswordResetMessage("You must check confirm password box")
+    } else {
+      setPasswordResetMessage("You must check confirm password box");
     }
-    
-    
   }
 
   return (
@@ -85,15 +96,16 @@ function ResetPassward({ closeForm, userId }) {
           name="password_confirmation"
         />
         <FormGroup>
-          <Form.Label className="text-danger">Check here to confirm password reset</Form.Label>
-        <Form.Check
-          type='checkbox'
-          name="confirm_reset"
-          label='Yes, reset password'
-          onChange={handleResetPasswordOnChange}
-        />
+          <Form.Label className="text-danger">
+            Check here to confirm password reset
+          </Form.Label>
+          <Form.Check
+            type="checkbox"
+            name="confirm_reset"
+            label="Yes, reset password"
+            onChange={handleResetPasswordOnChange}
+          />
         </FormGroup>
-        
         <br />
         <Button variant="primary" type="submit">
           Submit
@@ -103,23 +115,7 @@ function ResetPassward({ closeForm, userId }) {
         </Button>
         <br />
         <Form.Text className="text-danger">
-          <ul>
-          {errors.length !==0?(
-            errors.map((error, index) => {
-              return(
-                <li key={index}>{error[0]}
-                <ul>
-                  {error[1].map((errorInfo) => {
-                    return(
-                      <li>{errorInfo}</li>
-                    )
-                  })}
-                </ul>
-                </li>
-              )
-            })
-          ):null}
-          </ul>
+          <ul>{renderErrors()}</ul>
         </Form.Text>
       </Form>
     </div>

@@ -8,6 +8,7 @@ function TimeSlotForm({
   setSlotForm,
   handleSlotSubmit,
   closeForm,
+  errors,
 }) {
   const user = useAuth().currentUser;
   const [roomSelection, setRoomSelection] = useState("");
@@ -17,6 +18,22 @@ function TimeSlotForm({
       handleGetRooms(slotForm.building);
     }
   }, [slotForm]);
+
+  function renderErrors() {
+    const error_text = errors.map((error, index) => {
+      return (
+        <li key={index}>
+          {error[0]}
+          <ul>
+            {error[1].map((text) => (
+              <li>{text}</li>
+            ))}
+          </ul>
+        </li>
+      );
+    });
+    return error_text;
+  }
 
   function handleSlotFormOnChange(e) {
     let value = e.target.value;
@@ -93,7 +110,6 @@ function TimeSlotForm({
               })
             : null}
         </Form.Select>
-
         <Form.Select
           onChange={handleSlotFormOnChange}
           name="room"
@@ -132,7 +148,7 @@ function TimeSlotForm({
         </Button>
         <br />
         <Form.Text className="text-danger">
-          <ul></ul>
+          <ul>{renderErrors()}</ul>
         </Form.Text>
       </Form>
     </div>

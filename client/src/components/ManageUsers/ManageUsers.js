@@ -17,6 +17,8 @@ function ManageUsers() {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
+  const [errors, setErrors] = useState([])
+
   useEffect(() => {
     fetch("/users").then((res) => {
       if (res.ok) {
@@ -24,11 +26,27 @@ function ManageUsers() {
           setSchoolData(data);
         });
       } else {
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }, [user.school.id]);
 
+  function renderErrors() {
+    const error_text = errors.map((error, index) => {
+      return (
+        <li key={index}>
+          {error[0]}
+          <ul>
+            {error[1].map((text) => (
+              <li>{text}</li>
+            ))}
+          </ul>
+        </li>
+      );
+    });
+    return error_text;
+  }
+  
   function handleModalAction(modal_type, id = 0, resources = [], index = 0) {
     if (modal_type === "editUser") {
       setModalTitle("Edit User password");
@@ -82,6 +100,7 @@ function ManageUsers() {
   return (
     <>
       <Table striped bordered hover>
+        <ul>{renderErrors()}</ul>
         <thead>
           <tr>
             <th>User Name</th>

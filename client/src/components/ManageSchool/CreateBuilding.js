@@ -5,10 +5,26 @@ import Form from "react-bootstrap/Form";
 
 function CreateBuilding({ closeForm, school_id }) {
   const auth = useAuth();
-  // const user = auth.currentUser;
+  const [errors, setErrors] = useState([])
 
   const [createBuilding, setCreateBuilding] = useState(false);
   const [buildingForm, setBuildingForm] = useState([]);
+
+  function renderErrors() {
+    const error_text = errors.map((error, index) => {
+      return (
+        <li key={index}>
+          {error[0]}
+          <ul>
+            {error[1].map((text) => (
+              <li>{text}</li>
+            ))}
+          </ul>
+        </li>
+      );
+    });
+    return error_text;
+  }
 
   function handleBuildingFormOnChange(e) {
     let value = e.target.value;
@@ -22,6 +38,7 @@ function CreateBuilding({ closeForm, school_id }) {
 
   function handleCreateBuildingSubmit(e) {
     e.preventDefault();
+    setErrors([])
     let new_user = JSON.parse(JSON.stringify(auth.currentUser));
     let locations = new_user.school.locations;
     locations.push(createBuilding);
@@ -35,12 +52,10 @@ function CreateBuilding({ closeForm, school_id }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((building) => {
-          console.log(building);
           auth.auto();
         });
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }
@@ -67,7 +82,7 @@ function CreateBuilding({ closeForm, school_id }) {
         </Button>
         <br />
         <Form.Text className="text-danger">
-          <ul></ul>
+          <ul>{renderErrors()}</ul>
         </Form.Text>
       </Form>
     </div>

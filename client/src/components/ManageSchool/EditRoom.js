@@ -10,8 +10,26 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
     id: room_id,
     name: resources_name[1],
     building_name: resources_name[0],
-    building_id:0
+    building_id: 0,
   });
+
+  const [errors, setErrors] = useState([]);
+
+  function renderErrors() {
+    const error_text = errors.map((error, index) => {
+      return (
+        <li key={index}>
+          {error[0]}
+          <ul>
+            {error[1].map((text) => (
+              <li>{text}</li>
+            ))}
+          </ul>
+        </li>
+      );
+    });
+    return error_text;
+  }
 
   function handleRoomFormOnChange(e) {
     let name = e.target.name;
@@ -21,17 +39,18 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
 
   function handleEditRoomSubmit(e) {
     e.preventDefault();
+    setErrors([]);
     let saved_room;
     let saved_index;
     let removed_room_building;
     let updated_room_building;
     let new_rooms;
     let updated_rooms;
-    let new_locations
+    let new_locations;
 
     //https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/
-    let new_user = JSON.parse(JSON.stringify(auth.currentUser))
-    
+    let new_user = JSON.parse(JSON.stringify(auth.currentUser));
+
     let locations = [...auth.currentUser.school.locations];
 
     if (roomForm.name !== resources_name[1]) {
@@ -48,7 +67,7 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
         location.rooms.forEach((room, index) => {
           if (room.id === roomForm.id) {
             new_rooms = [...location.rooms];
-            removed_room_building = location.building.id
+            removed_room_building = location.building.id;
             saved_room = room;
             saved_index = index;
           }
@@ -56,20 +75,20 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
         new_rooms.splice(saved_index, 1);
       });
       locations.forEach((location) => {
-        if (location.building.name === roomForm.building_name){
-          saved_room.building_id = location.building.id
-          updated_room_building = location.building.id
-          updated_rooms = [...location.rooms, saved_room]
+        if (location.building.name === roomForm.building_name) {
+          saved_room.building_id = location.building.id;
+          updated_room_building = location.building.id;
+          updated_rooms = [...location.rooms, saved_room];
         }
-      })
-      new_locations = locations.map((location) =>{
-        if (location.building.id === removed_room_building){
-          location.rooms = new_rooms
+      });
+      new_locations = locations.map((location) => {
+        if (location.building.id === removed_room_building) {
+          location.rooms = new_rooms;
         }
-        if (location.building.id === updated_room_building){
-          location.rooms = updated_rooms
+        if (location.building.id === updated_room_building) {
+          location.rooms = updated_rooms;
         }
-      })
+      });
     }
     closeForm();
 
@@ -79,12 +98,9 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
       body: JSON.stringify(roomForm),
     }).then((res) => {
       if (res.ok) {
-        res.json().then((room) => {
-          console.log(room)
-        });
+        res.json().then((room) => {});
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }
@@ -118,7 +134,7 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
         </Button>
         <br />
         <Form.Text className="text-danger">
-          <ul></ul>
+          <ul>{renderErrors()}</ul>
         </Form.Text>
       </Form>
     </div>

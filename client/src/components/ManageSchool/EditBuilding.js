@@ -12,6 +12,24 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
     name: building_name,
   });
 
+  const [errors, setErrors] = useState([]);
+
+  function renderErrors() {
+    const error_text = errors.map((error, index) => {
+      return (
+        <li key={index}>
+          {error[0]}
+          <ul>
+            {error[1].map((text) => (
+              <li>{text}</li>
+            ))}
+          </ul>
+        </li>
+      );
+    });
+    return error_text;
+  }
+
   function handleBuildingFormOnChange(e) {
     let name = e.target.name;
     let value = e.target.value;
@@ -20,31 +38,25 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
 
   function handleEditBuildingSubmit(e) {
     e.preventDefault();
+    setErrors([]);
     let new_user = JSON.parse(JSON.stringify(user));
     let locations = JSON.parse(JSON.stringify(new_user.school.locations));
-    console.log(buildingForm);
 
     locations = locations.map((location) => {
       if (location.building.name !== buildingForm.name) {
-        console.log("Renaming Building");
-        console.log("Location Building id: ", location.building.id);
-        console.log("Update Building id: ", buildingForm.id);
         if (location.building.id === buildingForm.id) {
-          console.log("New Buildinng Name: ", buildingForm.name);
           location.building.name = buildingForm.name;
-          console.log("Location info:", location);
           return location;
-        }else{
-          return location
+        } else {
+          return location;
         }
-      }else{
-        return location
+      } else {
+        return location;
       }
     });
     new_user.school.locations = locations;
-    console.log("New Updated User: ",new_user);
-    auth.updateCurrentUser(new_user)
-    
+    auth.updateCurrentUser(new_user);
+
     closeForm();
     fetch(`/building/${building_id}`, {
       method: "PATCH",
@@ -53,12 +65,10 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((building) => {
-          console.log(building)
           auth.auto();
         });
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }
@@ -85,7 +95,7 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
         </Button>
         <br />
         <Form.Text className="text-danger">
-          <ul></ul>
+          <ul>{renderErrors()}</ul>
         </Form.Text>
       </Form>
     </div>

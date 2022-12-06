@@ -11,6 +11,23 @@ function CreateRoom({ closeForm, building_id }) {
     name: "",
     building_id: 0,
   });
+  const [errors, setErrors] = useState([]);
+
+  function renderErrors() {
+    const error_text = errors.map((error, index) => {
+      return (
+        <li key={index}>
+          {error[0]}
+          <ul>
+            {error[1].map((text) => (
+              <li>{text}</li>
+            ))}
+          </ul>
+        </li>
+      );
+    });
+    return error_text;
+  }
 
   function handleRoomFormOnChange(e) {
     let value = e.target.value;
@@ -19,6 +36,7 @@ function CreateRoom({ closeForm, building_id }) {
 
   function handleCreateRoomSubmit(e) {
     e.preventDefault();
+    setErrors([]);
     let new_user = JSON.parse(JSON.stringify(user));
     let locations = new_user.school.locations;
 
@@ -39,13 +57,10 @@ function CreateRoom({ closeForm, building_id }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((room) => {
-          console.log(room)
           auth.auto();
         });
-        
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }
@@ -72,7 +87,7 @@ function CreateRoom({ closeForm, building_id }) {
         </Button>
         <br />
         <Form.Text className="text-danger">
-          <ul></ul>
+          <ul>{renderErrors()}</ul>
         </Form.Text>
       </Form>
     </div>

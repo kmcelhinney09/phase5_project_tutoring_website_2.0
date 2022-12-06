@@ -16,7 +16,6 @@ function ViewTutoringTimeSlot() {
     fetch(`/tutoring_time_slots/${id}`).then((res) => {
       if (res.ok) {
         res.json().then((data) => {
-          console.log("TutoringTimeSlostData: ", data);
           setTutoringSlotInfo(data);
           setRefresh(false);
         });
@@ -30,7 +29,6 @@ function ViewTutoringTimeSlot() {
     let tutor_signup_id
     tutors.splice(tutor_index,1)
     setTutoringSlotInfo(new_slot)
-    console.log(new_slot)
     tutoringSlotInfo.tutor_slot_sign_ups.forEach((sign_up) => {
       if(sign_up.tutor_id === tutor_id){
         tutor_signup_id = sign_up.id
@@ -48,7 +46,6 @@ function ViewTutoringTimeSlot() {
   function handleDropBookedSession(session_id, session_index){
     let new_booked_slot = JSON.parse(JSON.stringify(tutoringSlotInfo));
     new_booked_slot.booked_slots.splice(session_index,1)
-    console.log(new_booked_slot)
     setTutoringSlotInfo(new_booked_slot)
 
     fetch(`/booked_slot/${session_id}`, {

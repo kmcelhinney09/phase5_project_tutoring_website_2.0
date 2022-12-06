@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
@@ -6,13 +7,16 @@ function TutoringSlotRender({
   slotInfo,
   handleDashboardKeyChange,
   callingComponent,
+  setErrors,
 }) {
   const auth = useAuth();
   const user = auth.currentUser;
   const navigate = useNavigate();
   let slot_status;
+  
 
   function handleBookTutoring(tutorId, tutorName, tutorSubjects) {
+    setErrors([]);
     let signUpSlot;
     let newUser = JSON.parse(JSON.stringify(user));
     let updatedBookedSlots = newUser.booked_slots;
@@ -52,20 +56,18 @@ function TutoringSlotRender({
     }).then((res) => {
       if (res.ok) {
         res.json().then((bookedSlot) => {
-          console.log(bookedSlot);
           handleDashboardKeyChange("dashboard");
           navigate(`/user/${user.id}`, { replace: true });
         });
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }
 
-  function handleTutorSignUp(sessionInfo) {
+  function handleTutorSignUp() {
+    setErrors([]);
     let newUser = JSON.parse(JSON.stringify(user));
-    console.log("New User: ", newUser);
     let signUps = newUser.tutor_sign_ups;
     const newSignUp = {
       date: slotInfo.date,
@@ -89,13 +91,11 @@ function TutoringSlotRender({
     }).then((res) => {
       if (res.ok) {
         res.json().then((tutorSignUp) => {
-          console.log(tutorSignUp);
           handleDashboardKeyChange("dashboard");
           navigate(`/user/${user.id}`, { replace: true });
         });
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }

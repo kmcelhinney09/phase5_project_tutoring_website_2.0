@@ -1,9 +1,6 @@
 class BookedSlot < ApplicationRecord
-  validate :tutor_id, :tutee_id, :tutoring_time_slot_id, :tutor_slot_sign_up_id, presence: true
+  validates :tutor_id, :tutee_id, :tutoring_time_slot_id, :tutor_slot_sign_up_id, presence: true
   
-    # May not need these plus they mess up the deployment because not all users have booked_tutors/tutees
-  # belongs_to :booked_tutor, class_name:"User", foreign_key: 'tutor_id'
-  # belongs_to :booked_tutee, class_name:"User", foreign_key: 'tutor_id'
   belongs_to :tutoring_time_slot
   belongs_to :tutor_slot_sign_up
 

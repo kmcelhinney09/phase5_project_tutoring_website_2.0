@@ -32,8 +32,7 @@ function useProvideAuth() {
           setIsLoggedIn(true);
         });
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }
@@ -52,8 +51,7 @@ function useProvideAuth() {
           setIsLoggedIn(true);
         });
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }

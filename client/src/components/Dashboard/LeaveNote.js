@@ -6,27 +6,44 @@ import Button from "react-bootstrap/esm/Button";
 
 function LeaveNote({ closeForm, tuteeId }) {
   const auth = useAuth();
-  const user = auth.currentUser
+  const user = auth.currentUser;
   const [noteForm, setNoteForm] = useState({
-    tutor_id:user.id,
-    tutee_id:tuteeId,
-    note:""
+    tutor_id: user.id,
+    tutee_id: tuteeId,
+    note: "",
   });
+  const [errors, setErrors] = useState([]);
+
+  function renderErrors() {
+    const error_text = errors.map((error, index) => {
+      return (
+        <li key={index}>
+          {error[0]}
+          <ul>
+            {error[1].map((text) => (
+              <li>{text}</li>
+            ))}
+          </ul>
+        </li>
+      );
+    });
+    return error_text;
+  }
 
   function handleNoteOnChange(e) {
-    const name = e.target.name
-    const value = e.target.value
-    console.log("Name: ",name,"Value: ", value)
-    setNoteForm({...noteForm, [name]:value})
+    const name = e.target.name;
+    const value = e.target.value;
+    setNoteForm({ ...noteForm, [name]: value });
   }
 
   function handleNoteOnSubmit(e) {
     e.preventDefault();
+    setErrors([]);
     let new_user = JSON.parse(JSON.stringify(user));
-    let new_written_notes = new_user.written_notes
-    let new_note = {tutor_name:user.full_name, tutor_note:noteForm.note}
-    new_written_notes.push(new_note)
-    auth.updateCurrentUser(new_user)
+    let new_written_notes = new_user.written_notes;
+    let new_note = { tutor_name: user.full_name, tutor_note: noteForm.note };
+    new_written_notes.push(new_note);
+    auth.updateCurrentUser(new_user);
     closeForm();
 
     fetch("/tutor_note", {
@@ -36,13 +53,10 @@ function LeaveNote({ closeForm, tuteeId }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((return_note) => {
-          console.log(return_note)
           auth.auto();
         });
-        
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }
@@ -77,7 +91,7 @@ function LeaveNote({ closeForm, tuteeId }) {
         </Button>
         <br />
         <Form.Text className="text-danger">
-          <ul></ul>
+          <ul>{renderErrors()}</ul>
         </Form.Text>
       </Form>
     </div>

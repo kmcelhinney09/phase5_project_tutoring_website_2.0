@@ -1,30 +1,54 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthProvider"
+import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import FloatingLabel from "react-bootstrap/FloatingLabel";
 
-function EditUserInfo({closeForm, userInfo, schoolData, setSchoolData, userIndex}) {
-const [userInfoForm, setUserInfoForm] = useState({
-  id:userInfo.id,
-  full_name:userInfo.full_name,
-  email:userInfo.email,
-  role:userInfo.role,
-  grade:userInfo.grade
-});
-console.log(userInfo)
+function EditUserInfo({
+  closeForm,
+  userInfo,
+  schoolData,
+  setSchoolData,
+  userIndex,
+}) {
+  const [userInfoForm, setUserInfoForm] = useState({
+    id: userInfo.id,
+    full_name: userInfo.full_name,
+    email: userInfo.email,
+    role: userInfo.role,
+    grade: userInfo.grade,
+  });
 
-  function handleUserInfoOnChange(e){
-    const name = e.target.name
-    const value = e.target.value
-    setUserInfoForm({...userInfoForm, [name]:value})
+  const [errors, setErrors] = useState([]);
+
+  function renderErrors() {
+    const error_text = errors.map((error, index) => {
+      return (
+        <li key={index}>
+          {error[0]}
+          <ul>
+            {error[1].map((text) => (
+              <li>{text}</li>
+            ))}
+          </ul>
+        </li>
+      );
+    });
+    return error_text;
   }
 
-  function handleUserInfoOnSubmit(e){
+  function handleUserInfoOnChange(e) {
+    const name = e.target.name;
+    const value = e.target.value;
+    setUserInfoForm({ ...userInfoForm, [name]: value });
+  }
+
+  function handleUserInfoOnSubmit(e) {
     e.preventDefault();
-    let new_data= JSON.parse(JSON.stringify(schoolData));
-    new_data[userIndex] = userInfoForm
-    setSchoolData(new_data)
+    setErrors([]);
+    let new_data = JSON.parse(JSON.stringify(schoolData));
+    new_data[userIndex] = userInfoForm;
+    setSchoolData(new_data);
 
     closeForm();
 
@@ -34,12 +58,9 @@ console.log(userInfo)
       body: JSON.stringify(userInfoForm),
     }).then((res) => {
       if (res.ok) {
-        res.json().then((user) => {
-          console.log(user)
-        });
+        res.json().then((user) => {});
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }
@@ -51,61 +72,57 @@ console.log(userInfo)
         onSubmit={(e) => handleUserInfoOnSubmit(e)}
       >
         <FloatingLabel
-        controlId="floatingInput"
-        label="User's full name"
-        className="mb-3"
+          controlId="floatingInput"
+          label="User's full name"
+          className="mb-3"
         >
-        <Form.Control
-          type="text"
-          placeholder="Full Name"
-          value={userInfoForm.full_name}
-          onChange={handleUserInfoOnChange}
-          name="full_name"
-        />
+          <Form.Control
+            type="text"
+            placeholder="Full Name"
+            value={userInfoForm.full_name}
+            onChange={handleUserInfoOnChange}
+            name="full_name"
+          />
         </FloatingLabel>
-
         <FloatingLabel
-        controlId="floatingInput"
-        label="User's email address"
-        className="mb-3"
+          controlId="floatingInput"
+          label="User's email address"
+          className="mb-3"
         >
-        <Form.Control
-          type="email"
-          placeholder="name@example.com"
-          value={userInfoForm.email}
-          onChange={handleUserInfoOnChange}
-          name="email"
-        />
+          <Form.Control
+            type="email"
+            placeholder="name@example.com"
+            value={userInfoForm.email}
+            onChange={handleUserInfoOnChange}
+            name="email"
+          />
         </FloatingLabel>
-        
         <FloatingLabel
-        controlId="floatingInput"
-        label="User's Role"
-        className="mb-3"
+          controlId="floatingInput"
+          label="User's Role"
+          className="mb-3"
         >
-        <Form.Control
-          type="text"
-          placeholder="Role"
-          value={userInfoForm.role}
-          onChange={handleUserInfoOnChange}
-          name="role"
-        />
+          <Form.Control
+            type="text"
+            placeholder="Role"
+            value={userInfoForm.role}
+            onChange={handleUserInfoOnChange}
+            name="role"
+          />
         </FloatingLabel>
-        
         <FloatingLabel
-        controlId="floatingInput"
-        label="User's Grade Level"
-        className="mb-3"
+          controlId="floatingInput"
+          label="User's Grade Level"
+          className="mb-3"
         >
-        <Form.Control
-          type="text"
-          placeholder="Grade Level"
-          value={userInfoForm.grade}
-          onChange={handleUserInfoOnChange}
-          name="grade"
-        />
+          <Form.Control
+            type="text"
+            placeholder="Grade Level"
+            value={userInfoForm.grade}
+            onChange={handleUserInfoOnChange}
+            name="grade"
+          />
         </FloatingLabel>
-
         <br />
         <Button variant="primary" type="submit">
           Submit
@@ -115,11 +132,11 @@ console.log(userInfo)
         </Button>
         <br />
         <Form.Text className="text-danger">
-          <ul></ul>
+          <ul>{renderErrors()}</ul>
         </Form.Text>
       </Form>
     </div>
-  )
+  );
 }
 
-export default EditUserInfo
+export default EditUserInfo;

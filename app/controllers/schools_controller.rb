@@ -9,6 +9,7 @@ class SchoolsController < ApplicationController
   def current_user
     current_user = User.find(session[:user_id])
   end
+  
   #error handling
   def render_unprocessable_entity(invalid)
     render json:{error: invalid.record.errors}, status: :unprocessable_entity

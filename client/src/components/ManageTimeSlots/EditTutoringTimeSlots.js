@@ -17,7 +17,7 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
     tutee_capacity: 0,
   });
 
-  console.log("Slot Info", slotInfo);
+  const [errors, setErrors] = useState([])
 
   useEffect(() => {
     let settingSlot = {
@@ -50,16 +50,15 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
 
   function handleEditSlotSubmit(e) {
     e.preventDefault();
+    setErrors([])
     let new_user = JSON.parse(JSON.stringify(user));
     let updated_time_slots = new_user.school.tutoring_time_slots;
     let room_id;
-    console.log("Slot Form INFO: ", slotForm);
 
     const start_time = `${slotForm.date} ${slotForm.start_time}`;
     const end_time = `${slotForm.date} ${slotForm.end_time}`;
 
     new_user.school.locations.forEach((location) => {
-      console.log("Locaiton: ", location.building.name);
       location.rooms.forEach((room) => {
         if (room.name === slotForm.room) {
           room_id = room.id;
@@ -74,7 +73,6 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
       end_time: end_time,
       room_id: room_id,
     };
-    console.log("Edited Time Slot: ", edited_time_slot);
     updated_time_slots.forEach((slot) => {
       if (slot.id == slotInfo.id) {
         slot.tutee_capacity = edited_time_slot.tutee_capacity;
@@ -84,7 +82,6 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
         slot.room_id = edited_time_slot.room_id;
       }
     });
-    console.log("New User Info: ", new_user);
     auth.updateCurrentUser(new_user);
     closeForm();
 
@@ -99,8 +96,7 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
           auth.auto();
         });
       } else {
-        // res.json().then((e) => setErrors(Object.entries(e.error)));
-        res.json().then((e) => console.log(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
   }
@@ -111,6 +107,7 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
       setSlotForm={setSlotForm}
       handleSlotSubmit={handleEditSlotSubmit}
       closeForm={closeForm}
+      errors={errors}
     />
   );
 }
