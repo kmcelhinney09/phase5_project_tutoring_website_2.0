@@ -17,9 +17,11 @@ function EditUserInfo({
     role: userInfo.role,
     grade: userInfo.grade,
   });
+  
 
   const [errors, setErrors] = useState([]);
-
+  const [subjectsTutored,setSubjectsTutored] = useState(userInfo.subjects_signed_up)
+  
   function renderErrors() {
     const error_text = errors.map((error, index) => {
       return (
@@ -62,6 +64,18 @@ function EditUserInfo({
         res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
+  }
+
+  function handleSubjectsTutoredEdit(e) {
+    let value = e.target.value
+    value = value.split(",")
+    const newSubjectsList = subjectsTutored.splice(value[0],1)
+    setSubjectsTutored(newSubjectsList)
+    
+    fetch(`/tutored_subject/${value[1]}`, {
+      method: "DELETE",
+    });
+
   }
 
   return (
@@ -121,6 +135,26 @@ function EditUserInfo({
             onChange={handleUserInfoOnChange}
             name="grade"
           />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId="floatingInput"
+          label="Subjects Tutored"
+          className="mb-3"
+        >
+          <Form.Select onChange={handleSubjectsTutoredEdit}>
+            <option>(click to remove)</option>
+            {userInfo.subjects_signed_up.map((sub,index) => {
+              return (
+                <option
+                  key={sub.id}
+                  value={[index,sub.id]}
+                  
+                >
+                  {sub.name}
+                </option>
+              );
+            })}
+          </Form.Select>
         </FloatingLabel>
         <br />
         <Button variant="primary" type="submit">

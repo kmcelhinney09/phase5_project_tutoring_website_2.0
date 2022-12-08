@@ -10,7 +10,8 @@ class UsersController < ApplicationController
         full_name:userInfo.full_name, 
         email:userInfo.email, 
         role:userInfo.role, 
-        grade:userInfo.grade
+        grade:userInfo.grade,
+        subjects_signed_up:userInfo.subjects_signed_up
         }
       }
       render json: users, status: :ok

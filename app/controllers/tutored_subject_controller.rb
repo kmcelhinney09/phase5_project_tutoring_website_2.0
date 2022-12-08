@@ -6,6 +6,12 @@ class TutoredSubjectController < ApplicationController
     render json: tutored_subject, status: :created
   end
   
+  def destroy
+    tutored_subject = TutoredSubject.find_by(id:params[:id])
+    tutored_subject.destroy
+    head :no_content
+  end
+  
   private
   
   def current_user
