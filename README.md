@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is my phase 4 for project for Flatiron software development track bootcamp. I chose this project because it was the last project I was going to do with my highschool computer science class before I decided to leave teaching and pursue a carrer in Software Development. I have also deployed this project on Render [here:](https://dashboard.render.com/web/srv-cducv5sgqg41km02n7g0/deploys/dep-ce8n6dla4999i2la82ug)  
+This project is my phase 4 for project for Flatiron software development track bootcamp. I chose this project because it was the last project I was going to do with my highschool computer science class before I decided to leave teaching and pursue a carrer in Software Development. I have also deployed this project on Render [here](https://knowledgeable-tutoring-platform.onrender.com)  
 
 
 ## Requirements
