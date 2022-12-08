@@ -10,10 +10,11 @@ Rails.application.routes.draw do
   resources :tutor_note, only: [:create, :destroy]
   resources :subject, only: [:create, :destroy]
   resources :tutored_subject, only: [:create, :destroy]
-  resources :sessions, only: [:create, :destroy]
 
   get "/auth", to: 'users#show'
+  post "/login", to: "sessions#create"
   patch "/admin/password_reset/:id", to: "users#password_reset"
+  delete "/logout", to: "sessions#destroy"
   
   # Routing logic: fallback requests for React Router.
   # Leave this here to help deploy your app later!

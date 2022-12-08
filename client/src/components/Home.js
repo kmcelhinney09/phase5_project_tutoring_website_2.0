@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../context/AuthProvider";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,6 +12,7 @@ import Login from "./Login";
 function Home() {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const errors = useAuth().errors
 
   const handleCloseSignUp = () => setShowSignUp(false);
   const handleShowSignUp = () => setShowSignUp(true);
@@ -48,6 +50,7 @@ function Home() {
               </Col>
             </Row>
           </Col>
+          {<ul>errors</ul>}
         </Row>
       </Container>
     );
