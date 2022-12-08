@@ -232,7 +232,7 @@ function ManageSchool() {
             <tbody>
               {user.school.subjects.map((subject,index) => {
                 return (
-                  <tr>
+                  <tr key={subject.id}>
                     <td>{subject.name}</td>
                     <td><Button variant="success" onClick={() => handleRemoveSubject(subject.id,index)}>Drop Subject</Button></td>
                   </tr>
