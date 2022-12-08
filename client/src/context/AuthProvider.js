@@ -16,11 +16,10 @@ export const useAuth = () => {
 function useProvideAuth() {
   const [currentUser, setCurrentUser] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   function login(loginForm) {
-    setIsLoading(true);
     fetch("/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -33,13 +32,13 @@ function useProvideAuth() {
         });
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error)));
+        setShowAlert(true)
       }
     });
   }
 
   function signup(signUpForm) {
     setErrors([]);
-    setIsLoading(true);
     fetch("/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -52,6 +51,7 @@ function useProvideAuth() {
         });
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error)));
+        setShowAlert(true)
       }
     });
   }
@@ -83,6 +83,9 @@ function useProvideAuth() {
   function updateCurrentUser(new_user) {
     setCurrentUser(new_user);
   }
+  function handleShowAlertClose(){
+    setShowAlert(false)
+  }
 
   return {
     currentUser,
@@ -91,8 +94,9 @@ function useProvideAuth() {
     signup,
     auto,
     updateCurrentUser,
+    handleShowAlertClose,
     errors,
-    isLoading,
+    showAlert,
     isLoggedIn,
   };
 }

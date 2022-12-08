@@ -15,23 +15,7 @@ function SignUp({ closeForm }) {
   });
 
   const auth = useAuth();
-  const errors = auth.errors
 
-  function renderErrors() {
-    const error_text = errors.map((error, index) => {
-      return (
-        <li key={index}>
-          {error[0]}
-          <ul>
-            {error[1].map((text) => (
-              <li>{text}</li>
-            ))}
-          </ul>
-        </li>
-      );
-    });
-    return error_text;
-  }
 
   function handleFormOnChange(e) {
     let name = e.target.name;
@@ -116,9 +100,7 @@ function SignUp({ closeForm }) {
           Cancel
         </Button>
         <br />
-        <Form.Text className="text-danger">
-          <ul>{renderErrors()}</ul>
-        </Form.Text>
+
       </Form>
     </div>
   );
