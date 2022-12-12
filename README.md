@@ -3,6 +3,8 @@
 ## Description
 
 This project is my phase 4 for project for Flatiron software development track bootcamp. I chose this project because it was the last project I was going to do with my highschool computer science class before I decided to leave teaching and pursue a carrer in Software Development. I have also deployed this project on Render [here](https://knowledgeable-tutoring-platform.onrender.com)
+User include admin@fake.com, tutor1@fake.com, tutee1@fake.com with a password of Abc123! for all.
+
 The website is designed for a tutoring service that could be used by schools. There are three user roles (admin, tutors, and tutees) that are used to determine the view of each user's page.
 
 ### ADMIN
@@ -45,6 +47,10 @@ You can use the following commands to run the application:
 - `rails s`: run the backend on [http://localhost:3000](http://localhost:3000)
 - `npm start --prefix client`: run the frontend on
   [http://localhost:4000](http://localhost:4000)
+
+
+If you want some seed data to work with run in a new terminal:
+```rails db:seed```
 
 ## Environment Setup
 
