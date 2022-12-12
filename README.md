@@ -2,15 +2,26 @@
 
 ## Description
 
-This project is my phase 4 for project for Flatiron software development track bootcamp. I chose this project because it was the last project I was going to do with my highschool computer science class before I decided to leave teaching and pursue a carrer in Software Development. I have also deployed this project on Render [here](https://knowledgeable-tutoring-platform.onrender.com)  
+This project is my phase 4 for project for Flatiron software development track bootcamp. I chose this project because it was the last project I was going to do with my highschool computer science class before I decided to leave teaching and pursue a carrer in Software Development. I have also deployed this project on Render [here](https://knowledgeable-tutoring-platform.onrender.com)
+The websit is designed for a tutoring service that could be used by schools. There are three user roles (admin, tutors, and tutees) that are used to determine the view of each user's page.
 
+### ADMIN
+
+![Admin dashboard view](README IMAGES/admin_dashboard.png)
+
+### Tutor
+
+![Tutor dashboard view](README IMAGES/tutor_dashboard.png)
+
+### Tutee
+
+![Tutee dashboard view](README IMAGES/tutee_dashboard.png)
 
 ## Requirements
 
 - Ruby 2.7.4
 - NodeJS (v16), and npm
 - Postgresql
-
 
 ## Setup
 
@@ -37,6 +48,7 @@ Verify which version of Ruby you're running by entering this in the terminal:
 ```console
 $ ruby -v
 ```
+
 I recommend version 2.7.4. If you need to upgrade you can install it using rvm:
 
 ```console
