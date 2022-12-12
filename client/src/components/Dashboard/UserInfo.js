@@ -61,7 +61,16 @@ function UserInfo() {
     });
   }
 
-  function handleSubjectRemoved(sub) {}
+  function handleSubjectRemoved(sub,subIndex) {
+    let newUser = JSON.parse(JSON.stringify(user));
+    let updated_subjects_tutored = newUser.subjects_signed_up;
+    updated_subjects_tutored.splice(subIndex,1);
+    auth.updateCurrentUser(newUser);
+
+    fetch(`/tutored_subject/${sub.id}`, {
+      method: "DELETE",
+    });
+  }
 
   return (
     <Container>
@@ -74,48 +83,52 @@ function UserInfo() {
             {user.full_name} - {user.grade}
           </h5>
         </Col>
-        <Col md={3}>
-          <DropdownButton
-            variant="success"
-            title="Add a Subject You Tutor"
-            drop={"end"}
-          >
-            {user.school.subjects
-              .sort((a, b) => (a.id > b.id ? 1 : -1))
-              .map((sub) => {
-                return (
-                  <Dropdown.Item
-                    key={sub.id}
-                    as="button"
-                    onClick={() => handleSubjectSelect(sub)}
-                  >
-                    {sub.name}
-                  </Dropdown.Item>
-                );
-              })}
-          </DropdownButton>
-        </Col>
-        <Col md={3}>
-          <DropdownButton
-            variant="success"
-            title="Drop a Subject You Tutor"
-            drop={"end"}
-          >
-            {user.subjects_signed_up
-              .sort((a, b) => (a.id > b.id ? 1 : -1))
-              .map((sub) => {
-                return (
-                  <Dropdown.Item
-                    key={sub.id}
-                    as="button"
-                    onClick={() => handleSubjectRemoved(sub)}
-                  >
-                    {sub.name}
-                  </Dropdown.Item>
-                );
-              })}
-          </DropdownButton>
-        </Col>
+        {user.role === "tutor" ? (
+          <>
+            <Col md={3}>
+              <DropdownButton
+                variant="success"
+                title="Add a Subject You Tutor"
+                drop={"end"}
+              >
+                {user.school.subjects
+                  .sort((a, b) => (a.id > b.id ? 1 : -1))
+                  .map((sub) => {
+                    return (
+                      <Dropdown.Item
+                        key={sub.id}
+                        as="button"
+                        onClick={() => handleSubjectSelect(sub)}
+                      >
+                        {sub.name}
+                      </Dropdown.Item>
+                    );
+                  })}
+              </DropdownButton>
+            </Col>
+            <Col md={3}>
+              <DropdownButton
+                variant="success"
+                title="Drop a Subject You Tutor"
+                drop={"end"}
+              >
+                {user.subjects_signed_up
+                  .sort((a, b) => (a.id > b.id ? 1 : -1))
+                  .map((sub, index) => {
+                    return (
+                      <Dropdown.Item
+                        key={sub.id}
+                        as="button"
+                        onClick={() => handleSubjectRemoved(sub,index)}
+                      >
+                        {sub.name}
+                      </Dropdown.Item>
+                    );
+                  })}
+              </DropdownButton>
+            </Col>
+          </>
+        ) : null}
       </Row>
       <Row>
         <h5>Subjects Tutored</h5>
