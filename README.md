@@ -3,7 +3,7 @@
 ## Description
 
 This project is my phase 4 for project for Flatiron software development track bootcamp. I chose this project because it was the last project I was going to do with my highschool computer science class before I decided to leave teaching and pursue a carrer in Software Development. I have also deployed this project on Render [here](https://knowledgeable-tutoring-platform.onrender.com)
-The websit is designed for a tutoring service that could be used by schools. There are three user roles (admin, tutors, and tutees) that are used to determine the view of each user's page.
+The website is designed for a tutoring service that could be used by schools. There are three user roles (admin, tutors, and tutees) that are used to determine the view of each user's page.
 
 ### ADMIN
 
@@ -17,13 +17,20 @@ The websit is designed for a tutoring service that could be used by schools. The
 
 ![Tutee dashboard view](/README_IMAGES/tutee_dashboard.png)
 
+This project has 10 active models written using Ruby on Rails. The models include: user, tutoring_time_slot (to set avaible tutoring sessions), school, subjects, buildings, and rooms (to mangange resources), and finally tutor_slot_sign_up, booked_slot, and tutored_subjects to act as join tables to bring it all together. The webiste is desinged to use bcrypt and cookies sessions to authenticate and autherize a user and help them remain logged in even on refresh.
+
+The front end was built with React and React-bootstrap to create unique dashboards for each roll that allows user to signup to work tutoring sessions and get tutoring, as well as leave notes on what to study. The admin dashboards allows for the management of users, school resources, and tutoring with full CRUD operations.
+
 ## Requirements
 
 - Ruby 2.7.4
 - NodeJS (v16), and npm
 - Postgresql
+- React-bootstrap for front end css
 
 ## Setup
+
+After you clone or fork the repository.
 
 When you're ready to start building your project, run:
 
@@ -151,6 +158,21 @@ service:
 brew services start postgresql
 ```
 
+### Getting React-Bootstrap
+
+Navigate to the Client folder in the terminal
+'''cd client '''
+
+then install react-bootstrap
+'''npm install react-bootstrap bootstrap'''
+
+## Colaboration
+I would really like to grow this site as an open source project for schools to use as a tutoring management system. If you would like to contribute please do so, and you can contact me at mr.mcelhinney@gmail.com
+
+
 ## Resources
 
 - [Getting Started with Ruby on Rails on Render](https://render.com/docs/deploy-rails)
+- [React-Bootstrap getting started]{(https://react-bootstrap.github.io/getting-started/introduction)
+- [Faker ruby gem](https://github.com/faker-ruby/faker)
+- [React Router Dom](https://reactrouter.com/en/main)
