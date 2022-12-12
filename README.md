@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is my phase 4 for project for Flatiron software development track bootcamp. I chose this project because it was the last project I was going to do with my highschool computer science class before I decided to leave teaching and pursue a carrer in Software Development. I have also deployed this project on Render [here](https://knowledgeable-tutoring-platform.onrender.com)
+This project is my phase 4 for project for Flatiron software development track bootcamp. I chose this project because it was the last project I was going to do with my highschool computer science class before I decided to leave teaching and pursue a carrer in Software Development. I have also deployed this project on Render [here.](https://knowledgeable-tutoring-platform.onrender.com)
 User include admin@fake.com, tutor1@fake.com, tutee1@fake.com with a password of Abc123! for all.
 
 The website is designed for a tutoring service that could be used by schools. There are three user roles (admin, tutors, and tutees) that are used to determine the view of each user's page.
@@ -179,6 +179,6 @@ I would really like to grow this site as an open source project for schools to u
 ## Resources
 
 - [Getting Started with Ruby on Rails on Render](https://render.com/docs/deploy-rails)
-- [React-Bootstrap getting started]{(https://react-bootstrap.github.io/getting-started/introduction)
+- [React-Bootstrap getting started](https://react-bootstrap.github.io/getting-started/introduction)
 - [Faker ruby gem](https://github.com/faker-ruby/faker)
 - [React Router Dom](https://reactrouter.com/en/main)

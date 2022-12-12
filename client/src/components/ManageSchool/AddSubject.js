@@ -13,7 +13,7 @@ function AddSubject({ closeForm }) {
   const [errors, setErrors] = useState([]);
 
   function renderErrors() {
-    console.log(errors)
+    
     const error_text = errors.map((error, index) => {
       return (
         <li key={index}>
@@ -53,7 +53,7 @@ function AddSubject({ closeForm }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((subject) => {
-          console.log(subject)
+          
         });
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error)));

@@ -23,7 +23,6 @@ function ManageUsers() {
     fetch("/users").then((res) => {
       if (res.ok) {
         res.json().then((data) => {
-          console.log("School Data",data)
           setSchoolData(data);
         });
       } else {

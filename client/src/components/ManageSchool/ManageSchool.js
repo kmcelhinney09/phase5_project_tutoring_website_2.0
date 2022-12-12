@@ -14,7 +14,7 @@ import AddSubject from "./AddSubject";
 function ManageSchool() {
   const auth = useAuth();
   let user = auth.currentUser;
-  console.log(user);
+  
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
