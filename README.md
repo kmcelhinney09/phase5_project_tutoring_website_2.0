@@ -7,15 +7,15 @@ The websit is designed for a tutoring service that could be used by schools. The
 
 ### ADMIN
 
-![Admin dashboard view](README IMAGES/admin_dashboard.png)
+![Admin dashboard view](/README_IMAGES/admin_dashboard.png)
 
 ### Tutor
 
-![Tutor dashboard view](README IMAGES/tutor_dashboard.png)
+![Tutor dashboard view](/README_IMAGES/tutor_dashboard.png)
 
 ### Tutee
 
-![Tutee dashboard view](README IMAGES/tutee_dashboard.png)
+![Tutee dashboard view](/README_IMAGES/tutee_dashboard.png)
 
 ## Requirements
 
