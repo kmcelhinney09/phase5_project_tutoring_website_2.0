@@ -61,10 +61,10 @@ function UserInfo() {
     });
   }
 
-  function handleSubjectRemoved(sub,subIndex) {
+  function handleSubjectRemoved(sub, subIndex) {
     let newUser = JSON.parse(JSON.stringify(user));
     let updated_subjects_tutored = newUser.subjects_signed_up;
-    updated_subjects_tutored.splice(subIndex,1);
+    updated_subjects_tutored.splice(subIndex, 1);
     auth.updateCurrentUser(newUser);
 
     fetch(`/tutored_subject/${sub.id}`, {
@@ -119,7 +119,7 @@ function UserInfo() {
                       <Dropdown.Item
                         key={sub.id}
                         as="button"
-                        onClick={() => handleSubjectRemoved(sub,index)}
+                        onClick={() => handleSubjectRemoved(sub, index)}
                       >
                         {sub.name}
                       </Dropdown.Item>
@@ -127,24 +127,24 @@ function UserInfo() {
                   })}
               </DropdownButton>
             </Col>
+            <Row>
+              <h5>Subjects Tutored</h5>
+              <p className="ms-4">
+                {user.subjects_signed_up
+                  .sort((a, b) => (a.id > b.id ? 1 : -1))
+                  .map((sub, index) => {
+                    const size = user.subjects_signed_up.length;
+                    if (index <= size - 2) {
+                      return <>{`${sub.name}, `}</>;
+                    } else {
+                      return <>{`${sub.name}`}</>;
+                    }
+                  })}
+              </p>
+              <p>{renderErrors()}</p>
+            </Row>
           </>
         ) : null}
-      </Row>
-      <Row>
-        <h5>Subjects Tutored</h5>
-        <p className="ms-4">
-          {user.subjects_signed_up
-            .sort((a, b) => (a.id > b.id ? 1 : -1))
-            .map((sub, index) => {
-              const size = user.subjects_signed_up.length;
-              if (index <= size - 2) {
-                return <>{`${sub.name}, `}</>;
-              } else {
-                return <>{`${sub.name}`}</>;
-              }
-            })}
-        </p>
-        <p>{renderErrors()}</p>
       </Row>
       <Row>
         <SessionRender />
