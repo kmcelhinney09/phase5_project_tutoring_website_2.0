@@ -17,6 +17,7 @@ class User < ApplicationRecord
   validate :password_uppercase
   validate :password_special_char
   validate :password_contains_number
+  validates :password, length: {minimum:6, maximum:20}
   validates :email, uniqueness: true
   validates :full_name, :email, :time_zone, presence: true
 
