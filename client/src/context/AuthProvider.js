@@ -1,8 +1,9 @@
 import React, { useState, useContext, createContext } from "react";
+import { getUserInfo } from "../components/ManageUsers/userSlice";
+import { useDispatch } from "react-redux";
 
 // Code help found at https://hhpendleton.medium.com/useauth-265512bbde3c from Henry Pendleton
 const authContext = createContext();
-
 
 export function ProvideAuth({ children }) {
   const auth = useProvideAuth();
@@ -16,8 +17,9 @@ export const useAuth = () => {
 function useProvideAuth() {
   const [currentUser, setCurrentUser] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [showAlert, setShowAlert] = useState(false)
+  const [showAlert, setShowAlert] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
 
   function login(loginForm) {
     fetch("/login", {
@@ -29,10 +31,11 @@ function useProvideAuth() {
         res.json().then((user) => {
           setCurrentUser(user);
           setIsLoggedIn(true);
+          dispatch(getUserInfo(loginForm));
         });
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error)));
-        setShowAlert(true)
+        setShowAlert(true);
       }
     });
   }
@@ -51,7 +54,7 @@ function useProvideAuth() {
         });
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error)));
-        setShowAlert(true)
+        setShowAlert(true);
       }
     });
   }
@@ -83,8 +86,8 @@ function useProvideAuth() {
   function updateCurrentUser(new_user) {
     setCurrentUser(new_user);
   }
-  function handleShowAlertClose(){
-    setShowAlert(false)
+  function handleShowAlertClose() {
+    setShowAlert(false);
   }
 
   return {

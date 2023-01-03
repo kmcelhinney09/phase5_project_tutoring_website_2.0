@@ -12,7 +12,7 @@ import Col from "react-bootstrap/esm/Col";
 function UserInfo() {
   const auth = useAuth();
   const user = auth.currentUser;
-
+  console.log(user);
   const [errors, setErrors] = useState([]);
 
   function renderErrors() {
