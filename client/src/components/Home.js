@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthProvider";
+// import { useAuth } from "../context/AuthProvider";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -13,10 +13,10 @@ import Login from "./Login";
 function Home() {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  const auth = useAuth();
-  const showAlert = auth.showAlert
-  const alertOff = () => auth.handleShowAlertClose()
-  const errors = auth.errors;
+  // const auth = useAuth();
+  // const showAlert = auth.showAlert
+  // const alertOff = () => auth.handleShowAlertClose()
+  // const errors = auth.errors;
 
 
   const handleCloseSignUp = () => setShowSignUp(false);
@@ -53,9 +53,9 @@ function Home() {
                   Sign-Up
                 </Button>
               </Col>
-              {showAlert ? (
+              {/* {showAlert ? (
                 <Alert variant="danger" onClose={() => alertOff(false)} dismissible>{<ul>{errors}</ul>}</Alert>
-              ) : null}
+              ) : null} */}
             </Row>
           </Col>
         </Row>

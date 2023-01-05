@@ -11,6 +11,7 @@ import AdminControl from "./AdminControl";
 
 function UserDashboard({ dashboardKey, handleDashboardKeyChange }) {
   const user = useAuth().currentUser;
+  
 
   const [tutoringInfo, setTutoringInfo] = useState(false);
 

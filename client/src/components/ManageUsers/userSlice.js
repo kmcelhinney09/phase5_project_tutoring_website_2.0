@@ -2,19 +2,18 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoading: false,
-  userInfo: {
-    id: 0,
-    email: "",
-    fullName: "",
-    grade: "",
-    role: "",
-    bookedAsTutor: [],
-    bookedSlots: [],
-    subjectsSignedUp: [],
-    tutorNotes: [],
-    tutorSignUps: [],
-    notesWritten: [],
-  },
+  isLoggedIn: false,
+  id: 0,
+  email: "",
+  fullName: "",
+  grade: "",
+  role: "",
+  bookedAsTutor: [],
+  bookedSlots: [],
+  subjectsSignedUp: [],
+  tutorNotes: [],
+  tutorSignUps: [],
+  notesWritten: [],
 };
 
 export const getUserInfo = createAsyncThunk(
@@ -26,9 +25,18 @@ export const getUserInfo = createAsyncThunk(
       body: JSON.stringify(loginForm),
     })
       .then((res) => res.json())
-      .then((userInfo) => userInfo);
+      .then((userInfo) => {
+        console.log(userInfo);
+        return userInfo;
+      });
   }
 );
+
+export const reAuthorizeUser = createAsyncThunk("user/reAuthorize", () => {
+  return fetch("/auth")
+    .then((res) => res.json())
+    .then((userInfo) => userInfo);
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -38,26 +46,45 @@ const userSlice = createSlice({
       console.log(state);
       console.log(action);
     },
+    logOutUser(state) {
+      state.isLoggedIn = false;
+      state.isLoading = false;
+      state.id = 0;
+      state.email = "";
+      state.fullName = "";
+      state.grade = "";
+      state.role = "";
+      state.bookedAsTutor = [];
+      state.bookedSlots = [];
+      state.subjectsSignedUp = [];
+      state.tutorNotes = [];
+      state.tutorSignUps = [];
+      state.notesWritten = [];
+      console.log(state)
+    },
   },
   extraReducers: {
     [getUserInfo.pending]: (state) => {
       state.isLoading = true;
     },
     [getUserInfo.fulfilled]: (state, { payload }) => {
-      state.userInfo.id = payload.id;
-      state.userInfo.email = payload.email;
-      state.userInfo.fullName = payload.full_name;
-      state.userInfo.grade = payload.grade;
-      state.userInfo.role = payload.role;
-      state.userInfo.bookedAsTutor = payload.booked_as_tutor;
-      state.userInfo.bookedSlots = payload.booked_slots;
-      state.userInfo.subjectsSignedUp = payload.subjects_signed_up;
-      state.userInfo.tutorNotes = payload.tutor_notes;
-      state.userInfo.tutorSignUps = payload.tutor_sign_ups;
-      state.userInfo.notesWritten = payload.written_notes;
+      state.id = payload.id;
+      state.email = payload.email;
+      state.fullName = payload.full_name;
+      state.grade = payload.grade;
+      state.role = payload.role;
+      state.bookedAsTutor = payload.booked_as_tutor;
+      state.bookedSlots = payload.booked_slots;
+      state.subjectsSignedUp = payload.subjects_signed_up;
+      state.tutorNotes = payload.tutor_notes;
+      state.tutorSignUps = payload.tutor_sign_ups;
+      state.notesWritten = payload.written_notes;
+      state.isLoggedIn = true;
       state.isLoading = false;
     },
   },
 });
+
+export const { addTutorSignUp, logOutUser } = userSlice.actions;
 
 export default userSlice.reducer;
