@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthProvider";
+import { useDispatch } from "react-redux";
+import { getUserInfo } from "./ManageUsers/userSlice";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
@@ -10,7 +12,7 @@ function Login({ closeForm }) {
   });
 
   const auth = useAuth();
-  
+  const dispatch = useDispatch();
 
   function handleFormOnChange(e) {
     let name = e.target.name;
@@ -24,6 +26,12 @@ function Login({ closeForm }) {
   function handleSignUpSubmit(e) {
     e.preventDefault();
     auth.login(loginForm);
+    closeForm();
+  }
+
+  function handleSignUpSubmitStore(e) {
+    e.preventDefault();
+    dispatch(getUserInfo(loginForm));
     closeForm();
   }
 
