@@ -8,16 +8,16 @@
 
 require 'faker'
 
-puts "Clearing Old Data"
-School.destroy_all
-User.destroy_all
-Building.destroy_all
-Room.destroy_all
-TutoringTimeSlot.destroy_all
-BookedSlot.destroy_all
-TutorNote.destroy_all
-TutorSlotSignUp.destroy_all
-Subject.destroy_all
+# puts "Clearing Old Data"
+# School.destroy_all
+# User.destroy_all
+# Building.destroy_all
+# Room.destroy_all
+# TutoringTimeSlot.destroy_all
+# BookedSlot.destroy_all
+# TutorNote.destroy_all
+# TutorSlotSignUp.destroy_all
+# Subject.destroy_all
 
 puts "Seeding Data"
 
