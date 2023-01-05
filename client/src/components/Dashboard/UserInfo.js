@@ -15,6 +15,7 @@ function UserInfo() {
   console.log(user);
   const [errors, setErrors] = useState([]);
 
+
   function renderErrors() {
     const error_text = errors.map((error, index) => {
       return (

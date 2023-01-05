@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import Feedback from "react-bootstrap/esm/Feedback";
 
 const initialState = {
   isLoading: false,
