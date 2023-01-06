@@ -1,4 +1,5 @@
-import { useAuth } from "../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider";
+import { useSelector } from "react-redux";
 import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
@@ -8,12 +9,13 @@ import ManageTimeSlots from "../ManageTimeSlots/ManageTimeSlots";
 import ManageUsers from "../ManageUsers/ManageUsers";
 
 function AdminControl() {
-  const user = useAuth().currentUser;
+  // const user = useAuth().currentUser;
+  const user = useSelector((state) => state.user);
   return (
     <>
       {user.id ? (
         <>
-          <h1>{user.school.name}</h1>
+          <h1>{"Repace Me With School Name"}</h1>
           <div className="mb-5">
             <Tab.Container
               id="left-tabs-example"

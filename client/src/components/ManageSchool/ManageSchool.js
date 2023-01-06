@@ -1,4 +1,5 @@
-import { useAuth } from "../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
@@ -12,9 +13,11 @@ import EditBuilding from "./EditBuilding";
 import AddSubject from "./AddSubject";
 
 function ManageSchool() {
-  const auth = useAuth();
-  let user = auth.currentUser;
-  
+  // const auth = useAuth();
+  // let user = auth.currentUser;
+  const {school, user} = useSelector((state) => state)
+  // const school = useSelector((state) => state.school)
+  console.log(school)
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
@@ -33,7 +36,7 @@ function ManageSchool() {
       setModalBody(
         <CreateBuilding
           closeForm={handleCloseModal}
-          school_id={user.school.id}
+          school_id={school.id}
         />
       );
     } else if (modal_type === "edit building") {
@@ -42,7 +45,7 @@ function ManageSchool() {
         <EditBuilding
           closeForm={handleCloseModal}
           building_id={id}
-          school_id={user.school.id}
+          school_id={school.id}
           building_name={resources_name[0]}
         />
       );
@@ -65,8 +68,8 @@ function ManageSchool() {
   }
 
   function handleRemoveRoom(room_id) {
-    let new_user = JSON.parse(JSON.stringify(user));
-    let locations = new_user.school.locations;
+    let newSchool = JSON.parse(JSON.stringify(school));
+    let locations = newSchool.locations;
     let new_rooms = [];
     let saved_index;
     let removed_room_building;
@@ -88,7 +91,7 @@ function ManageSchool() {
         });
       }
     });
-    auth.updateCurrentUser(new_user);
+    // auth.updateCurrentUser(new_user);
 
     fetch(`/room/${room_id}`, {
       method: "DELETE",
@@ -96,8 +99,8 @@ function ManageSchool() {
   }
 
   function handleRemoveBuilding(building_id) {
-    let new_user = JSON.parse(JSON.stringify(user));
-    let locations = new_user.school.locations;
+    let newSchool = JSON.parse(JSON.stringify(school));
+    let locations = newSchool.locations;
     let building_index;
     locations.forEach((location, index) => {
       if (location.building.id === building_id) {
@@ -105,7 +108,7 @@ function ManageSchool() {
       }
     });
     locations.splice(building_index, 1);
-    auth.updateCurrentUser(new_user);
+    // auth.updateCurrentUser(new_user);
 
     fetch(`/building/${building_id}`, {
       method: "DELETE",
@@ -113,10 +116,10 @@ function ManageSchool() {
   }
 
   function handleRemoveSubject(subjectId, subjectIndex){
-    let newUser = JSON.parse(JSON.stringify(user));
-    let updatedSubject = newUser.school.subjects
+    let newSchool = JSON.parse(JSON.stringify(school));
+    let updatedSubject = newSchool.subjects
     updatedSubject.splice(subjectIndex,1)
-    auth.updateCurrentUser(newUser)
+    // auth.updateCurrentUser(newUser)
 
     fetch(`/subject/${subjectId}`, {
       method: "DELETE",
@@ -132,9 +135,9 @@ function ManageSchool() {
       >
         Create New Building
       </Button>{" "}
-      {user.id ? (
-        user.school.locations
-          .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
+      {!user.isLoading ? (
+        school.locations
+          // .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
           .map((buildingInfo) => {
             return (
               <Container key={buildingInfo.building.id}>
@@ -151,7 +154,7 @@ function ManageSchool() {
                     </thead>
                     <tbody>
                       {buildingInfo.rooms
-                        .sort((a, b) => (a.id > b.id ? 1 : -1))
+                        // .sort((a, b) => (a.id > b.id ? 1 : -1))
                         .map((room) => {
                           return (
                             <tr key={room.id}>
@@ -230,7 +233,7 @@ function ManageSchool() {
               </tr>
             </thead>
             <tbody>
-              {user.school.subjects.map((subject,index) => {
+              {school.subjects.map((subject,index) => {
                 return (
                   <tr key={subject.id}>
                     <td>{subject.name}</td>

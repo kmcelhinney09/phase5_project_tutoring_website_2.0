@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider";
+import { useSelector } from "react-redux";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -8,13 +9,15 @@ import SessionRender from "./SessionRender";
 import SessionsTutored from "./SessionsTutored";
 import RenderNotes from "./RenderNotes";
 import Col from "react-bootstrap/esm/Col";
+import { sortedSchool } from "../ManageSchool/schoolSlice";
 
 function UserInfo() {
-  const auth = useAuth();
-  const user = auth.currentUser;
+  // const auth = useAuth();
+  // const user = auth.currentUser;
+  const { user, school } = useSelector((state) => state);
   console.log(user);
+  console.log("Sorted State: ", sortedSchool);
   const [errors, setErrors] = useState([]);
-
 
   function renderErrors() {
     const error_text = errors.map((error, index) => {
@@ -36,7 +39,7 @@ function UserInfo() {
     let new_user = JSON.parse(JSON.stringify(user));
     let new_written_notes = new_user.written_notes;
     new_written_notes.splice(noteIndex, 1);
-    auth.updateCurrentUser(new_user);
+    // auth.updateCurrentUser(new_user);
 
     fetch(`/tutor_note/${noteId}`, {
       method: "DELETE",
@@ -47,7 +50,7 @@ function UserInfo() {
     let newUser = JSON.parse(JSON.stringify(user));
     let updated_subjects_tutored = newUser.subjects_signed_up;
     updated_subjects_tutored.push(subject);
-    auth.updateCurrentUser(newUser);
+    // auth.updateCurrentUser(newUser);
 
     fetch(`/tutored_subject`, {
       method: "POST",
@@ -66,7 +69,7 @@ function UserInfo() {
     let newUser = JSON.parse(JSON.stringify(user));
     let updated_subjects_tutored = newUser.subjects_signed_up;
     updated_subjects_tutored.splice(subIndex, 1);
-    auth.updateCurrentUser(newUser);
+    // auth.updateCurrentUser(newUser);
 
     fetch(`/tutored_subject/${sub.id}`, {
       method: "DELETE",
@@ -76,12 +79,12 @@ function UserInfo() {
   return (
     <Container>
       <Row>
-        <h1>{user.school.name}</h1>
+        <h1>{school.name}</h1>
       </Row>
       <Row className="mb-2">
         <Col md={2}>
           <h5>
-            {user.full_name} - {user.grade}
+            {user.fullName} - {user.grade}
           </h5>
         </Col>
         {user.role === "tutor" ? (
@@ -113,7 +116,7 @@ function UserInfo() {
                 title="Drop a Subject You Tutor"
                 drop={"end"}
               >
-                {user.subjects_signed_up
+                {user.subjectsSignedUp
                   .sort((a, b) => (a.id > b.id ? 1 : -1))
                   .map((sub, index) => {
                     return (
@@ -131,10 +134,10 @@ function UserInfo() {
             <Row>
               <h5>Subjects Tutored</h5>
               <p className="ms-4">
-                {user.subjects_signed_up
+                {user.subjectsSignedUp
                   .sort((a, b) => (a.id > b.id ? 1 : -1))
                   .map((sub, index) => {
-                    const size = user.subjects_signed_up.length;
+                    const size = user.subjectsSignedUp;
                     if (index <= size - 2) {
                       return <>{`${sub.name}, `}</>;
                     } else {
@@ -155,13 +158,13 @@ function UserInfo() {
       ) : null}
       <Row>
         <h4>Notes from Tutors:</h4>
-        <RenderNotes notesData={user.tutor_notes} userRole={user.role} />
+        <RenderNotes notesData={user.tutorNotes} userRole={user.role} />
       </Row>
       {user.role === "tutor" || user.role === "admin" ? (
         <Row>
           <h4>Written Notes:</h4>
           <RenderNotes
-            notesData={user.written_notes}
+            notesData={user.notesWritten}
             userRole={user.role}
             handleDelete={handleDeleteWrittenNotes}
           />

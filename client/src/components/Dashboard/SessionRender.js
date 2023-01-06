@@ -1,19 +1,21 @@
 import React from "react";
-import { useAuth } from "../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider";
+import { useSelector } from "react-redux";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/esm/Table";
 import Button from "react-bootstrap/esm/Button";
 
 function SessionRender() {
-  const auth = useAuth();
-  const user = auth.currentUser;
+  // const auth = useAuth();
+  // const user = auth.currentUser;
+  const user = useSelector((state) => state.user)
 
   function handleDropSession(sessionId, sessionIndex) {
     let newUser = JSON.parse(JSON.stringify(user));
-    let updatedBookedSlots = newUser.booked_slots;
+    let updatedBookedSlots = newUser.bookedSlots;
     updatedBookedSlots.splice(sessionIndex, 1);
-    auth.updateCurrentUser(newUser);
+    // auth.updateCurrentUser(newUser);
 
     fetch(`/booked_slot/${sessionId}`, {
       method: "DELETE",
@@ -36,8 +38,8 @@ function SessionRender() {
             </tr>
           </thead>
           <tbody>
-            {user.booked_slots.length !== 0 ? (
-              user.booked_slots
+            {user.bookedSlots.length !== 0 ? (
+              user.bookedSlots
                 .sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1))
                 .map((slot, index) => {
                   return (

@@ -1,4 +1,5 @@
-import { useAuth } from "../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
@@ -10,8 +11,9 @@ import CreateTutoringTimeSlots from "./CreateTutoringTimeSlots";
 import EditTutoringTimeSlots from "./EditTutoringTimeSlots";
 
 function ManageTimeSlots() {
-  const auth = useAuth();
-  const user = auth.currentUser;
+  // const auth = useAuth();
+  // const user = auth.currentUser;
+  const {user,school} = useSelector((state)=>state)
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
@@ -23,10 +25,10 @@ function ManageTimeSlots() {
   
 
   function handleRemoveTutoringSlot(slot_index, slot_id) {
-    let new_user = JSON.parse(JSON.stringify(user));
-    let time_slots = new_user.school.tutoring_time_slots;
+    let newSchool = JSON.parse(JSON.stringify(school));
+    let time_slots = newSchool.tutoringTimeSlots;
     time_slots.splice(slot_index, 1);
-    auth.updateCurrentUser(new_user);
+    // auth.updateCurrentUser(new_user);
 
     fetch(`/tutoring_time_slots/${slot_id}`, {
       method: "DELETE",
@@ -60,15 +62,15 @@ function ManageTimeSlots() {
         >
           Create New Tutoring Session
         </Button>
-        {user.id ? (
-          user.school.locations
-            .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
+        {!user.isLoading ? (
+          school.locations
+            // .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
             .map((buildingInfo) => {
               return (
                 <Row key={buildingInfo.building.id}>
                   <h3>{buildingInfo.building.name}</h3>
                   {buildingInfo.rooms
-                    .sort((a, b) => (a.id > b.id ? 1 : -1))
+                    // .sort((a, b) => (a.id > b.id ? 1 : -1))
                     .map((rooms) => {
                       return (
                         <Row key={rooms.id}>
@@ -93,13 +95,13 @@ function ManageTimeSlots() {
                                   <th className="text_center">Actions</th>
                                 </tr>
                               </thead>
-                              {user.school.tutoring_time_slots
-                                .sort((a, b) =>
-                                  new Date(a.start_time).getTime() >
-                                  new Date(b.start_time).getTime()
-                                    ? 1
-                                    : -1
-                                )
+                              {school.tutoringTimeSlots
+                                // .sort((a, b) =>
+                                //   new Date(a.start_time).getTime() >
+                                //   new Date(b.start_time).getTime()
+                                //     ? 1
+                                //     : -1
+                                // )
                                 .map((slot, index) => {
                                   return (
                                     <tbody key={slot.id}>

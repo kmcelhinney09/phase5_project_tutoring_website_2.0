@@ -1,5 +1,6 @@
 import { useAuth } from "../../context/AuthProvider";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
@@ -8,26 +9,24 @@ import UserInfo from "./UserInfo";
 import { LinkContainer } from "react-router-bootstrap";
 import TutoringSignUp from "./TutoringSignUp";
 import AdminControl from "./AdminControl";
+import {getSchoolData} from "../ManageSchool/schoolSlice"
+
 
 function UserDashboard({ dashboardKey, handleDashboardKeyChange }) {
-  const user = useAuth().currentUser;
-  
+  const user = useSelector((state) => state.user);
+  const school = useSelector((state) => state.school)
+  const dispatch = useDispatch();
+
 
   const [tutoringInfo, setTutoringInfo] = useState(false);
 
   useEffect(() => {
-    fetch(`/schools/${user.school.id}`).then((res) => {
-      if (res.ok) {
-        res.json().then((data) => {
-          setTutoringInfo(data);
-        });
-      }
-    });
-  }, [user.school.id, dashboardKey]);
+    dispatch(getSchoolData())
+  }, []);
 
   return (
     <>
-      {user.role ? (
+      {!user.isLoading ? (
         <div className="mb-5">
           <Tab.Container
             id="left-tabs-example"

@@ -8,6 +8,7 @@ const initialState = {
   fullName: "",
   grade: "",
   role: "",
+  schoolId: 0,
   bookedAsTutor: [],
   bookedSlots: [],
   subjectsSignedUp: [],
@@ -54,13 +55,14 @@ const userSlice = createSlice({
       state.fullName = "";
       state.grade = "";
       state.role = "";
+      state.schoolId = 0;
       state.bookedAsTutor = [];
       state.bookedSlots = [];
       state.subjectsSignedUp = [];
       state.tutorNotes = [];
       state.tutorSignUps = [];
       state.notesWritten = [];
-      console.log(state)
+      console.log(state);
     },
   },
   extraReducers: {
@@ -73,6 +75,7 @@ const userSlice = createSlice({
       state.fullName = payload.full_name;
       state.grade = payload.grade;
       state.role = payload.role;
+      state.schoolId = payload.school.id;
       state.bookedAsTutor = payload.booked_as_tutor;
       state.bookedSlots = payload.booked_slots;
       state.subjectsSignedUp = payload.subjects_signed_up;
@@ -86,5 +89,6 @@ const userSlice = createSlice({
 });
 
 export const { addTutorSignUp, logOutUser } = userSlice.actions;
+
 
 export default userSlice.reducer;

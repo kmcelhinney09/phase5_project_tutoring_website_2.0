@@ -1,4 +1,5 @@
-import { useAuth } from "../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
@@ -8,8 +9,9 @@ import Modal from "react-bootstrap/esm/Modal";
 import LeaveNote from "./LeaveNote";
 
 function SessionsTutored() {
-  const auth = useAuth();
-  const user = auth.currentUser;
+  // const auth = useAuth();
+  // const user = auth.currentUser;
+  const user = useSelector((state)=> state.user)
   const [showModal, setShowModal] = useState(false);
   const [tuteeId, setTuteeId] = useState(0);
 
@@ -17,25 +19,25 @@ function SessionsTutored() {
   const handleShowModal = () => setShowModal(true);
 
   function handleDropBookedSession(session_id, session_index) {
-    let new_user = JSON.parse(JSON.stringify(user));
-    let new_booked_slots = new_user.booked_as_tutor;
-    new_booked_slots.splice(session_index, 1);
-    auth.updateCurrentUser(new_user);
+    let newUser = JSON.parse(JSON.stringify(user));
+    let newBookedSlots = newUser.bookedAsTutor;
+    newBookedSlots.splice(session_index, 1);
+    // auth.updateCurrentUser(newUser);
 
     fetch(`/booked_slot/${session_id}`, {
       method: "DELETE",
     }).then((res) => {
       if (res.ok) {
-        auth.auto();
+        // auth.auto();
       }
     });
   }
 
   function handleDropEntireSession(session_id, session_index) {
     let newUser = JSON.parse(JSON.stringify(user));
-    let newSignUps = newUser.tutor_sign_ups;
+    let newSignUps = newUser.tutorSignUps;
     newSignUps.splice(session_index, 1);
-    auth.updateCurrentUser(newUser);
+    // auth.updateCurrentUser(newUser);
 
     fetch(`/tutor_slot_sign_up/${session_id}`, {
       method: "DELETE",
@@ -64,8 +66,8 @@ function SessionsTutored() {
                 </tr>
               </thead>
               <tbody>
-                {user.tutor_sign_ups.length !== 0 ? (
-                  user.tutor_sign_ups
+                {user.tutorSignUps.length !== 0 ? (
+                  user.tutorSignUps
                     .sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1))
                     .map((signUp, index) => {
                       return (
@@ -110,8 +112,8 @@ function SessionsTutored() {
                 </tr>
               </thead>
               <tbody>
-                {user.booked_as_tutor.length !== 0 ? (
-                  user.booked_as_tutor
+                {user.bookedAsTutor.length !== 0 ? (
+                  user.bookedAsTutor
                     .sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1))
                     .map((slot, index) => {
                       return (

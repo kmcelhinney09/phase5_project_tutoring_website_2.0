@@ -1,11 +1,12 @@
 import { Outlet, Navigate } from "react-router-dom"
-import { useAuth } from "../context/AuthProvider"
+import { useSelector } from "react-redux"
 
 function PrivateRoutes() {
   //PrivateRoutes code adapted from Dennis Ivy from https://www.youtube.com/watch?v=2k8NleFjG7I
-  let isAllowed = useAuth().isLoggedIn
+  const {isLoggedIn} = useSelector((state) => state.user)
+  console.log(isLoggedIn)
   return (
-    isAllowed ? <Outlet/> : <Navigate to="/" />
+    isLoggedIn ? <Outlet/> : <Navigate to="/" />
   )
 }
 

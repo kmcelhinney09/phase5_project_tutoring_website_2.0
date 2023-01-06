@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider";
+import { useSelector } from "react-redux";
 import Modal from "react-bootstrap/Modal";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
@@ -7,7 +8,8 @@ import ResetPassward from "./ResetPassward";
 import EditUserInfo from "./EditUserInfo";
 
 function ManageUsers() {
-  const user = useAuth().currentUser;
+  // const user = useAuth().currentUser;
+  const {user,school} = useSelector((state) => state)
   const [schoolData, setSchoolData] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +31,7 @@ function ManageUsers() {
         res.json().then((e) => setErrors(Object.entries(e.error)));
       }
     });
-  }, [user.school.id]);
+  }, [school.id]);
 
   function renderErrors() {
     const error_text = errors.map((error, index) => {

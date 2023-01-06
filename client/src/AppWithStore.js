@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   BrowserRouter as Router,
@@ -15,16 +15,14 @@ import Home from "./components/Home";
 import UserDashboard from "./components/Dashboard/UserDashboard";
 import PrivateRoutes from "./components/PrivateRoutes";
 import ViewTutoringTimeSlot from "./components/ManageTimeSlots/ViewTutoringTimeSlot";
-import {
-  logOutUser,
-  reAuthorizeUser,
-} from "./components/ManageUsers/userSlice";
+import { logOutUser } from "./components/ManageUsers/userSlice";
 
 function AppWithStore() {
   const [dashboardKey, setDashboardKey] = useState("dashboard");
   const storeUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
+  console.log(storeUser);
 
   function handleLogout() {
     fetch("/logout", {

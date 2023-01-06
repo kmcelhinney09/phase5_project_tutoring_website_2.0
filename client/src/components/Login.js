@@ -39,7 +39,7 @@ function Login({ closeForm }) {
     <div className="color-overlay d-flex justify-content-center align-items-center">
       <Form
         className="rounded p-3 p-sm-4"
-        onSubmit={(e) => handleSignUpSubmit(e)}
+        onSubmit={(e) => handleSignUpSubmitStore(e)}
       >
         <Form.Control
           type="email"

@@ -1,5 +1,6 @@
-import { useAuth } from "../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
@@ -11,7 +12,8 @@ function TutoringSignUp({
   callingComponent,
   handleDashboardKeyChange,
 }) {
-  const user = useAuth().currentUser;
+  // const user = useAuth().currentUser;
+  const user = useSelector((state) => state.user)
   const [errors, setErrors] = useState([]);
 
   function handleSetErrors(inputErrors){
