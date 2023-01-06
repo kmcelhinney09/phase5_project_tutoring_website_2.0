@@ -15,9 +15,9 @@ import AddSubject from "./AddSubject";
 function ManageSchool() {
   // const auth = useAuth();
   // let user = auth.currentUser;
-  const {school, user} = useSelector((state) => state)
+  const { school, user } = useSelector((state) => state);
   // const school = useSelector((state) => state.school)
-  console.log(school)
+  console.log(school);
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
@@ -34,10 +34,7 @@ function ManageSchool() {
     } else if (modal_type === "create building") {
       setModalTitle("Create Building");
       setModalBody(
-        <CreateBuilding
-          closeForm={handleCloseModal}
-          school_id={school.id}
-        />
+        <CreateBuilding closeForm={handleCloseModal} school_id={school.id} />
       );
     } else if (modal_type === "edit building") {
       setModalTitle("Edit Building");
@@ -49,7 +46,7 @@ function ManageSchool() {
           building_name={resources_name[0]}
         />
       );
-    } else if(modal_type === "Edit Room") {
+    } else if (modal_type === "Edit Room") {
       setModalTitle("Edit Room");
       setModalBody(
         <EditRoom
@@ -58,11 +55,9 @@ function ManageSchool() {
           resources_name={resources_name}
         />
       );
-    } else if(modal_type === "Create Subject"){
+    } else if (modal_type === "Create Subject") {
       setModalTitle("Add Subject");
-      setModalBody(
-        <AddSubject closeForm={handleCloseModal}/>
-      )
+      setModalBody(<AddSubject closeForm={handleCloseModal} />);
     }
     handleShowModal();
   }
@@ -115,10 +110,10 @@ function ManageSchool() {
     });
   }
 
-  function handleRemoveSubject(subjectId, subjectIndex){
+  function handleRemoveSubject(subjectId, subjectIndex) {
     let newSchool = JSON.parse(JSON.stringify(school));
-    let updatedSubject = newSchool.subjects
-    updatedSubject.splice(subjectIndex,1)
+    let updatedSubject = newSchool.subjects;
+    updatedSubject.splice(subjectIndex, 1);
     // auth.updateCurrentUser(newUser)
 
     fetch(`/subject/${subjectId}`, {
@@ -136,8 +131,8 @@ function ManageSchool() {
         Create New Building
       </Button>{" "}
       {!user.isLoading ? (
-        school.locations
-          // .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
+        JSON.parse(JSON.stringify(school.locations))
+          .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
           .map((buildingInfo) => {
             return (
               <Container key={buildingInfo.building.id}>
@@ -153,8 +148,8 @@ function ManageSchool() {
                       </tr>
                     </thead>
                     <tbody>
-                      {buildingInfo.rooms
-                        // .sort((a, b) => (a.id > b.id ? 1 : -1))
+                      {JSON.parse(JSON.stringify(buildingInfo.rooms))
+                        .sort((a, b) => (a.id > b.id ? 1 : -1))
                         .map((room) => {
                           return (
                             <tr key={room.id}>
@@ -163,11 +158,10 @@ function ManageSchool() {
                                 <Button
                                   variant="success"
                                   onClick={() =>
-                                    handleModalAction(
-                                      `Edit Room`,
-                                      room.id,
-                                      [buildingInfo.building.name, room.name]
-                                    )
+                                    handleModalAction(`Edit Room`, room.id, [
+                                      buildingInfo.building.name,
+                                      room.name,
+                                    ])
                                   }
                                 >
                                   Edit
@@ -224,7 +218,12 @@ function ManageSchool() {
       {user.id ? (
         <>
           <h4>School Subjects</h4>
-          <Button variant="success" onClick={() => handleModalAction("Create Subject")}>Add Subject</Button>
+          <Button
+            variant="success"
+            onClick={() => handleModalAction("Create Subject")}
+          >
+            Add Subject
+          </Button>
           <Table responsive="md" striped bordered hover>
             <thead>
               <tr>
@@ -233,11 +232,18 @@ function ManageSchool() {
               </tr>
             </thead>
             <tbody>
-              {school.subjects.map((subject,index) => {
+              {school.subjects.map((subject, index) => {
                 return (
                   <tr key={subject.id}>
                     <td>{subject.name}</td>
-                    <td><Button variant="success" onClick={() => handleRemoveSubject(subject.id,index)}>Drop Subject</Button></td>
+                    <td>
+                      <Button
+                        variant="success"
+                        onClick={() => handleRemoveSubject(subject.id, index)}
+                      >
+                        Drop Subject
+                      </Button>
+                    </td>
                   </tr>
                 );
               })}

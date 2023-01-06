@@ -15,8 +15,10 @@ function UserInfo() {
   // const auth = useAuth();
   // const user = auth.currentUser;
   const { user, school } = useSelector((state) => state);
+  const sorted = useSelector((state) => sortedSchool(state.school));
+  console.log(sorted)
   console.log(user);
-  console.log("Sorted State: ", sortedSchool);
+
   const [errors, setErrors] = useState([]);
 
   function renderErrors() {

@@ -13,7 +13,7 @@ import EditTutoringTimeSlots from "./EditTutoringTimeSlots";
 function ManageTimeSlots() {
   // const auth = useAuth();
   // const user = auth.currentUser;
-  const {user,school} = useSelector((state)=>state)
+  const { user, school } = useSelector((state) => state);
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
@@ -22,7 +22,6 @@ function ManageTimeSlots() {
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
-  
 
   function handleRemoveTutoringSlot(slot_index, slot_id) {
     let newSchool = JSON.parse(JSON.stringify(school));
@@ -63,14 +62,14 @@ function ManageTimeSlots() {
           Create New Tutoring Session
         </Button>
         {!user.isLoading ? (
-          school.locations
-            // .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
+          JSON.parse(JSON.stringify(school.locations))
+            .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
             .map((buildingInfo) => {
               return (
                 <Row key={buildingInfo.building.id}>
                   <h3>{buildingInfo.building.name}</h3>
-                  {buildingInfo.rooms
-                    // .sort((a, b) => (a.id > b.id ? 1 : -1))
+                  {JSON.parse(JSON.stringify(buildingInfo.rooms))
+                    .sort((a, b) => (a.id > b.id ? 1 : -1))
                     .map((rooms) => {
                       return (
                         <Row key={rooms.id}>
@@ -95,13 +94,15 @@ function ManageTimeSlots() {
                                   <th className="text_center">Actions</th>
                                 </tr>
                               </thead>
-                              {school.tutoringTimeSlots
-                                // .sort((a, b) =>
-                                //   new Date(a.start_time).getTime() >
-                                //   new Date(b.start_time).getTime()
-                                //     ? 1
-                                //     : -1
-                                // )
+                              {JSON.parse(
+                                JSON.stringify(school.tutoringTimeSlots)
+                              )
+                                .sort((a, b) =>
+                                  new Date(a.date_sort).getTime() >
+                                  new Date(b.date_sort).getTime()
+                                    ? 1
+                                    : -1
+                                )
                                 .map((slot, index) => {
                                   return (
                                     <tbody key={slot.id}>
