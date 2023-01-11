@@ -5,7 +5,8 @@ import Form from "react-bootstrap/esm/Form";
 import FloatingLabel from "react-bootstrap/esm/FloatingLabel";
 import Button from "react-bootstrap/esm/Button";
 import { addTutorNote } from "../ManageUsers/userSlice";
-
+//TODO: remove usAuth
+//TODO: created action to add note to store
 function LeaveNote({ closeForm, tuteeData }) {
   // const auth = useAuth();
   // const user = auth.currentUser;
@@ -52,23 +53,20 @@ function LeaveNote({ closeForm, tuteeData }) {
       tutee_name: tuteeData.tuteeName,
     };
     dispatch(addTutorNote(newNote));
-
-    // auth.updateCurrentUser(new_user);
     closeForm();
 
-    // fetch("/tutor_note", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(noteForm),
-    // }).then((res) => {
-    //   if (res.ok) {
-    //     res.json().then((return_note) => {
-    //       // auth.auto();
-    //     });
-    //   } else {
-    //     res.json().then((e) => setErrors(Object.entries(e.error)));
-    //   }
-    // });
+    fetch("/tutor_note", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(noteForm),
+    }).then((res) => {
+      console.log(res);
+      if (res.ok) {
+        res.json().then((return_note) => {});
+      } else {
+        res.json().then((e) => setErrors(Object.entries(e.error)));
+      }
+    });
   }
 
   return (

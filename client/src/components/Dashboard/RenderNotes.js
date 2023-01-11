@@ -5,7 +5,9 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
 import { useSelector } from "react-redux";
-
+//TODO: added condinational rendering in addFoot to add tutee_name and delete button to notes written by tutor. 
+// Included additional information tutor_id, tutee_name to add to note cards changed user serializer 
+// to change data in tutor notes and notes as tutor
 function RenderNotes({ notesData, userRole, handleDelete = "" }) {
   console.log(notesData);
   const user = useSelector((store) => store.user);
