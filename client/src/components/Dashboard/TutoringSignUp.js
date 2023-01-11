@@ -5,19 +5,17 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import TutoringSlotRender from "./TutoringSlotRender";
+import { sortedSchool } from "../ManageSchool/schoolSlice";
 
-
-function TutoringSignUp({
-  tutoringInfo,
-  callingComponent,
-  handleDashboardKeyChange,
-}) {
+function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
   // const user = useAuth().currentUser;
-  const user = useSelector((state) => state.user)
+  const { user, school } = useSelector((store) => store);
+
   const [errors, setErrors] = useState([]);
 
-  function handleSetErrors(inputErrors){
-    setErrors(inputErrors)
+  console.log(school);
+  function handleSetErrors(inputErrors) {
+    setErrors(inputErrors);
   }
 
   function renderErrors() {
@@ -37,6 +35,7 @@ function TutoringSignUp({
   }
 
   function handle_closed_sessions(session) {
+    // console.log(session)
     if (callingComponent === "TutoringSignUp") {
       if (session.open_status === true) {
         return (
@@ -75,21 +74,19 @@ function TutoringSignUp({
   }
   return (
     <>
-      {tutoringInfo.id ? (
+      {!school.isLoading ? (
         <Container>
           <Row>
-            <h1>{tutoringInfo.name}</h1>
+            <h1>{school.name}</h1>
             <ul>{renderErrors()}</ul>
           </Row>
           <Row>
-            {tutoringInfo.locations
-              .sort((a, b) => (a.building.id > b.building.id ? 1 : -1))
+            {school.locations
               .map((buildingInfo) => {
                 return (
                   <Row key={buildingInfo.building.id}>
                     <h3>{buildingInfo.building.name}</h3>
                     {buildingInfo.rooms
-                      .sort((a, b) => (a.id > b.id ? 1 : -1))
                       .map((rooms) => {
                         return (
                           <Row key={rooms.id}>
@@ -111,7 +108,9 @@ function TutoringSignUp({
                                     <th className="text-center">Status</th>
                                   </tr>
                                 </thead>
-                                {tutoringInfo.tutoring_time_slots
+                                {JSON.parse(
+                                  JSON.stringify(school.tutoringTimeSlots)
+                                )
                                   .sort((a, b) =>
                                     a.date_sort > b.date_sort ? 1 : -1
                                   )

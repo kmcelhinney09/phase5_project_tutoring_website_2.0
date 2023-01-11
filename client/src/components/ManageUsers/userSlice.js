@@ -36,7 +36,9 @@ export const getUserInfo = createAsyncThunk(
 export const reAuthorizeUser = createAsyncThunk("user/reAuthorize", () => {
   return fetch("/auth")
     .then((res) => res.json())
-    .then((userInfo) => userInfo);
+    .then((userInfo) => {
+      return userInfo;
+    });
 });
 
 const userSlice = createSlice({
@@ -48,21 +50,8 @@ const userSlice = createSlice({
       console.log(action);
     },
     logOutUser(state) {
-      state.isLoggedIn = false;
       state.isLoading = false;
-      state.id = 0;
-      state.email = "";
-      state.fullName = "";
-      state.grade = "";
-      state.role = "";
-      state.schoolId = 0;
-      state.bookedAsTutor = [];
-      state.bookedSlots = [];
-      state.subjectsSignedUp = [];
-      state.tutorNotes = [];
-      state.tutorSignUps = [];
-      state.notesWritten = [];
-      console.log(state);
+      state = initialState;
     },
   },
   extraReducers: {
@@ -85,10 +74,32 @@ const userSlice = createSlice({
       state.isLoggedIn = true;
       state.isLoading = false;
     },
+    [reAuthorizeUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [reAuthorizeUser.fulfilled]: (state, { payload }) => {
+      if (Object.keys(payload).includes("error")) {
+        console.log(payload);
+      } else {
+        state.id = payload.id;
+        state.email = payload.email;
+        state.fullName = payload.full_name;
+        state.grade = payload.grade;
+        state.role = payload.role;
+        state.schoolId = payload.school.id;
+        state.bookedAsTutor = payload.booked_as_tutor;
+        state.bookedSlots = payload.booked_slots;
+        state.subjectsSignedUp = payload.subjects_signed_up;
+        state.tutorNotes = payload.tutor_notes;
+        state.tutorSignUps = payload.tutor_sign_ups;
+        state.notesWritten = payload.written_notes;
+        state.isLoggedIn = true;
+        state.isLoading = false;
+      }
+    },
   },
 });
 
 export const { addTutorSignUp, logOutUser } = userSlice.actions;
-
 
 export default userSlice.reducer;

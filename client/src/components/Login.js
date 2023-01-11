@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthProvider";
-import { useDispatch } from "react-redux";
+// import { useAuth } from "../context/AuthProvider";
+import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "./ManageUsers/userSlice";
+import { getSchoolData } from "./ManageSchool/schoolSlice";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
@@ -11,7 +12,7 @@ function Login({ closeForm }) {
     password: "",
   });
 
-  const auth = useAuth();
+  // const auth = useAuth();
   const dispatch = useDispatch();
 
   function handleFormOnChange(e) {
@@ -23,15 +24,15 @@ function Login({ closeForm }) {
     });
   }
 
-  function handleSignUpSubmit(e) {
-    e.preventDefault();
-    auth.login(loginForm);
-    closeForm();
-  }
+  // function handleSignUpSubmit(e) {
+  //   e.preventDefault();
+  //   auth.login(loginForm);
+  //   closeForm();
+  // }
 
   function handleSignUpSubmitStore(e) {
     e.preventDefault();
-    dispatch(getUserInfo(loginForm));
+    console.log(dispatch(getUserInfo(loginForm)));
     closeForm();
   }
 

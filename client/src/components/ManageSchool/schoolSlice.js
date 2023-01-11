@@ -33,9 +33,9 @@ const schoolSlice = createSlice({
     },
   },
 });
-export const sortedSchool = (state) =>
-  JSON.parse(JSON.stringify(state.tutoringTimeSlots)).sort((a, b) =>
-    new Date(a.date_sort).getTime() > new Date(b.date_sort).getTime() ? 1 : -1
-  );
+
+// export sortedSchoolState = (state) => {
+// }
+
 export const { initializeSchool } = schoolSlice.actions;
 export default schoolSlice.reducer;

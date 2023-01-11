@@ -10,12 +10,12 @@ import ManageUsers from "../ManageUsers/ManageUsers";
 
 function AdminControl() {
   // const user = useAuth().currentUser;
-  const user = useSelector((state) => state.user);
+  const {user,school} = useSelector((store) => store);
   return (
     <>
-      {user.id ? (
+      {!user.isLoading ? (
         <>
-          <h1>{"Repace Me With School Name"}</h1>
+          <h1>{school.name}</h1>
           <div className="mb-5">
             <Tab.Container
               id="left-tabs-example"

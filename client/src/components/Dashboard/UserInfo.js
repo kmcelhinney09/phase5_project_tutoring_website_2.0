@@ -15,8 +15,7 @@ function UserInfo() {
   // const auth = useAuth();
   // const user = auth.currentUser;
   const { user, school } = useSelector((state) => state);
-  const sorted = useSelector((state) => sortedSchool(state.school));
-  console.log(sorted)
+
   console.log(user);
 
   const [errors, setErrors] = useState([]);
@@ -97,8 +96,7 @@ function UserInfo() {
                 title="Add a Subject You Tutor"
                 drop={"end"}
               >
-                {user.school.subjects
-                  .sort((a, b) => (a.id > b.id ? 1 : -1))
+                {school.subjects
                   .map((sub) => {
                     return (
                       <Dropdown.Item
@@ -119,7 +117,6 @@ function UserInfo() {
                 drop={"end"}
               >
                 {user.subjectsSignedUp
-                  .sort((a, b) => (a.id > b.id ? 1 : -1))
                   .map((sub, index) => {
                     return (
                       <Dropdown.Item
@@ -137,9 +134,8 @@ function UserInfo() {
               <h5>Subjects Tutored</h5>
               <p className="ms-4">
                 {user.subjectsSignedUp
-                  .sort((a, b) => (a.id > b.id ? 1 : -1))
                   .map((sub, index) => {
-                    const size = user.subjectsSignedUp;
+                    const size = user.subjectsSignedUp.length;
                     if (index <= size - 2) {
                       return <>{`${sub.name}, `}</>;
                     } else {

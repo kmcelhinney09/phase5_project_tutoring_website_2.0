@@ -20,7 +20,7 @@ function ManageUsers() {
   const handleShowModal = () => setShowModal(true);
 
   const [errors, setErrors] = useState([])
-
+  // Does this call need to be made? Can I include it in the User call if they are admin?
   useEffect(() => {
     fetch("/users").then((res) => {
       if (res.ok) {

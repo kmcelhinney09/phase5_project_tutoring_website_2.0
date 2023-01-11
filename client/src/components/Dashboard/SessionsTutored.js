@@ -68,7 +68,6 @@ function SessionsTutored() {
               <tbody>
                 {user.tutorSignUps.length !== 0 ? (
                   user.tutorSignUps
-                    .sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1))
                     .map((signUp, index) => {
                       return (
                         <tr key={signUp.id + 10}>
@@ -113,8 +112,7 @@ function SessionsTutored() {
               </thead>
               <tbody>
                 {user.bookedAsTutor.length !== 0 ? (
-                  user.bookedAsTutor
-                    .sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1))
+                user.bookedAsTutor
                     .map((slot, index) => {
                       return (
                         <tr key={slot.id.toString() + slot.tutee.full_name}>

@@ -14,4 +14,16 @@ class UserSerializer < ActiveModel::Serializer
   def written_notes
     notes = object.notes_belong_to_tutor
   end
+
+  def booked_as_tutor
+    object.booked_as_tutor.sort_by{|slot| slot.tutoring_time_slot.start_time}
+  end
+
+  def tutor_sign_ups
+    object.tutor_sign_ups.sort_by{|slot| slot.tutoring_time_slot.start_time}
+  end
+
+  def subjects_signed_up
+    object.subjects_signed_up.order(:name)
+  end
 end

@@ -1,8 +1,9 @@
 class SchoolsController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
+  
   def show
     school = School.find(params[:id])
-    render json:school, status: :ok
+    render json: school, status: :ok
   end
   
   private
@@ -14,4 +15,5 @@ class SchoolsController < ApplicationController
   def render_unprocessable_entity(invalid)
     render json:{error: invalid.record.errors}, status: :unprocessable_entity
   end
+
 end

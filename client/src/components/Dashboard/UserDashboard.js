@@ -1,4 +1,4 @@
-import { useAuth } from "../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Tab from "react-bootstrap/Tab";
@@ -9,20 +9,17 @@ import UserInfo from "./UserInfo";
 import { LinkContainer } from "react-router-bootstrap";
 import TutoringSignUp from "./TutoringSignUp";
 import AdminControl from "./AdminControl";
-import {getSchoolData} from "../ManageSchool/schoolSlice"
-
 
 function UserDashboard({ dashboardKey, handleDashboardKeyChange }) {
   const user = useSelector((state) => state.user);
-  const school = useSelector((state) => state.school)
+  // const school = useSelector((state) => state.school);
   const dispatch = useDispatch();
 
-
-  const [tutoringInfo, setTutoringInfo] = useState(false);
-
-  useEffect(() => {
-    dispatch(getSchoolData())
-  }, []);
+  // const [tutoringInfo, setTutoringInfo] = useState(false);
+  // console.log(school.tutoringTimeSlots);
+  // useEffect(() => {
+  //   setTutoringInfo(school.tutoringTimeSlots);
+  // }, [school.tutoringTimeSlots]);
 
   return (
     <>
@@ -77,14 +74,12 @@ function UserDashboard({ dashboardKey, handleDashboardKeyChange }) {
                   </Tab.Pane>
                   <Tab.Pane eventKey="tutoring">
                     <TutoringSignUp
-                      tutoringInfo={tutoringInfo}
                       callingComponent={"TutoringSignUp"}
                       handleDashboardKeyChange={handleDashboardKeyChange}
                     />
                   </Tab.Pane>
                   <Tab.Pane eventKey="sessionSignup">
                     <TutoringSignUp
-                      tutoringInfo={tutoringInfo}
                       callingComponent={"SessionSignUp"}
                       handleDashboardKeyChange={handleDashboardKeyChange}
                     />

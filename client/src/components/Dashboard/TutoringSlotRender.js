@@ -1,4 +1,5 @@
-import { useAuth } from "../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 
@@ -8,11 +9,11 @@ function TutoringSlotRender({
   callingComponent,
   setErrors,
 }) {
-  const auth = useAuth();
-  const user = auth.currentUser;
+  // const auth = useAuth();
+  // const user = auth.currentUser;
+  const user = useSelector((store) => store.user);
   const navigate = useNavigate();
   let slot_status;
-  
 
   function handleBookTutoring(tutorId, tutorName, tutorSubjects) {
     setErrors([]);
@@ -39,7 +40,7 @@ function TutoringSlotRender({
     };
     updatedBookedSlots.push(newBooking);
 
-    auth.updateCurrentUser(newUser);
+    // auth.updateCurrentUser(newUser);
 
     fetch("/booked_slot", {
       method: "POST",
@@ -76,7 +77,7 @@ function TutoringSlotRender({
       start_time: slotInfo.start_time,
     };
     signUps.push(newSignUp);
-    auth.updateCurrentUser(newUser);
+    // auth.updateCurrentUser(newUser);
 
     fetch("/tutor_slot_sign_up", {
       method: "POST",

@@ -10,7 +10,7 @@ function ViewTutoringTimeSlot() {
   const [tutoringSlotInfo, setTutoringSlotInfo] = useState(false);
   const [refresh,setRefresh] = useState(false);
   const { id } = useParams();
-
+//TODO: Does this need to be called? Do I have the info in the School store?
   useEffect(() => {
     fetch(`/tutoring_time_slots/${id}`).then((res) => {
       if (res.ok) {

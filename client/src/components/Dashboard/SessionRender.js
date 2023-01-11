@@ -40,7 +40,6 @@ function SessionRender() {
           <tbody>
             {user.bookedSlots.length !== 0 ? (
               user.bookedSlots
-                .sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1))
                 .map((slot, index) => {
                   return (
                     <tr key={slot.id}>

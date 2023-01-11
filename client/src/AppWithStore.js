@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   BrowserRouter as Router,
@@ -15,14 +15,28 @@ import Home from "./components/Home";
 import UserDashboard from "./components/Dashboard/UserDashboard";
 import PrivateRoutes from "./components/PrivateRoutes";
 import ViewTutoringTimeSlot from "./components/ManageTimeSlots/ViewTutoringTimeSlot";
-import { logOutUser } from "./components/ManageUsers/userSlice";
+import {
+  logOutUser,
+  reAuthorizeUser,
+} from "./components/ManageUsers/userSlice";
+import { getSchoolData } from "./components/ManageSchool/schoolSlice";
 
 function AppWithStore() {
   const [dashboardKey, setDashboardKey] = useState("dashboard");
   const storeUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  console.log(storeUser);
+  // console.log(storeUser);
+
+  useEffect(() => {
+    dispatch(reAuthorizeUser());
+  }, []);
+
+  useEffect(() => {
+    if (storeUser.id) {
+      dispatch(getSchoolData());
+    }
+  }, [storeUser]);
 
   function handleLogout() {
     fetch("/logout", {
@@ -40,6 +54,7 @@ function AppWithStore() {
 
   function handleUserView() {
     let navigation;
+    console.log("User info from APP: ", storeUser.id);
     if (storeUser.role === "admin") {
       navigation = <Navigate to={`/admin/${storeUser.id}`} />;
     } else {
@@ -60,6 +75,11 @@ function AppWithStore() {
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto"></Nav>
               <Nav>
+                <Nav.Link href="" className="text-white">
+                  {storeUser.isLoggedIn ? storeUser.fullName : null}
+                </Nav.Link>
+              </Nav>
+              <Nav>
                 {storeUser.isLoggedIn ? (
                   <Nav.Link href="/">
                     <Button variant="success" onClick={handleLogout}>
@@ -67,9 +87,6 @@ function AppWithStore() {
                     </Button>
                   </Nav.Link>
                 ) : null}
-                <Nav.Link href="">
-                  {storeUser.isLoggedIn ? storeUser.fullName : null}
-                </Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Container>
