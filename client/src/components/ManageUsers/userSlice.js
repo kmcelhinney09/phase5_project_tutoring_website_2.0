@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { v4 as uuid } from "uuid";
 
 const initialState = {
   isLoading: false,
@@ -53,8 +54,16 @@ const userSlice = createSlice({
       state.isLoading = false;
       state = initialState;
     },
-    addTutorNote(state,{payload}){
-      
+    addTutorNote(state, { payload }) {
+      console.log(payload);
+      const newNote = {
+        id: uuid(),
+        tutor_id: payload.tutor_id,
+        tutor_name: payload.tutor_name,
+        tutor_note: payload.tutor_note,
+        tutee_name: payload.tutee_name,
+      };
+      state.notesWritten.push(newNote);
     },
   },
   extraReducers: {
@@ -103,6 +112,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { addTutorSignUp, logOutUser } = userSlice.actions;
+export const { addTutorSignUp, logOutUser, addTutorNote } = userSlice.actions;
 
 export default userSlice.reducer;

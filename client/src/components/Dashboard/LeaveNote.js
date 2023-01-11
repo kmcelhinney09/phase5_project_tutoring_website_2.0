@@ -4,17 +4,18 @@ import { useState } from "react";
 import Form from "react-bootstrap/esm/Form";
 import FloatingLabel from "react-bootstrap/esm/FloatingLabel";
 import Button from "react-bootstrap/esm/Button";
+import { addTutorNote } from "../ManageUsers/userSlice";
 
-function LeaveNote({ closeForm, tuteeId }) {
+function LeaveNote({ closeForm, tuteeData }) {
   // const auth = useAuth();
   // const user = auth.currentUser;
   const dispatch = useDispatch();
 
-  const user = useSelector((store) => store.user)
-  
+  const user = useSelector((store) => store.user);
+
   const [noteForm, setNoteForm] = useState({
     tutor_id: user.id,
-    tutee_id: tuteeId,
+    tutee_id: tuteeData.tuteeId,
     note: "",
   });
   const [errors, setErrors] = useState([]);
@@ -44,26 +45,30 @@ function LeaveNote({ closeForm, tuteeId }) {
   function handleNoteOnSubmit(e) {
     e.preventDefault();
     setErrors([]);
-    let new_user = JSON.parse(JSON.stringify(user));
-    let new_written_notes = new_user.written_notes;
-    let new_note = { tutor_name: user.full_name, tutor_note: noteForm.note };
-    new_written_notes.push(new_note);
+    let newNote = {
+      tutor_id: user.id,
+      tutor_name: user.fullName,
+      tutor_note: noteForm.note,
+      tutee_name: tuteeData.tuteeName,
+    };
+    dispatch(addTutorNote(newNote));
+
     // auth.updateCurrentUser(new_user);
     closeForm();
 
-    fetch("/tutor_note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(noteForm),
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((return_note) => {
-          // auth.auto();
-        });
-      } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
-      }
-    });
+    // fetch("/tutor_note", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(noteForm),
+    // }).then((res) => {
+    //   if (res.ok) {
+    //     res.json().then((return_note) => {
+    //       // auth.auto();
+    //     });
+    //   } else {
+    //     res.json().then((e) => setErrors(Object.entries(e.error)));
+    //   }
+    // });
   }
 
   return (

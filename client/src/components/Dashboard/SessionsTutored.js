@@ -11,9 +11,9 @@ import LeaveNote from "./LeaveNote";
 function SessionsTutored() {
   // const auth = useAuth();
   // const user = auth.currentUser;
-  const user = useSelector((state)=> state.user)
+  const user = useSelector((state) => state.user);
   const [showModal, setShowModal] = useState(false);
-  const [tuteeId, setTuteeId] = useState(0);
+  const [tuteeData, setTuteeData] = useState(0);
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
@@ -44,8 +44,8 @@ function SessionsTutored() {
     });
   }
 
-  function handleAddNote(tuteeID) {
-    setTuteeId(tuteeID);
+  function handleAddNote(tuteeId, tuteeName) {
+    setTuteeData({ tuteeId: tuteeId, tuteeName: tuteeName });
     handleShowModal();
   }
 
@@ -67,29 +67,28 @@ function SessionsTutored() {
               </thead>
               <tbody>
                 {user.tutorSignUps.length !== 0 ? (
-                  user.tutorSignUps
-                    .map((signUp, index) => {
-                      return (
-                        <tr key={signUp.id + 10}>
-                          <td>{signUp.location}</td>
-                          <td>{signUp.date}</td>
-                          <td>
-                            {signUp.start_time}-{signUp.end_time}
-                          </td>
-                          <td>
-                            <Button
-                              variant="success"
-                              className="mb-2"
-                              onClick={() =>
-                                handleDropEntireSession(signUp.id, index)
-                              }
-                            >
-                              Drop Session
-                            </Button>
-                          </td>
-                        </tr>
-                      );
-                    })
+                  user.tutorSignUps.map((signUp, index) => {
+                    return (
+                      <tr key={signUp.id + 10}>
+                        <td>{signUp.location}</td>
+                        <td>{signUp.date}</td>
+                        <td>
+                          {signUp.start_time}-{signUp.end_time}
+                        </td>
+                        <td>
+                          <Button
+                            variant="success"
+                            className="mb-2"
+                            onClick={() =>
+                              handleDropEntireSession(signUp.id, index)
+                            }
+                          >
+                            Drop Session
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })
                 ) : (
                   <tr>
                     <td>No Current Sessions</td>
@@ -112,37 +111,38 @@ function SessionsTutored() {
               </thead>
               <tbody>
                 {user.bookedAsTutor.length !== 0 ? (
-                user.bookedAsTutor
-                    .map((slot, index) => {
-                      return (
-                        <tr key={slot.id.toString() + slot.tutee.full_name}>
-                          <td>{slot.location}</td>
-                          <td>{slot.date}</td>
-                          <td>
-                            {slot.start_time}-{slot.end_time}
-                          </td>
-                          <td>{slot.tutee.full_name}</td>
-                          <td>
-                            <Button
-                              variant="success"
-                              className="mb-2"
-                              onClick={() =>
-                                handleDropBookedSession(slot.id, index)
-                              }
-                            >
-                              Drop Session
-                            </Button>{" "}
-                            <Button
-                              variant="success"
-                              className="mb-2"
-                              onClick={() => handleAddNote(slot.tutee.id)}
-                            >
-                              Leave Note
-                            </Button>
-                          </td>
-                        </tr>
-                      );
-                    })
+                  user.bookedAsTutor.map((slot, index) => {
+                    return (
+                      <tr key={slot.id.toString() + slot.tutee.full_name}>
+                        <td>{slot.location}</td>
+                        <td>{slot.date}</td>
+                        <td>
+                          {slot.start_time}-{slot.end_time}
+                        </td>
+                        <td>{slot.tutee.full_name}</td>
+                        <td>
+                          <Button
+                            variant="success"
+                            className="mb-2"
+                            onClick={() =>
+                              handleDropBookedSession(slot.id, index)
+                            }
+                          >
+                            Drop Session
+                          </Button>{" "}
+                          <Button
+                            variant="success"
+                            className="mb-2"
+                            onClick={() =>
+                              handleAddNote(slot.tutee.id, slot.tutee.full_name)
+                            }
+                          >
+                            Leave Note
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })
                 ) : (
                   <tr>
                     <td>No Current Sessions</td>
@@ -158,7 +158,7 @@ function SessionsTutored() {
           <Modal.Title>Leave Note</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <LeaveNote closeForm={handleCloseModal} tuteeId={tuteeId} />
+          <LeaveNote closeForm={handleCloseModal} tuteeData={tuteeData} />
         </Modal.Body>
       </Modal>
     </>

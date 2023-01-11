@@ -9,7 +9,6 @@ import SessionRender from "./SessionRender";
 import SessionsTutored from "./SessionsTutored";
 import RenderNotes from "./RenderNotes";
 import Col from "react-bootstrap/esm/Col";
-import { sortedSchool } from "../ManageSchool/schoolSlice";
 
 function UserInfo() {
   // const auth = useAuth();
