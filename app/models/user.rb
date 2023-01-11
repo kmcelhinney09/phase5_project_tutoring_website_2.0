@@ -51,11 +51,11 @@ class User < ApplicationRecord
 
   def notes_from_tutor
     notes = TutorNote.where(tutee_id:self.id).to_a
-    tutor_notes_arry = notes.map{|note| {id:note.id, tutor_name:note.tutor.full_name, tutor_note:note.note}}
+    tutor_notes_arry = notes.map{|note| {id:note.id, tutor_id:note.tutor_id, tutor_name:note.tutor.full_name, tutor_note:note.note, tutee_name:note.tutee.full_name}}
   end
 
   def notes_belong_to_tutor
     notes = TutorNote.where(tutor_id:self.id).to_a
-    tutor_notes_arry = notes.map{|note| {id:note.id, tutor_name:note.tutor.full_name, tutor_note:note.note}}
+    tutor_notes_arry = notes.map{|note| {id:note.id, tutor_id:note.tutor_id, tutor_name:note.tutor.full_name, tutor_note:note.note, tutee_name:note.tutee.full_name}}
   end
 end
