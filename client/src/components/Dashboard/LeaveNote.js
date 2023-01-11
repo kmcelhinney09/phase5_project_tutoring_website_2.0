@@ -1,12 +1,17 @@
-import { useAuth } from "../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import Form from "react-bootstrap/esm/Form";
 import FloatingLabel from "react-bootstrap/esm/FloatingLabel";
 import Button from "react-bootstrap/esm/Button";
 
 function LeaveNote({ closeForm, tuteeId }) {
-  const auth = useAuth();
-  const user = auth.currentUser;
+  // const auth = useAuth();
+  // const user = auth.currentUser;
+  const dispatch = useDispatch();
+
+  const user = useSelector((store) => store.user)
+  
   const [noteForm, setNoteForm] = useState({
     tutor_id: user.id,
     tutee_id: tuteeId,
@@ -43,7 +48,7 @@ function LeaveNote({ closeForm, tuteeId }) {
     let new_written_notes = new_user.written_notes;
     let new_note = { tutor_name: user.full_name, tutor_note: noteForm.note };
     new_written_notes.push(new_note);
-    auth.updateCurrentUser(new_user);
+    // auth.updateCurrentUser(new_user);
     closeForm();
 
     fetch("/tutor_note", {
@@ -53,7 +58,7 @@ function LeaveNote({ closeForm, tuteeId }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((return_note) => {
-          auth.auto();
+          // auth.auto();
         });
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error)));

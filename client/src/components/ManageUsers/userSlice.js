@@ -53,6 +53,9 @@ const userSlice = createSlice({
       state.isLoading = false;
       state = initialState;
     },
+    addTutorNote(state,{payload}){
+      
+    },
   },
   extraReducers: {
     [getUserInfo.pending]: (state) => {
