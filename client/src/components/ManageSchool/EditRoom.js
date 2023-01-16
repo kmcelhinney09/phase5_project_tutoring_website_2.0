@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-
+//[]: remove useAuth
 function EditRoom({ closeForm, room_id = 0, resources_name }) {
   const auth = useAuth();
 
@@ -16,6 +16,7 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
   const [errors, setErrors] = useState([]);
 
   function renderErrors() {
+    //[]: link to errors from school store
     const error_text = errors.map((error, index) => {
       return (
         <li key={index}>
@@ -39,17 +40,17 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
 
   function handleEditRoomSubmit(e) {
     e.preventDefault();
-    setErrors([]);
+    setErrors([]); //[]:link to clear error in school store
     let saved_room;
     let saved_index;
     let removed_room_building;
     let updated_room_building;
     let new_rooms;
     let updated_rooms;
-
+    //[]: link to action to edit room is school store
     //https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/
     let locations = [...auth.currentUser.school.locations];
-
+    // Logic is complicated make sure you trace and underrstand before handeling store
     if (roomForm.name !== resources_name[1]) {
       locations.forEach((location) => {
         location.rooms.forEach((room) => {
@@ -95,9 +96,9 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
       body: JSON.stringify(roomForm),
     }).then((res) => {
       if (res.ok) {
-        res.json().then((room) => {});
+        res.json().then((room) => {}); //[]: create message that action happened??
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));//[]: link to errors in school store
       }
     });
   }

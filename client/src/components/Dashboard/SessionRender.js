@@ -5,18 +5,19 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/esm/Table";
 import Button from "react-bootstrap/esm/Button";
-
+//[]remove useAuth
 function SessionRender() {
   // const auth = useAuth();
   // const user = auth.currentUser;
   const user = useSelector((state) => state.user)
 
   function handleDropSession(sessionId, sessionIndex) {
+    //[]hook this drop session to school store
     let newUser = JSON.parse(JSON.stringify(user));
     let updatedBookedSlots = newUser.bookedSlots;
     updatedBookedSlots.splice(sessionIndex, 1);
     // auth.updateCurrentUser(newUser);
-
+    //[]: create message that that action was successful
     fetch(`/booked_slot/${sessionId}`, {
       method: "DELETE",
     });

@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-
+//[]: remove useAuth
+//[]: add useSelector to attach user
 function AddSubject({ closeForm }) {
   const auth = useAuth();
-  const user = auth.currentUser
+  const user = auth.currentUser // replace with useSelector user
   const [subjectForm, setSubjectForm] = useState({
     name: "",
     school_id: user.school.id,
@@ -13,7 +14,7 @@ function AddSubject({ closeForm }) {
   const [errors, setErrors] = useState([]);
 
   function renderErrors() {
-    
+    //[]: link to errors in user store
     const error_text = errors.map((error, index) => {
       return (
         <li key={index}>
@@ -38,7 +39,7 @@ function AddSubject({ closeForm }) {
   function handleSubmiitSubjectForm(e) {
     e.preventDefault();
     setErrors([]);
-
+    //[]: link add subject to school store
     let newUser = JSON.parse(JSON.stringify(user));
     let updatedSubject = newUser.school.subjects
     updatedSubject.push(subjectForm)
@@ -53,10 +54,10 @@ function AddSubject({ closeForm }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((subject) => {
-          
+          //[]: create message that action was successful
         });
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to errors
       }
     });
   }

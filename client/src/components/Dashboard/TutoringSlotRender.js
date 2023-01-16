@@ -2,7 +2,7 @@
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
-
+//[]: Remove useAuth
 function TutoringSlotRender({
   slotInfo,
   handleDashboardKeyChange,
@@ -17,6 +17,7 @@ function TutoringSlotRender({
 
   function handleBookTutoring(tutorId, tutorName, tutorSubjects) {
     setErrors([]);
+    // []:link booking tutoring to user slice
     let signUpSlot;
     let newUser = JSON.parse(JSON.stringify(user));
     let updatedBookedSlots = newUser.booked_slots;
@@ -56,17 +57,19 @@ function TutoringSlotRender({
     }).then((res) => {
       if (res.ok) {
         res.json().then((bookedSlot) => {
+          //[]: create message that action was successful
           handleDashboardKeyChange("dashboard");
           navigate(`/user/${user.id}`, { replace: true });
         });
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));//[]: link to errors in user store
       }
     });
   }
 
   function handleTutorSignUp() {
     setErrors([]);
+    //[]:add tutor sign up to user store
     let newUser = JSON.parse(JSON.stringify(user));
     let signUps = newUser.tutor_sign_ups;
     const newSignUp = {
@@ -91,11 +94,12 @@ function TutoringSlotRender({
     }).then((res) => {
       if (res.ok) {
         res.json().then((tutorSignUp) => {
+          //[]: create message that action was successful
           handleDashboardKeyChange("dashboard");
           navigate(`/user/${user.id}`, { replace: true });
         });
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to errors in school store
       }
     });
   }

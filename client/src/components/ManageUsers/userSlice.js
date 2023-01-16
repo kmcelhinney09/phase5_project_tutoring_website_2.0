@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
-
+//TODO: create an error tag and an update or add error and a reset error action
 const initialState = {
   isLoading: false,
   isLoggedIn: false,
@@ -17,7 +17,7 @@ const initialState = {
   tutorSignUps: [],
   notesWritten: [],
 };
-
+//[]: create thunk for user sign up
 export const getUserInfo = createAsyncThunk(
   "user/initializeUser",
   (loginForm) => {
@@ -41,7 +41,14 @@ export const reAuthorizeUser = createAsyncThunk("user/reAuthorize", () => {
       return userInfo;
     });
 });
-
+// []: add action to delete written notes
+//[]: add action to add subject to user subjects tutored
+//[]: add action to edit subjects tutored to user
+//[]: add action to remove subjects tutored from user
+//[]: add action to add booked tutoring to store
+//[]: add action to add tutor slot sign up to store
+//[]: add action to edit user info in user store
+//
 const userSlice = createSlice({
   name: "user",
   initialState,

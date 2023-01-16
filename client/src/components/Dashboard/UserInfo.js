@@ -9,6 +9,7 @@ import SessionRender from "./SessionRender";
 import SessionsTutored from "./SessionsTutored";
 import RenderNotes from "./RenderNotes";
 import Col from "react-bootstrap/esm/Col";
+//[]:remove useAuth
 
 function UserInfo() {
   // const auth = useAuth();
@@ -19,6 +20,7 @@ function UserInfo() {
 
   const [errors, setErrors] = useState([]);
 
+  //[]: connect to the proper store user
   function renderErrors() {
     const error_text = errors.map((error, index) => {
       return (
@@ -36,17 +38,20 @@ function UserInfo() {
   }
 
   function handleDeleteWrittenNotes(noteId, noteIndex) {
+    //[]: Link action to remove writtenNotes from user store
     let new_user = JSON.parse(JSON.stringify(user));
     let new_written_notes = new_user.written_notes;
     new_written_notes.splice(noteIndex, 1);
     // auth.updateCurrentUser(new_user);
 
     fetch(`/tutor_note/${noteId}`, {
+      //[]: create message that action was successful
       method: "DELETE",
     });
   }
 
   function handleSubjectSelect(subject) {
+    //[]: Link action to add subject to user subjects tutored
     let newUser = JSON.parse(JSON.stringify(user));
     let updated_subjects_tutored = newUser.subjects_signed_up;
     updated_subjects_tutored.push(subject);
@@ -58,20 +63,23 @@ function UserInfo() {
       body: JSON.stringify({ subject_id: subject.id, tutor_id: user.id }),
     }).then((res) => {
       if (res.ok) {
+        //[]: create message that action was successful
         res.json().then((subjectSignedUp) => {});
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));//[]: link to errors in user store
       }
     });
   }
 
   function handleSubjectRemoved(sub, subIndex) {
+    //[]: link action to remove subjects tutored from user
     let newUser = JSON.parse(JSON.stringify(user));
     let updated_subjects_tutored = newUser.subjects_signed_up;
     updated_subjects_tutored.splice(subIndex, 1);
     // auth.updateCurrentUser(newUser);
 
     fetch(`/tutored_subject/${sub.id}`, {
+      //[]: create message that action was successful
       method: "DELETE",
     });
   }

@@ -6,7 +6,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
 import ResetPassward from "./ResetPassward";
 import EditUserInfo from "./EditUserInfo";
-
+//TODO: remove useAuth
 function ManageUsers() {
   // const user = useAuth().currentUser;
   const {user,school} = useSelector((state) => state)
@@ -19,7 +19,7 @@ function ManageUsers() {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-  const [errors, setErrors] = useState([])
+  const [errors, setErrors] = useState([])//[]: link to errors in user store (might Remove do we need?)
   // Does this call need to be made? Can I include it in the User call if they are admin?
   useEffect(() => {
     fetch("/users").then((res) => {
@@ -34,6 +34,7 @@ function ManageUsers() {
   }, [school.id]);
 
   function renderErrors() {
+    //[]: link to errors in user store
     const error_text = errors.map((error, index) => {
       return (
         <li key={index}>
@@ -89,6 +90,7 @@ function ManageUsers() {
   }
 
   function handleDeleteUser(userId, userIndex) {
+    //[]: link to action to delete user from user store
     let newSchoolData = JSON.parse(JSON.stringify(schoolData));
     newSchoolData.splice(userIndex, 1);
     setSchoolData(newSchoolData);

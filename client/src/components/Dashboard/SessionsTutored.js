@@ -7,7 +7,7 @@ import Table from "react-bootstrap/esm/Table";
 import Button from "react-bootstrap/esm/Button";
 import Modal from "react-bootstrap/esm/Modal";
 import LeaveNote from "./LeaveNote";
-
+// [] Remove useAuth
 function SessionsTutored() {
   // const auth = useAuth();
   // const user = auth.currentUser;
@@ -28,7 +28,8 @@ function SessionsTutored() {
       method: "DELETE",
     }).then((res) => {
       if (res.ok) {
-        // auth.auto();
+        //[]: create message that action was successful
+        // auth.auto();//TODO: remove
       }
     });
   }
@@ -40,6 +41,7 @@ function SessionsTutored() {
     // auth.updateCurrentUser(newUser);
 
     fetch(`/tutor_slot_sign_up/${session_id}`, {
+      //[]: create message that action was successful
       method: "DELETE",
     });
   }

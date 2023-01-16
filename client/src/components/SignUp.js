@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-
+//TODO: remove useAuth
 function SignUp({ closeForm }) {
   const [signUpForm, setSignUpForm] = useState({
     email: "",
@@ -27,6 +27,7 @@ function SignUp({ closeForm }) {
   }
 
   function handleSignUpSubmit(e) {
+    //[]: link to signup user in user store
     e.preventDefault();
     auth.signup(signUpForm);
     closeForm();

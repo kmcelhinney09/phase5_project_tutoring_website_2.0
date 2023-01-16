@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-
+//TODO: remove useAUTH
 function TimeSlotForm({
   slotForm,
   setSlotForm,
@@ -13,13 +13,14 @@ function TimeSlotForm({
   const user = useAuth().currentUser;
   const [roomSelection, setRoomSelection] = useState("");
 
-  useEffect(() => {
+  useEffect(() => { //[]: link to selector to store to pull rooms based on building id
     if (slotForm.building !== "") {
       handleGetRooms(slotForm.building);
     }
   }, [slotForm]);
 
   function renderErrors() {
+    //[]: link to errors in school store
     const error_text = errors.map((error, index) => {
       return (
         <li key={index}>

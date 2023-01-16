@@ -15,7 +15,7 @@ import Home from "./components/Home";
 import UserDashboard from "./components/Dashboard/UserDashboard";
 import PrivateRoutes from "./components/PrivateRoutes";
 import ViewTutoringTimeSlot from "./components/ManageTimeSlots/ViewTutoringTimeSlot";
-
+//TODO: Remove this APP and change the other oone to APP
 function App() {
   const auth = useAuth();
   const user = auth.currentUser;

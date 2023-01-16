@@ -5,8 +5,9 @@ import Form from "react-bootstrap/esm/Form";
 import FloatingLabel from "react-bootstrap/esm/FloatingLabel";
 import Button from "react-bootstrap/esm/Button";
 import { addTutorNote } from "../ManageUsers/userSlice";
-//TODO: remove usAuth
-//TODO: created action to add note to store
+//[]: Remove useAuth
+//[]: Fix Error Handeling to work with store
+//Note: created action to add note to store
 function LeaveNote({ closeForm, tuteeData }) {
   // const auth = useAuth();
   // const user = auth.currentUser;
@@ -62,6 +63,7 @@ function LeaveNote({ closeForm, tuteeData }) {
     }).then((res) => {
       console.log(res);
       if (res.ok) {
+        //[]: create message that action was sucessful
         res.json().then((return_note) => {});
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error)));

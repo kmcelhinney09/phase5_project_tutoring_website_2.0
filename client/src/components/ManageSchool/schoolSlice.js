@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+//TODO: Crete Error handleling ?? Maybe have an errors tag and just render errors there have actio to add errors and clear errors
 const initialState = {
   isLoading: false,
   id: 0,
@@ -14,6 +14,16 @@ export const getSchoolData = createAsyncThunk("school/getSchoolData", () => {
     .then((res) => res.json())
     .then((schoolData) => schoolData);
 });
+//[] add action to add new tutoring time slot
+//[] add action to edit tutoring time slot
+//[] add action to remove tutoring time slot
+//[] add action to add new building to school
+//[] add action to edit building to school
+//[] add action to remove building from school
+//[] add action to add new room to school
+//[] add action to edit room to school
+//[] add action to remove room from school
+//[] add action to remove subject from school
 
 const schoolSlice = createSlice({
   name: "school",
@@ -36,6 +46,6 @@ const schoolSlice = createSlice({
 
 // export sortedSchoolState = (state) => {
 // }
-
+//[]: create selector that will return rooms associated with building (might do on back end with serializer)
 export const { initializeSchool } = schoolSlice.actions;
 export default schoolSlice.reducer;

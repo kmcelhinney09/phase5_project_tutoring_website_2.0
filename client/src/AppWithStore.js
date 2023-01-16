@@ -20,7 +20,7 @@ import {
   reAuthorizeUser,
 } from "./components/ManageUsers/userSlice";
 import { getSchoolData } from "./components/ManageSchool/schoolSlice";
-
+//TODO: Change to APP instead of  APP WITH STORE
 function AppWithStore() {
   const [dashboardKey, setDashboardKey] = useState("dashboard");
   const storeUser = useSelector((state) => state.user);

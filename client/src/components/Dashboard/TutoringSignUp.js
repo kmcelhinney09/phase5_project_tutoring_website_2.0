@@ -6,11 +6,12 @@ import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import TutoringSlotRender from "./TutoringSlotRender";
 import { sortedSchool } from "../ManageSchool/schoolSlice";
-
+//[]: Remove useAuth
 function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
   // const user = useAuth().currentUser;
   const { user, school } = useSelector((store) => store);
 
+  //hook errors up to school store
   const [errors, setErrors] = useState([]);
 
   console.log(school);

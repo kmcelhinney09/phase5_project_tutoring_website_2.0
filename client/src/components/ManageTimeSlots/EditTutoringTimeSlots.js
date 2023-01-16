@@ -16,8 +16,9 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
       tutee_capacity: slotInfo.tutee_capacity,
   });
 
-  const [errors, setErrors] = useState([])
+  const [errors, setErrors] = useState([])//[]: link to errors in school store
 
+  //TODO: Is this still necessary with the store?
   function getBuilding() {
     let building;
     let room;
@@ -36,7 +37,8 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
 
   function handleEditSlotSubmit(e) {
     e.preventDefault();
-    setErrors([])
+    setErrors([])//[]: link to clear errors in school store
+    //[]: link to edit tutoring time slot in school store
     let new_user = JSON.parse(JSON.stringify(user));
     let updated_time_slots = new_user.school.tutoring_time_slots;
     let room_id;
@@ -78,10 +80,11 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((slot) => {
-          auth.auto();
+          //[]: create message that action successful
+          auth.auto();//TODO: remove
         });
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to add errors in school store
       }
     });
   }

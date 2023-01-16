@@ -14,11 +14,12 @@ function CreateTutoringTimeSlots({ closeForm }) {
     tutor_capacity: 0,
     tutee_capacity: 0,
   });
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState([]);//[]: link to errors in school store
 
   function handleCreateSlotSubmit(e) {
     e.preventDefault();
-    setErrors([]);
+    setErrors([]); //[]: link to clear errors in school store
+    //[] linkk to add a new tutoring timeslot to the school store
     let new_user = JSON.parse(JSON.stringify(user));
     let start_time = `${slotForm.date} ${slotForm.start_time}`;
     let end_time = `${slotForm.date} ${slotForm.end_time}`;
@@ -54,10 +55,11 @@ function CreateTutoringTimeSlots({ closeForm }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((slot) => {
-          auth.auto();
+          //[]: create message that action was successful
+          auth.auto();//TODO: remove
         });
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error)));//[]: link to errors from school store
       }
     });
   }

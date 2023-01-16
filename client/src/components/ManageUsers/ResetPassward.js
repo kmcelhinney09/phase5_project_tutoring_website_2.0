@@ -61,6 +61,7 @@ function ResetPassward({ closeForm, userId }) {
       }).then((res) => {
         if (res.ok) {
           res.json().then((user) => {
+            //[]: create message that action was successful
             setPasswordResetMessage("Password was successfully reset");
           });
         } else {

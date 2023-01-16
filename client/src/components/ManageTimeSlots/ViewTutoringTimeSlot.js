@@ -4,7 +4,7 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
-
+//TODO: remove useAuth
 function ViewTutoringTimeSlot() {
   // const auth = useAuth();
   const [tutoringSlotInfo, setTutoringSlotInfo] = useState(false);
@@ -15,6 +15,7 @@ function ViewTutoringTimeSlot() {
     fetch(`/tutoring_time_slots/${id}`).then((res) => {
       if (res.ok) {
         res.json().then((data) => {
+          //[]: create message that action successful
           setTutoringSlotInfo(data);
           setRefresh(false);
         });
@@ -37,7 +38,8 @@ function ViewTutoringTimeSlot() {
       method: "DELETE",
     }).then(res => {
       if(res.ok){
-        setRefresh(true)
+        //[]: create message that action successful
+        setRefresh(true) //TODO: Remove store should refresh on change
       }
     })
   }
@@ -51,7 +53,8 @@ function ViewTutoringTimeSlot() {
       method: "DELETE",
     }).then(res => {
       if(res.ok){
-        setRefresh(true)
+        //[]: create message that action successful
+        setRefresh(true) //TODO: Remove store should refresh on change
       }
     });
   }

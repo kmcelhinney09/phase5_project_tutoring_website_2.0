@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-
+//[]: remove useAuth
 function EditBuilding({ closeForm, building_id, school_id, building_name }) {
   const auth = useAuth();
   const user = auth.currentUser;
@@ -15,6 +15,7 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
   const [errors, setErrors] = useState([]);
 
   function renderErrors() {
+    //[]: link school errors to render errors
     const error_text = errors.map((error, index) => {
       return (
         <li key={index}>
@@ -38,8 +39,9 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
 
   function handleEditBuildingSubmit(e) {
     e.preventDefault();
-    setErrors([]);
+    setErrors([]); // []: link to clear erros in school errors
     //https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/
+    //[]: link to edit building action in school store
     let new_user = JSON.parse(JSON.stringify(user));
     let locations = JSON.parse(JSON.stringify(new_user.school.locations));
 
@@ -66,10 +68,11 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((building) => {
-          auth.auto();
+          //[]: create message that action was sucessful
+          auth.auto();// remove
         });
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error))); // []: link to school errors
       }
     });
   }

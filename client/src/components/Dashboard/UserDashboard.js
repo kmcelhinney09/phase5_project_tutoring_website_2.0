@@ -1,6 +1,6 @@
 // import { useAuth } from "../../context/AuthProvider";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux"; //[]:remove useDispatch
 import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
@@ -9,11 +9,12 @@ import UserInfo from "./UserInfo";
 import { LinkContainer } from "react-router-bootstrap";
 import TutoringSignUp from "./TutoringSignUp";
 import AdminControl from "./AdminControl";
-
+//[]: remove useAuth
+//[]: clean up commented out code
 function UserDashboard({ dashboardKey, handleDashboardKeyChange }) {
   const user = useSelector((state) => state.user);
   // const school = useSelector((state) => state.school);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // const [tutoringInfo, setTutoringInfo] = useState(false);
   // console.log(school.tutoringTimeSlots);

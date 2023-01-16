@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-
+//[]: remove useAuth
 function CreateBuilding({ closeForm, school_id }) {
   const auth = useAuth();
   const [errors, setErrors] = useState([])
@@ -11,6 +11,7 @@ function CreateBuilding({ closeForm, school_id }) {
   const [buildingForm, setBuildingForm] = useState([]);
 
   function renderErrors() {
+    // []: link errors to school store
     const error_text = errors.map((error, index) => {
       return (
         <li key={index}>
@@ -39,6 +40,7 @@ function CreateBuilding({ closeForm, school_id }) {
   function handleCreateBuildingSubmit(e) {
     e.preventDefault();
     setErrors([])
+    //[]: link to action to add building to school store
     let new_user = JSON.parse(JSON.stringify(auth.currentUser));
     let locations = new_user.school.locations;
     locations.push(createBuilding);
@@ -52,10 +54,11 @@ function CreateBuilding({ closeForm, school_id }) {
     }).then((res) => {
       if (res.ok) {
         res.json().then((building) => {
-          auth.auto();
+          auth.auto(); //TODO: remove
+          //[]: create message to action was successful
         });
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
+        res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to errors
       }
     });
   }

@@ -11,7 +11,7 @@ import CreateRoom from "./CreateRoom";
 import EditRoom from "./EditRoom";
 import EditBuilding from "./EditBuilding";
 import AddSubject from "./AddSubject";
-
+//-[ ] Remove useAuth
 function ManageSchool() {
   // const auth = useAuth();
   // let user = auth.currentUser;
@@ -63,6 +63,7 @@ function ManageSchool() {
   }
 
   function handleRemoveRoom(room_id) {
+    //[]: link to remove room action in school store
     let newSchool = JSON.parse(JSON.stringify(school));
     let locations = newSchool.locations;
     let new_rooms = [];
@@ -89,11 +90,13 @@ function ManageSchool() {
     // auth.updateCurrentUser(new_user);
 
     fetch(`/room/${room_id}`, {
+      //[]: create message that action was successful
       method: "DELETE",
     });
   }
 
   function handleRemoveBuilding(building_id) {
+    //[]: link action to remove building in school store
     let newSchool = JSON.parse(JSON.stringify(school));
     let locations = newSchool.locations;
     let building_index;
@@ -106,17 +109,20 @@ function ManageSchool() {
     // auth.updateCurrentUser(new_user);
 
     fetch(`/building/${building_id}`, {
+      //[]: create message that action was successful
       method: "DELETE",
     });
   }
 
   function handleRemoveSubject(subjectId, subjectIndex) {
+    //[]: link to action to remove subject from school store
     let newSchool = JSON.parse(JSON.stringify(school));
     let updatedSubject = newSchool.subjects;
     updatedSubject.splice(subjectIndex, 1);
     // auth.updateCurrentUser(newUser)
 
     fetch(`/subject/${subjectId}`, {
+      //[]: create message that action was successful
       method: "DELETE",
     });
   }
