@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../context/AuthProvider";
+import { useSelector } from "react-redux";
+// import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 //TODO: remove useAUTH
@@ -10,7 +11,8 @@ function TimeSlotForm({
   closeForm,
   errors,
 }) {
-  const user = useAuth().currentUser;
+  // const user = useAuth().currentUser;
+  const { user, school } = useSelector((store) => store)
   const [roomSelection, setRoomSelection] = useState("");
 
   useEffect(() => { //[]: link to selector to store to pull rooms based on building id
@@ -53,7 +55,7 @@ function TimeSlotForm({
       setRoomSelection(false);
     } else {
       let rooms;
-      const locations = user.school.locations;
+      const locations = school.locations;
       locations.forEach((location) => {
         if (location.building.name === buildingName) {
           rooms = location.rooms;
@@ -99,7 +101,7 @@ function TimeSlotForm({
         >
           <option value={"Select a building"}>Select a building</option>
           {user.id
-            ? user.school.locations.map((location) => {
+            ? school.locations.map((location) => {
                 return (
                   <option
                     key={location.building.id}
