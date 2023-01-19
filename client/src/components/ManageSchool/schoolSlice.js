@@ -20,7 +20,10 @@ export const getSchoolData = createAsyncThunk("school/getSchoolData", () => {
 
 export const postTutoringTimeSlot = createAsyncThunk(
   "school/postTutoringTimeSlot",
-  (state, slotForm) => {
+  (slotForm, thunkAPI) => {
+    // console.log("FROOM FETCH FORM: ", slotForm);
+    const state = thunkAPI.getState().school;
+    console.log("GET STATE: ", state);
     let roomId;
 
     state.locations.forEach((location) => {
@@ -42,18 +45,15 @@ export const postTutoringTimeSlot = createAsyncThunk(
       school_id: state.id,
       room_id: roomId,
     };
+    console.log("From FETCH :", newServerTimeSlot);
 
     return fetch("/tutoring_time_slots", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newServerTimeSlot),
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((slots) => slots);
-      } else {
-        res.json().then((e) => console.log(e.errors)); //[]: link to errors from school store (this wont work Thunk always returns fullfilled)
-      }
-    });
+    })
+      .then((res) => res.json())
+      .then((slots) => slots);
   }
 );
 
@@ -72,44 +72,6 @@ const schoolSlice = createSlice({
   name: "school",
   initialState,
   reducers: {
-    addTutoringTimeSlot(state, { payload }) {
-      let roomId;
-      const date = new Date(`${payload.date} ${payload.start_time}`);
-      console.log("Date: ", date);
-      const endTime = new Date(`${payload.date} ${payload.end_time}`);
-      const dateSort = new Date(`${payload.date} ${payload.start_time}`);
-
-      state.locations.forEach((location) => {
-        location.rooms.forEach((room) => {
-          if (room.name === payload.room) {
-            roomId = room.id;
-          }
-        });
-      });
-
-      const newSiteTimeSlot = {
-        id: uuid(),
-        created_by: payload.userId,
-        tutor_capacity: payload.tutor_capacity,
-        tutee_capacity: payload.tutee_capacity,
-        date: format(date, "eeee, MMM e "),
-        start_time: format(date, "p"),
-        end_time: format(endTime, "p"),
-        date_sort: Date.parse(dateSort),
-        open_status: false,
-        booked_status: false,
-        school_id: state.id,
-        room_id: roomId,
-        location_render: `${payload.building} - ${payload.room}`,
-        tutoring_slot_sign_ups: [],
-        tutors: [],
-      };
-
-      state.tutoringTimeSlots.push(newSiteTimeSlot);
-      state.tutoringTimeSlots.sort((a, b) =>
-        a.date_sort > b.date_sort ? 1 : -1
-      );
-    },
   },
   extraReducers: {
     [getSchoolData.pending]: (state) => {
@@ -128,8 +90,29 @@ const schoolSlice = createSlice({
     [postTutoringTimeSlot.pending]: (state) => {
       state.isloading = true;
     },
-    [postTutoringTimeSlot.fulfilled]: (state, { payload }) => {
-      console.log("Tutoring Time Slot added");
+    [postTutoringTimeSlot.fulfilled]: (state, action) => {
+      console.log("Tutoring Time Slot added: ", action.payload);
+      const newSiteTimeSlot = {
+        id: action.payload.id,
+        created_by: action.payload.created_by,
+        tutor_capacity: action.payload.tutor_capacity,
+        tutee_capacity: action.payload.tutee_capacity,
+        date: action.payload.date,
+        start_time: action.payload.start_time,
+        end_time: action.payload.end_time,
+        date_sort: action.payload.date_sort,
+        open_status: action.payload.open_status,
+        booked_status: action.payload.booked_status,
+        school_id: state.id,
+        room_id: action.payload.room_id,
+        location_render: action.payload.location_render,
+        tutoring_slot_sign_ups: action.payload.tutoring_slot_sign_ups,
+        tutors: action.payload.tutors,
+      };
+      state.tutoringTimeSlots.push(newSiteTimeSlot);
+      state.tutoringTimeSlots.sort((a, b) =>
+        a.date_sort > b.date_sort ? 1 : -1
+      );
       //[]: add sucess message and error handeling here
       state.isloading = false;
     },
@@ -137,5 +120,5 @@ const schoolSlice = createSlice({
 });
 
 //[]: create selector that will return rooms associated with building (might do on back end with serializer)
-export const { initializeSchool, addTutoringTimeSlot } = schoolSlice.actions;
+export const { } = schoolSlice.actions;
 export default schoolSlice.reducer;

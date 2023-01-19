@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addTutoringTimeSlot, postTutoringTimeSlot } from "../ManageSchool/schoolSlice";
+import { postTutoringTimeSlot } from "../ManageSchool/schoolSlice";
 import TimeSlotForm from "./TimeSlotForm";
 
 function CreateTutoringTimeSlots({ closeForm }) {
   const { user, school } = useSelector((store) => store);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [slotForm, setSlotForm] = useState({
     userId: user.id,
     date: "",
@@ -22,9 +22,9 @@ function CreateTutoringTimeSlots({ closeForm }) {
     e.preventDefault();
     setErrors([]); //[]: link to clear errors in school store
     //[x] link to add a new tutoring timeslot to the school store
-    dispatch(addTutoringTimeSlot(slotForm))
-    dispatch(postTutoringTimeSlot(school,slotForm))
-    
+
+    dispatch(postTutoringTimeSlot(slotForm));
+
     closeForm();
   }
 

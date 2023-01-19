@@ -16,7 +16,7 @@ function UserInfo() {
   // const user = auth.currentUser;
   const { user, school } = useSelector((state) => state);
 
-  console.log(user);
+  // console.log(user);
 
   const [errors, setErrors] = useState([]);
 
@@ -66,7 +66,7 @@ function UserInfo() {
         //[]: create message that action was successful
         res.json().then((subjectSignedUp) => {});
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));//[]: link to errors in user store
+        res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to errors in user store
       }
     });
   }
@@ -103,18 +103,17 @@ function UserInfo() {
                 title="Add a Subject You Tutor"
                 drop={"end"}
               >
-                {school.subjects
-                  .map((sub) => {
-                    return (
-                      <Dropdown.Item
-                        key={sub.id}
-                        as="button"
-                        onClick={() => handleSubjectSelect(sub)}
-                      >
-                        {sub.name}
-                      </Dropdown.Item>
-                    );
-                  })}
+                {school.subjects.map((sub) => {
+                  return (
+                    <Dropdown.Item
+                      key={sub.id}
+                      as="button"
+                      onClick={() => handleSubjectSelect(sub)}
+                    >
+                      {sub.name}
+                    </Dropdown.Item>
+                  );
+                })}
               </DropdownButton>
             </Col>
             <Col md={3}>
@@ -123,32 +122,30 @@ function UserInfo() {
                 title="Drop a Subject You Tutor"
                 drop={"end"}
               >
-                {user.subjectsSignedUp
-                  .map((sub, index) => {
-                    return (
-                      <Dropdown.Item
-                        key={sub.id}
-                        as="button"
-                        onClick={() => handleSubjectRemoved(sub, index)}
-                      >
-                        {sub.name}
-                      </Dropdown.Item>
-                    );
-                  })}
+                {user.subjectsSignedUp.map((sub, index) => {
+                  return (
+                    <Dropdown.Item
+                      key={sub.id}
+                      as="button"
+                      onClick={() => handleSubjectRemoved(sub, index)}
+                    >
+                      {sub.name}
+                    </Dropdown.Item>
+                  );
+                })}
               </DropdownButton>
             </Col>
             <Row>
               <h5>Subjects Tutored</h5>
               <p className="ms-4">
-                {user.subjectsSignedUp
-                  .map((sub, index) => {
-                    const size = user.subjectsSignedUp.length;
-                    if (index <= size - 2) {
-                      return <>{`${sub.name}, `}</>;
-                    } else {
-                      return <>{`${sub.name}`}</>;
-                    }
-                  })}
+                {user.subjectsSignedUp.map((sub, index) => {
+                  const size = user.subjectsSignedUp.length;
+                  if (index <= size - 2) {
+                    return <>{`${sub.name}, `}</>;
+                  } else {
+                    return <>{`${sub.name}`}</>;
+                  }
+                })}
               </p>
               <p>{renderErrors()}</p>
             </Row>

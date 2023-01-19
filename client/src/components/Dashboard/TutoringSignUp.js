@@ -14,7 +14,7 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
   //hook errors up to school store
   const [errors, setErrors] = useState([]);
 
-  console.log(school);
+  // console.log(school);
   function handleSetErrors(inputErrors) {
     setErrors(inputErrors);
   }
@@ -82,56 +82,54 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
             <ul>{renderErrors()}</ul>
           </Row>
           <Row>
-            {school.locations
-              .map((buildingInfo) => {
-                return (
-                  <Row key={buildingInfo.building.id}>
-                    <h3>{buildingInfo.building.name}</h3>
-                    {buildingInfo.rooms
-                      .map((rooms) => {
-                        return (
-                          <Row key={rooms.id}>
-                            <Row>
-                              <h5>{rooms.name}</h5>
-                            </Row>
-                            <Row>
-                              <Table responsive="md">
-                                <thead>
-                                  <tr>
-                                    <th className="text-center">Session</th>
-                                    <th className="text-center">Tutor</th>
-                                    <th className="text-center">
-                                      Subjects Covered
-                                    </th>
-                                    <th className="text-center">Start Time</th>
-                                    <th className="text-center">End Time</th>
-                                    <th className="text-center">Open Slots</th>
-                                    <th className="text-center">Status</th>
-                                  </tr>
-                                </thead>
-                                {JSON.parse(
-                                  JSON.stringify(school.tutoringTimeSlots)
-                                )
-                                  .sort((a, b) =>
-                                    a.date_sort > b.date_sort ? 1 : -1
-                                  )
-                                  .map((slot) => {
-                                    return (
-                                      <tbody key={slot.id}>
-                                        {slot.room_id === rooms.id
-                                          ? handle_closed_sessions(slot)
-                                          : null}
-                                      </tbody>
-                                    );
-                                  })}
-                              </Table>
-                            </Row>
-                          </Row>
-                        );
-                      })}
-                  </Row>
-                );
-              })}
+            {school.locations.map((buildingInfo) => {
+              return (
+                <Row key={buildingInfo.building.id}>
+                  <h3>{buildingInfo.building.name}</h3>
+                  {buildingInfo.rooms.map((rooms) => {
+                    return (
+                      <Row key={rooms.id}>
+                        <Row>
+                          <h5>{rooms.name}</h5>
+                        </Row>
+                        <Row>
+                          <Table responsive="md">
+                            <thead>
+                              <tr>
+                                <th className="text-center">Session</th>
+                                <th className="text-center">Tutor</th>
+                                <th className="text-center">
+                                  Subjects Covered
+                                </th>
+                                <th className="text-center">Start Time</th>
+                                <th className="text-center">End Time</th>
+                                <th className="text-center">Open Slots</th>
+                                <th className="text-center">Status</th>
+                              </tr>
+                            </thead>
+                            {JSON.parse(
+                              JSON.stringify(school.tutoringTimeSlots)
+                            )
+                              .sort((a, b) =>
+                                a.date_sort > b.date_sort ? 1 : -1
+                              )
+                              .map((slot) => {
+                                return (
+                                  <tbody key={slot.id}>
+                                    {slot.room_id === rooms.id
+                                      ? handle_closed_sessions(slot)
+                                      : null}
+                                  </tbody>
+                                );
+                              })}
+                          </Table>
+                        </Row>
+                      </Row>
+                    );
+                  })}
+                </Row>
+              );
+            })}
           </Row>
         </Container>
       ) : (

@@ -14,6 +14,7 @@ class TutoringTimeSlotsController < ApplicationController
   end
 
   def create
+    puts "#########################################################################################"
     time_slot = TutoringTimeSlot.create!(tutoring_time_slot_params)
     render json: time_slot, status: :created
   end

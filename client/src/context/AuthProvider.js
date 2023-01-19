@@ -1,6 +1,5 @@
 import React, { useState, useContext, createContext } from "react";
 import { getUserInfo } from "../components/ManageUsers/userSlice";
-import { initializeSchool } from "../components/ManageSchool/schoolSlice";
 import { useDispatch } from "react-redux";
 //TODO: remove this folder
 // Code help found at https://hhpendleton.medium.com/useauth-265512bbde3c from Henry Pendleton
@@ -32,7 +31,7 @@ function useProvideAuth() {
         res.json().then((user) => {
           dispatch(getUserInfo(loginForm));
           const newUser = JSON.parse(JSON.stringify(user));
-          dispatch(initializeSchool(newUser));
+          
           setCurrentUser(user);
           setIsLoggedIn(true);
         });
