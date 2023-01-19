@@ -1,5 +1,5 @@
 // import { useAuth } from "../../context/AuthProvider";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
@@ -11,11 +11,14 @@ import CreateRoom from "./CreateRoom";
 import EditRoom from "./EditRoom";
 import EditBuilding from "./EditBuilding";
 import AddSubject from "./AddSubject";
-//-[ ] Remove useAuth
+import { removeBuildingAndItsRooms } from "./schoolSlice";
+
+//TODO: Remove useAuth
 function ManageSchool() {
   // const auth = useAuth();
   // let user = auth.currentUser;
   const { school, user } = useSelector((state) => state);
+  const dispatch = useDispatch();
   // const school = useSelector((state) => state.school)
   console.log(school);
   const [showModal, setShowModal] = useState(false);
@@ -96,18 +99,16 @@ function ManageSchool() {
   }
 
   function handleRemoveBuilding(building_id) {
-    //[]: link action to remove building in school store
-    let newSchool = JSON.parse(JSON.stringify(school));
-    let locations = newSchool.locations;
+    //[x]: link to action to remove building in school store
     let building_index;
-    locations.forEach((location, index) => {
+    school.locations.forEach((location, index) => {
       if (location.building.id === building_id) {
         building_index = index;
       }
     });
-    locations.splice(building_index, 1);
-    // auth.updateCurrentUser(new_user);
-
+    console.log(building_index)
+    dispatch(removeBuildingAndItsRooms(building_index))
+    
     fetch(`/building/${building_id}`, {
       //[]: create message that action was successful
       method: "DELETE",

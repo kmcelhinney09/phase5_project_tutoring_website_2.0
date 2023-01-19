@@ -62,7 +62,8 @@ class TutoringTimeSlot < ApplicationRecord
   end
 
   def date_sort_render
-    date_sort = self.start_time.to_f
+    date_to_float = self.start_time.to_f
+    date_sort = ( self.start_time.to_f * 1000).to_i
   end
 
 end

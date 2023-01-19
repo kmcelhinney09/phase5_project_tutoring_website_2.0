@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-// import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-//TODO: remove useAUTH
+
 function TimeSlotForm({
   slotForm,
   setSlotForm,
@@ -11,7 +10,6 @@ function TimeSlotForm({
   closeForm,
   errors,
 }) {
-  // const user = useAuth().currentUser;
   const { user, school } = useSelector((store) => store)
   const [roomSelection, setRoomSelection] = useState("");
 

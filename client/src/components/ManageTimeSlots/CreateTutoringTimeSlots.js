@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { postTutoringTimeSlot } from "../ManageSchool/schoolSlice";
+import { createTutoringTimeSlot } from "../ManageSchool/schoolSlice";
 import TimeSlotForm from "./TimeSlotForm";
 
 function CreateTutoringTimeSlots({ closeForm }) {
@@ -23,7 +23,7 @@ function CreateTutoringTimeSlots({ closeForm }) {
     setErrors([]); //[]: link to clear errors in school store
     //[x] link to add a new tutoring timeslot to the school store
 
-    dispatch(postTutoringTimeSlot(slotForm));
+    dispatch(createTutoringTimeSlot(slotForm));
 
     closeForm();
   }

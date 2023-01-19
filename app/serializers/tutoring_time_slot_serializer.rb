@@ -6,7 +6,7 @@ class TutoringTimeSlotSerializer < ActiveModel::Serializer
 
   
   def date_sort
-    object.start_time.to_f()
+    object.date_sort_render
   end
   
   def date

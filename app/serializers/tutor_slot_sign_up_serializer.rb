@@ -18,7 +18,7 @@ class TutorSlotSignUpSerializer < ActiveModel::Serializer
 
   def date_sort
     time_slot = object.tutoring_time_slot
-    date_sort = time_slot.date_sort_render
+    s = time_slot.date_sort_render
   end
 
   def location

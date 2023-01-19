@@ -18,15 +18,14 @@ export const getSchoolData = createAsyncThunk("school/getSchoolData", () => {
     .then((schoolData) => schoolData);
 });
 
-export const postTutoringTimeSlot = createAsyncThunk(
-  "school/postTutoringTimeSlot",
+export const createTutoringTimeSlot = createAsyncThunk(
+  "school/createTutoringTimeSlot",
   (slotForm, thunkAPI) => {
     // console.log("FROOM FETCH FORM: ", slotForm);
-    const state = thunkAPI.getState().school;
-    console.log("GET STATE: ", state);
+    const school = thunkAPI.getState().school;
     let roomId;
 
-    state.locations.forEach((location) => {
+    school.locations.forEach((location) => {
       location.rooms.forEach((room) => {
         if (room.name === slotForm.room) {
           roomId = room.id;
@@ -42,7 +41,7 @@ export const postTutoringTimeSlot = createAsyncThunk(
       end_time: `${slotForm.date} ${slotForm.end_time}`,
       open_status: false,
       booked_status: false,
-      school_id: state.id,
+      school_id: school.id,
       room_id: roomId,
     };
     console.log("From FETCH :", newServerTimeSlot);
@@ -57,12 +56,56 @@ export const postTutoringTimeSlot = createAsyncThunk(
   }
 );
 
+export const updateTutoringTimeSlot = createAsyncThunk(
+  "school/updateTutoriingTimeSlot",
+  (slotData, thunkAPI) => {
+    const { school } = thunkAPI.getState();
+    const newServerTimeSlot = {
+      created_by: slotData.userId,
+      tutor_capacity: slotData.tutor_capacity,
+      tutee_capacity: slotData.tutee_capacity,
+      start_time: `${slotData.date} ${slotData.start_time}`,
+      end_time: `${slotData.date} ${slotData.end_time}`,
+      school_id: school.id,
+      room_id: slotData.room_id,
+    };
+    return fetch(`/tutoring_time_slots/${slotData.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newServerTimeSlot),
+    })
+      .then((res) => res.json())
+      .then((slot) => slot);
+  }
+);
+
+const createNewSiteTutoringSlot = (slotData) => {
+  const newTimeSlot = {
+    id: slotData.id,
+    created_by: slotData.created_by,
+    tutor_capacity: slotData.tutor_capacity,
+    tutee_capacity: slotData.tutee_capacity,
+    date: slotData.date,
+    start_time: slotData.start_time,
+    end_time: slotData.end_time,
+    date_sort: slotData.date_sort,
+    open_status: slotData.open_status,
+    booked_status: slotData.booked_status,
+    school_id: slotData.school.id,
+    room_id: slotData.room_id,
+    location_render: slotData.location_render,
+    tutoring_slot_sign_ups: slotData.tutoring_slot_sign_ups,
+    tutors: slotData.tutors,
+  };
+  return newTimeSlot;
+};
+
 //[x] add action to add new tutoring time slot
-//[] add action to edit tutoring time slot
-//[] add action to remove tutoring time slot
+//[x] add action to edit tutoring time slot
+//[x] add action to remove tutoring time slot
 //[] add action to add new building to school
 //[] add action to edit building to school
-//[] add action to remove building from school
+//[x] add action to remove building from school
 //[] add action to add new room to school
 //[] add action to edit room to school
 //[] add action to remove room from school
@@ -76,6 +119,9 @@ const schoolSlice = createSlice({
       state.tutoringTimeSlots = state.tutoringTimeSlots.filter(
         (slot) => slot.id !== payload
       );
+    },
+    removeBuildingAndItsRooms(state, { payload }) {
+      state.locations.splice(payload, 1);
     },
   },
   extraReducers: {
@@ -92,28 +138,23 @@ const schoolSlice = createSlice({
       state.tutoringTimeSlots = payload.tutoring_time_slots;
       state.isLoading = false;
     },
-    [postTutoringTimeSlot.pending]: (state) => {
-      state.isloading = true;
+    [createTutoringTimeSlot.pending]: (state) => {
+      state.isLoading = true;
     },
-    [postTutoringTimeSlot.fulfilled]: (state, action) => {
-      console.log("Tutoring Time Slot added: ", action.payload);
-      const newSiteTimeSlot = {
-        id: action.payload.id,
-        created_by: action.payload.created_by,
-        tutor_capacity: action.payload.tutor_capacity,
-        tutee_capacity: action.payload.tutee_capacity,
-        date: action.payload.date,
-        start_time: action.payload.start_time,
-        end_time: action.payload.end_time,
-        date_sort: action.payload.date_sort,
-        open_status: action.payload.open_status,
-        booked_status: action.payload.booked_status,
-        school_id: state.id,
-        room_id: action.payload.room_id,
-        location_render: action.payload.location_render,
-        tutoring_slot_sign_ups: action.payload.tutoring_slot_sign_ups,
-        tutors: action.payload.tutors,
-      };
+    [createTutoringTimeSlot.fulfilled]: (state, action) => {
+      const newSiteTimeSlot = createNewSiteTutoringSlot(action.payload);
+      state.tutoringTimeSlots.push(newSiteTimeSlot);
+      state.tutoringTimeSlots.sort((a, b) =>
+        a.date_sort > b.date_sort ? 1 : -1
+      );
+      //[]: add sucess message and error handeling here
+      state.isloading = false;
+    },
+    [updateTutoringTimeSlot.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [updateTutoringTimeSlot.fulfilled]: (state, action) => {
+      const newSiteTimeSlot = createNewSiteTutoringSlot(action.payload);
       state.tutoringTimeSlots.push(newSiteTimeSlot);
       state.tutoringTimeSlots.sort((a, b) =>
         a.date_sort > b.date_sort ? 1 : -1
@@ -125,5 +166,6 @@ const schoolSlice = createSlice({
 });
 
 //[]: create selector that will return rooms associated with building (might do on back end with serializer)
-export const { removeTutoringTimeSlot } = schoolSlice.actions;
+export const { removeTutoringTimeSlot, removeBuildingAndItsRooms } =
+  schoolSlice.actions;
 export default schoolSlice.reducer;
