@@ -72,6 +72,11 @@ const schoolSlice = createSlice({
   name: "school",
   initialState,
   reducers: {
+    removeTutoringTimeSlot(state, { payload }) {
+      state.tutoringTimeSlots = state.tutoringTimeSlots.filter(
+        (slot) => slot.id !== payload
+      );
+    },
   },
   extraReducers: {
     [getSchoolData.pending]: (state) => {
@@ -120,5 +125,5 @@ const schoolSlice = createSlice({
 });
 
 //[]: create selector that will return rooms associated with building (might do on back end with serializer)
-export const { } = schoolSlice.actions;
+export const { removeTutoringTimeSlot } = schoolSlice.actions;
 export default schoolSlice.reducer;

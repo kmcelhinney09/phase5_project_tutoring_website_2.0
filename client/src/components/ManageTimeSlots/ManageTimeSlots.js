@@ -1,5 +1,4 @@
-// import { useAuth } from "../../context/AuthProvider";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
@@ -9,12 +8,13 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
 import CreateTutoringTimeSlots from "./CreateTutoringTimeSlots";
 import EditTutoringTimeSlots from "./EditTutoringTimeSlots";
-// TODO: remove useAuth
+import { removeTutoringTimeSlot } from "../ManageSchool/schoolSlice";
+
 function ManageTimeSlots() {
-  // const auth = useAuth();
-  // const user = auth.currentUser;
+  
   const { user, school } = useSelector((state) => state);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -24,11 +24,8 @@ function ManageTimeSlots() {
   const handleShowModal = () => setShowModal(true);
 
   function handleRemoveTutoringSlot(slot_index, slot_id) {
-    //[]: link to action to remove tutoring time slot from school store
-    let newSchool = JSON.parse(JSON.stringify(school));
-    let time_slots = newSchool.tutoringTimeSlots;
-    time_slots.splice(slot_index, 1);
-    // auth.updateCurrentUser(new_user);
+    //[x]: link to action to remove tutoring time slot from school store
+    dispatch(removeTutoringTimeSlot(slot_id))
 
     fetch(`/tutoring_time_slots/${slot_id}`, {
       //[]: create message that action successful
