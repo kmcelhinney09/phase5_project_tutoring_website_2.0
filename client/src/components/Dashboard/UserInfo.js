@@ -9,7 +9,7 @@ import SessionRender from "./SessionRender";
 import SessionsTutored from "./SessionsTutored";
 import RenderNotes from "./RenderNotes";
 import Col from "react-bootstrap/esm/Col";
-import { removeWrittenNote } from "../ManageUsers/userSlice";
+import { removeWrittenNote, removeSubjectsTutored } from "../ManageUsers/userSlice";
 //[]:remove useAuth
 
 function UserInfo() {
@@ -41,8 +41,8 @@ function UserInfo() {
 
   function handleDeleteWrittenNotes(noteId) {
     //[x]: Link action to remove writtenNotes from user store
-    dispatch(removeWrittenNote(noteId))
-    
+    dispatch(removeWrittenNote(noteId));
+
     fetch(`/tutor_note/${noteId}`, {
       //[]: create message that action was successful
       method: "DELETE",
@@ -71,16 +71,17 @@ function UserInfo() {
   }
 
   function handleSubjectRemoved(sub, subIndex) {
-    //[]: link action to remove subjects tutored from user
-    let newUser = JSON.parse(JSON.stringify(user));
-    let updated_subjects_tutored = newUser.subjects_signed_up;
-    updated_subjects_tutored.splice(subIndex, 1);
-    // auth.updateCurrentUser(newUser);
+    //[x]: link action to remove subjects tutored from user
+    dispatch(removeSubjectsTutored(sub.id))
+    // let newUser = JSON.parse(JSON.stringify(user));
+    // let updated_subjects_tutored = newUser.subjects_signed_up;
+    // updated_subjects_tutored.splice(subIndex, 1);
+    // // auth.updateCurrentUser(newUser);
 
-    fetch(`/tutored_subject/${sub.id}`, {
-      //[]: create message that action was successful
-      method: "DELETE",
-    });
+    // fetch(`/tutored_subject/${sub.id}`, {
+    //   //[]: create message that action was successful
+    //   method: "DELETE",
+    // });
   }
 
   return (
@@ -99,7 +100,7 @@ function UserInfo() {
             <Col md={3}>
               <DropdownButton
                 variant="success"
-                title="Add a Subject You Tutor"
+                title="Add Tutor Subject"
                 drop={"end"}
               >
                 {school.subjects.map((sub) => {
@@ -118,7 +119,7 @@ function UserInfo() {
             <Col md={3}>
               <DropdownButton
                 variant="success"
-                title="Drop a Subject You Tutor"
+                title="Drop Tutor Subject"
                 drop={"end"}
               >
                 {user.subjectsSignedUp.map((sub, index) => {

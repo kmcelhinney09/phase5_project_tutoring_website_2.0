@@ -44,7 +44,7 @@ export const reAuthorizeUser = createAsyncThunk("user/reAuthorize", () => {
 // [x]: add action to delete written notes
 //[]: add action to add subject to user subjects tutored
 //[]: add action to edit subjects tutored to user
-//[]: add action to remove subjects tutored from user
+//[x]: add action to remove subjects tutored from user
 //[]: add action to add booked tutoring to store
 //[]: add action to add tutor slot sign up to store
 //[]: add action to edit user info in user store
@@ -77,6 +77,9 @@ const userSlice = createSlice({
         (note) => note.id !== payload
       );
     },
+    removeSubjectsTutored(state, {payload}){
+      state.subjectsSignedUp = state.subjectsSignedUp.filter((signup) => signup.id !== payload) 
+    }
   },
   extraReducers: {
     [getUserInfo.pending]: (state) => {
@@ -124,7 +127,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { addTutorSignUp, logOutUser, addTutorNote, removeWrittenNote } =
+export const { addTutorSignUp, logOutUser, addTutorNote, removeWrittenNote, removeSubjectsTutored } =
   userSlice.actions;
 
 export default userSlice.reducer;
