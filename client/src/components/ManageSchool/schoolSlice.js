@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
 import { format } from "date-fns";
 
@@ -123,6 +123,34 @@ const schoolSlice = createSlice({
     removeBuildingAndItsRooms(state, { payload }) {
       state.locations.splice(payload, 1);
     },
+    removeRoom(state, { payload }) {
+      console.log("Removing Room");
+      console.log(payload);
+      const new_locations = JSON.parse(JSON.stringify(state.locations));
+      let new_rooms = [];
+      let saved_index;
+      let removed_room_building;
+
+      new_locations.forEach((location) => {
+        location.rooms.forEach((room, index) => {
+          if (room.id === payload) {
+            new_rooms = [...location.rooms];
+            removed_room_building = location.building.id;
+            saved_index = index;
+          }
+        });
+        if (new_rooms.length !== 0) {
+          new_rooms.splice(saved_index, 1);
+          new_locations.forEach((location) => {
+            if (location.building.id === removed_room_building) {
+              location.rooms = new_rooms;
+            }
+          });
+        }
+      });
+      console.log(new_locations);
+      return ({...state, locations: new_locations});
+    },
   },
   extraReducers: {
     [getSchoolData.pending]: (state) => {
@@ -166,6 +194,6 @@ const schoolSlice = createSlice({
 });
 
 //[]: create selector that will return rooms associated with building (might do on back end with serializer)
-export const { removeTutoringTimeSlot, removeBuildingAndItsRooms } =
+export const { removeTutoringTimeSlot, removeBuildingAndItsRooms, removeRoom } =
   schoolSlice.actions;
 export default schoolSlice.reducer;

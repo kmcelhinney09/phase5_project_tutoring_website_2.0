@@ -11,7 +11,7 @@ import CreateRoom from "./CreateRoom";
 import EditRoom from "./EditRoom";
 import EditBuilding from "./EditBuilding";
 import AddSubject from "./AddSubject";
-import { removeBuildingAndItsRooms } from "./schoolSlice";
+import { removeBuildingAndItsRooms, removeRoom } from "./schoolSlice";
 
 //TODO: Remove useAuth
 function ManageSchool() {
@@ -66,32 +66,8 @@ function ManageSchool() {
   }
 
   function handleRemoveRoom(room_id) {
-    //[]: link to remove room action in school store
-    let newSchool = JSON.parse(JSON.stringify(school));
-    let locations = newSchool.locations;
-    let new_rooms = [];
-    let saved_index;
-    let removed_room_building;
-
-    locations.forEach((location) => {
-      location.rooms.forEach((room, index) => {
-        if (room.id === room_id) {
-          new_rooms = [...location.rooms];
-          removed_room_building = location.building.id;
-          saved_index = index;
-        }
-      });
-      if (new_rooms.length !== 0) {
-        new_rooms.splice(saved_index, 1);
-        locations.forEach((location) => {
-          if (location.building.id === removed_room_building) {
-            location.rooms = new_rooms;
-          }
-        });
-      }
-    });
-    // auth.updateCurrentUser(new_user);
-
+    //[x]: link to remove room action in school store
+    dispatch(removeRoom(room_id));
     fetch(`/room/${room_id}`, {
       //[]: create message that action was successful
       method: "DELETE",
@@ -106,9 +82,9 @@ function ManageSchool() {
         building_index = index;
       }
     });
-    console.log(building_index)
-    dispatch(removeBuildingAndItsRooms(building_index))
-    
+    console.log(building_index);
+    dispatch(removeBuildingAndItsRooms(building_index));
+
     fetch(`/building/${building_id}`, {
       //[]: create message that action was successful
       method: "DELETE",
