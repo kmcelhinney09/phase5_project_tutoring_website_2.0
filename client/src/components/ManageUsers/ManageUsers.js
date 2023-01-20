@@ -20,7 +20,7 @@ function ManageUsers() {
   const handleShowModal = () => setShowModal(true);
 
   const [errors, setErrors] = useState([])//[]: link to errors in user store (might Remove do we need?)
-  // Does this call need to be made? Can I include it in the User call if they are admin?
+  // NOTE: Does this call need to be made? Can I include it in the User call if they are admin?(only used on this page not need for store)
   useEffect(() => {
     fetch("/users").then((res) => {
       if (res.ok) {
@@ -52,7 +52,7 @@ function ManageUsers() {
   
   function handleModalAction(modal_type, id = 0, resources = [], index = 0) {
     if (modal_type === "editUser") {
-      setModalTitle("Edit User password");
+      setModalTitle("Edit User");
       setModalBody(
         <EditUserInfo
           closeForm={handleCloseModal}
@@ -90,7 +90,7 @@ function ManageUsers() {
   }
 
   function handleDeleteUser(userId, userIndex) {
-    //[]: link to action to delete user from user store
+    //[x]: link to action to delete user from user store (data is just for this component no need for store)
     let newSchoolData = JSON.parse(JSON.stringify(schoolData));
     newSchoolData.splice(userIndex, 1);
     setSchoolData(newSchoolData);
