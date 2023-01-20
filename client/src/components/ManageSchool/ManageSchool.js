@@ -11,7 +11,7 @@ import CreateRoom from "./CreateRoom";
 import EditRoom from "./EditRoom";
 import EditBuilding from "./EditBuilding";
 import AddSubject from "./AddSubject";
-import { removeBuildingAndItsRooms, removeRoom } from "./schoolSlice";
+import { removeBuildingAndItsRooms, removeRoom, removeSchoolSubject } from "./schoolSlice";
 
 //TODO: Remove useAuth
 function ManageSchool() {
@@ -92,11 +92,9 @@ function ManageSchool() {
   }
 
   function handleRemoveSubject(subjectId, subjectIndex) {
-    //[]: link to action to remove subject from school store
-    let newSchool = JSON.parse(JSON.stringify(school));
-    let updatedSubject = newSchool.subjects;
-    updatedSubject.splice(subjectIndex, 1);
-    // auth.updateCurrentUser(newUser)
+    //[x]: link to action to remove subject from school store
+    dispatch(removeSchoolSubject(subjectId))
+  
 
     fetch(`/subject/${subjectId}`, {
       //[]: create message that action was successful
