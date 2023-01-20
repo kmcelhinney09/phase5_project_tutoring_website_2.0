@@ -1,22 +1,21 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthProvider";
+import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-//TODO: remove useAuth
+import { signUpUser } from "./ManageUsers/userSlice";
+
 function SignUp({ closeForm }) {
   const [signUpForm, setSignUpForm] = useState({
     email: "",
     full_name: "",
-    school: "",
     grade: "",
+    school_id: 1,
     time_zone: "",
     password: "",
     password_confirmation: "",
   });
-
-  const auth = useAuth();
-
-
+  const dispatch = useDispatch();
+ 
   function handleFormOnChange(e) {
     let name = e.target.name;
     let value = e.target.value;
@@ -27,9 +26,9 @@ function SignUp({ closeForm }) {
   }
 
   function handleSignUpSubmit(e) {
-    //[]: link to signup user in user store
+    //[x]: link to signup user in user store
     e.preventDefault();
-    auth.signup(signUpForm);
+    dispatch(signUpUser(signUpForm));
     closeForm();
   }
 
@@ -55,19 +54,16 @@ function SignUp({ closeForm }) {
         />
         <Form.Control
           type="text"
-          placeholder="School"
-          value={signUpForm.school}
-          onChange={handleFormOnChange}
-          name="school"
-        />
-        <Form.Control
-          type="text"
           placeholder="Grade"
           value={signUpForm.grade}
           onChange={handleFormOnChange}
           name="grade"
         />
-        <Form.Select aria-label="Select Time Zone" name="time-zone">
+        <Form.Select
+          aria-label="Select Time Zone"
+          name="time_zone"
+          onChange={handleFormOnChange}
+        >
           <option>Time Zone</option>
           <option value="Hawaii">Hawaii</option>
           <option value="Alaska">Alaska</option>
@@ -101,7 +97,6 @@ function SignUp({ closeForm }) {
           Cancel
         </Button>
         <br />
-
       </Form>
     </div>
   );

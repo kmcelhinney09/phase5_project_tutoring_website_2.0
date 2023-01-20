@@ -41,6 +41,16 @@ export const reAuthorizeUser = createAsyncThunk("user/reAuthorize", () => {
       return userInfo;
     });
 });
+
+export const signUpUser = createAsyncThunk("user/SignUp", (signUpForm) => {
+  return fetch("/users", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(signUpForm),
+  })
+    .then((res) => res.json())
+    .then((user) => user);
+});
 // [x]: add action to delete written notes
 //[]: add action to add subject to user subjects tutored
 //[]: add action to edit subjects tutored to user
@@ -77,9 +87,11 @@ const userSlice = createSlice({
         (note) => note.id !== payload
       );
     },
-    removeSubjectsTutored(state, {payload}){
-      state.subjectsSignedUp = state.subjectsSignedUp.filter((signup) => signup.id !== payload) 
-    }
+    removeSubjectsTutored(state, { payload }) {
+      state.subjectsSignedUp = state.subjectsSignedUp.filter(
+        (signup) => signup.id !== payload
+      );
+    },
   },
   extraReducers: {
     [getUserInfo.pending]: (state) => {
@@ -124,10 +136,33 @@ const userSlice = createSlice({
         state.isLoading = false;
       }
     },
+    [signUpUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [signUpUser.fulfilled]: (state, { payload }) => {
+      state.id = payload.id;
+      state.email = payload.email;
+      state.fullName = payload.full_name;
+      state.grade = payload.grade;
+      state.role = payload.role;
+      state.bookedAsTutor = payload.booked_as_tutor;
+      state.bookedSlots = payload.booked_slots;
+      state.subjectsSignedUp = payload.subjects_signed_up;
+      state.tutorNotes = payload.tutor_notes;
+      state.tutorSignUps = payload.tutor_sign_ups;
+      state.notesWritten = payload.written_notes;
+      state.isLoggedIn = true;
+      state.isLoading = false;
+    },
   },
 });
 
-export const { addTutorSignUp, logOutUser, addTutorNote, removeWrittenNote, removeSubjectsTutored } =
-  userSlice.actions;
+export const {
+  addTutorSignUp,
+  logOutUser,
+  addTutorNote,
+  removeWrittenNote,
+  removeSubjectsTutored,
+} = userSlice.actions;
 
 export default userSlice.reducer;

@@ -26,9 +26,7 @@ class UsersController < ApplicationController
   end
 
   def create    
-    school_id = School.find_by(name:params[:school]).id
     user = User.create!(user_params)
-    user.school_id = school_id
     session[:user_id] = user.id
     render json: user, status: :created
   end
@@ -65,6 +63,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(:id,:email,:password, :password_confirmation, :full_name,:school,:time_zone, :grade, :role)
+    params.permit(:id,:email,:password, :password_confirmation, :full_name,:school_id,:school,:time_zone, :grade, :role) 
   end
 end

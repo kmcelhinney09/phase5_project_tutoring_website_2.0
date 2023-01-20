@@ -9,7 +9,7 @@ import Button from "react-bootstrap/esm/Button";
 function SessionRender() {
   // const auth = useAuth();
   // const user = auth.currentUser;
-  const user = useSelector((state) => state.user)
+  const user = useSelector((state) => state.user);
 
   function handleDropSession(sessionId, sessionIndex) {
     //[]hook this drop session to school store
@@ -22,7 +22,7 @@ function SessionRender() {
       method: "DELETE",
     });
   }
-
+  console.log(user.isLoggedIn);
   return (
     <Container>
       <Row>
@@ -39,29 +39,28 @@ function SessionRender() {
             </tr>
           </thead>
           <tbody>
-            {user.bookedSlots.length !== 0 ? (
-              user.bookedSlots
-                .map((slot, index) => {
-                  return (
-                    <tr key={slot.id}>
-                      <td>{slot.location}</td>
-                      <td>{slot.date}</td>
-                      <td>
-                        {slot.start_time}-{slot.end_time}
-                      </td>
-                      <td>{slot.tutor.full_name}</td>
-                      <td>{slot.tutor.subjects_covered}</td>
-                      <td>
-                        <Button
-                          variant="success"
-                          onClick={() => handleDropSession(slot.id, index)}
-                        >
-                          Drop Session
-                        </Button>
-                      </td>
-                    </tr>
-                  );
-                })
+            {user.isLoggedIn ? (
+              user.bookedSlots.map((slot, index) => {
+                return (
+                  <tr key={slot.id}>
+                    <td>{slot.location}</td>
+                    <td>{slot.date}</td>
+                    <td>
+                      {slot.start_time}-{slot.end_time}
+                    </td>
+                    <td>{slot.tutor.full_name}</td>
+                    <td>{slot.tutor.subjects_covered}</td>
+                    <td>
+                      <Button
+                        variant="success"
+                        onClick={() => handleDropSession(slot.id, index)}
+                      >
+                        Drop Session
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td>No Current Sessions</td>

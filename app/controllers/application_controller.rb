@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
     return render json:{error:"Not Authorized"}, status: :unauthorized unless session.include? :user_id
   end
 
-  private
+
 
 def set_time_zone(&block)
   Time.use_zone(current_user.time_zone, &block)
