@@ -17,7 +17,7 @@ function RenderNotes({ notesData, userRole, handleDelete = "" }) {
         return (
           <Card.Footer>
             <Card.Text>Written to: {note.tutee_name}</Card.Text>
-            <Button onClick={() => handleDelete(note.id, index)}>Delete</Button>
+            <Button onClick={() => handleDelete(note.id)}>Delete</Button>
           </Card.Footer>
         );
       } else {

@@ -41,7 +41,7 @@ export const reAuthorizeUser = createAsyncThunk("user/reAuthorize", () => {
       return userInfo;
     });
 });
-// []: add action to delete written notes
+// [x]: add action to delete written notes
 //[]: add action to add subject to user subjects tutored
 //[]: add action to edit subjects tutored to user
 //[]: add action to remove subjects tutored from user
@@ -71,6 +71,11 @@ const userSlice = createSlice({
         tutee_name: payload.tutee_name,
       };
       state.notesWritten.push(newNote);
+    },
+    removeWrittenNote(state, { payload }) {
+      state.notesWritten = state.notesWritten.filter(
+        (note) => note.id !== payload
+      );
     },
   },
   extraReducers: {
@@ -119,6 +124,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { addTutorSignUp, logOutUser, addTutorNote } = userSlice.actions;
+export const { addTutorSignUp, logOutUser, addTutorNote, removeWrittenNote } =
+  userSlice.actions;
 
 export default userSlice.reducer;

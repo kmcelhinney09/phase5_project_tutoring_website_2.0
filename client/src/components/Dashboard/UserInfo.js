@@ -1,6 +1,6 @@
 import { useState } from "react";
 // import { useAuth } from "../../context/AuthProvider";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -9,12 +9,14 @@ import SessionRender from "./SessionRender";
 import SessionsTutored from "./SessionsTutored";
 import RenderNotes from "./RenderNotes";
 import Col from "react-bootstrap/esm/Col";
+import { removeWrittenNote } from "../ManageUsers/userSlice";
 //[]:remove useAuth
 
 function UserInfo() {
   // const auth = useAuth();
   // const user = auth.currentUser;
   const { user, school } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   // console.log(user);
 
@@ -37,13 +39,10 @@ function UserInfo() {
     return error_text;
   }
 
-  function handleDeleteWrittenNotes(noteId, noteIndex) {
-    //[]: Link action to remove writtenNotes from user store
-    let new_user = JSON.parse(JSON.stringify(user));
-    let new_written_notes = new_user.written_notes;
-    new_written_notes.splice(noteIndex, 1);
-    // auth.updateCurrentUser(new_user);
-
+  function handleDeleteWrittenNotes(noteId) {
+    //[x]: Link action to remove writtenNotes from user store
+    dispatch(removeWrittenNote(noteId))
+    
     fetch(`/tutor_note/${noteId}`, {
       //[]: create message that action was successful
       method: "DELETE",

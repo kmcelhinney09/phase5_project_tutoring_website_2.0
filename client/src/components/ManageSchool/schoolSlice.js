@@ -108,8 +108,8 @@ const createNewSiteTutoringSlot = (slotData) => {
 //[x] add action to remove building from school
 //[] add action to add new room to school
 //[] add action to edit room to school
-//[] add action to remove room from school
-//[] add action to remove subject from school
+//[x] add action to remove room from school
+//[x] add action to remove subject from school
 
 const schoolSlice = createSlice({
   name: "school",
