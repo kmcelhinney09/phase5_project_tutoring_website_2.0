@@ -119,6 +119,10 @@ const userSlice = createSlice({
         (note) => note.id !== payload
       );
     },
+    addSubjectsTutored(state, { payload }) {
+      state.subjectsSignedUp.push(payload);
+      state.subjectsSignedUp.sort((a, b) => (a.name > b.name ? 1 : -1));
+    },
     removeSubjectsTutored(state, { payload }) {
       state.subjectsSignedUp = state.subjectsSignedUp.filter(
         (signup) => signup.id !== payload
@@ -228,6 +232,7 @@ export const {
   logOutUser,
   addTutorNote,
   removeWrittenNote,
+  addSubjectsTutored,
   removeSubjectsTutored,
   removeBookedTimeSlots,
   removeBookedAsTutor,

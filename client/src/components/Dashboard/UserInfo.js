@@ -12,6 +12,7 @@ import Col from "react-bootstrap/esm/Col";
 import {
   removeWrittenNote,
   removeSubjectsTutored,
+  addSubjectsTutored
 } from "../ManageUsers/userSlice";
 //TODOremove useAuth
 
@@ -25,7 +26,7 @@ function UserInfo() {
 
   const [errors, setErrors] = useState([]);
 
-  //[]: connect to the proper store user
+  //[]: connect errors to the proper store user
   function renderErrors() {
     const error_text = errors.map((error, index) => {
       return (
@@ -53,11 +54,8 @@ function UserInfo() {
   }
 
   function handleSubjectSelect(subject) {
-    //[]: Link action to add subject to user subjects tutored
-    let newUser = JSON.parse(JSON.stringify(user));
-    let updated_subjects_tutored = newUser.subjects_signed_up;
-    updated_subjects_tutored.push(subject);
-    // auth.updateCurrentUser(newUser);
+    //[x]: Link action to add subject to user subjects tutored
+    dispatch(addSubjectsTutored(subject))
 
     fetch(`/tutored_subject`, {
       method: "POST",

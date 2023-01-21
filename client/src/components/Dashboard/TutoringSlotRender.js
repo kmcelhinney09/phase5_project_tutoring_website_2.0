@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 import { bookTutoringSlot, tutorSlotSignUp } from "../ManageUsers/userSlice";
+import { v4 as uuid } from "uuid";
 function TutoringSlotRender({
   slotInfo,
   handleDashboardKeyChange,
@@ -41,10 +42,10 @@ function TutoringSlotRender({
     //[x]:add tutor sign up to user store
     const slotSignUp = {
       tutor_id: user.id,
-        tutoring_time_slot_id: slotInfo.id,
+      tutoring_time_slot_id: slotInfo.id,
     };
-    
-    dispatch(tutorSlotSignUp(slotSignUp))
+
+    dispatch(tutorSlotSignUp(slotSignUp));
     handleDashboardKeyChange("dashboard");
     navigate(`/user/${user.id}`, { replace: true });
   }
@@ -86,11 +87,8 @@ function TutoringSlotRender({
           } else {
             slot_status = <td className="text-danger">Full</td>;
           }
-          {
-            //[] replace ID below with uuid
-          }
           return (
-            <tr key={slotInfo.id + tutor.full_name + slotInfo.room_id}>
+            <tr key={uuid()}>
               <td className="text-center">{slotInfo.date}</td>
               <td className="text-center">{tutor.full_name}</td>
               <td className="text-center">{tutor.subjects_covered}</td>
