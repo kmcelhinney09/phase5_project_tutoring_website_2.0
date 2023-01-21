@@ -67,14 +67,27 @@ export const bookTutoringSlot = createAsyncThunk(
   }
 );
 
+export const tutorSlotSignUp = createAsyncThunk(
+  "user/tutorSlotSignUp",
+  (tutorSlotInfo) => {
+    return fetch("/tutor_slot_sign_up", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(tutorSlotInfo),
+    })
+      .then((res) => res.json())
+      .then((tutorSignUp) => tutorSignUp);
+  }
+);
+
 // [x]: add action to delete written notes
 //[]: add action to add subject to user subjects tutored
 //[]: add action to edit subjects tutored to user
 //[x]: add action to remove subjects tutored from user
-//[]: add action to add booked tutoring to store
-//[]: add action to add tutor slot sign up to store
-//[]: add action to edit user info in user store
-//[x]: add createAsyncThunk to book tutoring time slot
+//[x]: add action to add booked tutoring to store
+//[x]: add action to add tutor slot sign up to store
 //[x]: add drop booked session
 //[x]: add drop entiore tutoring session
 
@@ -121,8 +134,13 @@ const userSlice = createSlice({
         (session) => session.id !== payload
       );
     },
-    removeEntireTutoringSession(state, {payload}){
-      state.tutorSignUps = state.tutorSignUps.filter((session) => session.id !== payload)
+    removeEntireTutoringSession(state, { payload }) {
+      state.tutorSignUps = state.tutorSignUps.filter(
+        (session) => session.id !== payload
+      );
+      state.bookedAsTutor = state.bookedAsTutor.filter(
+        (session) => session.tutor_slot_sign_up_id !== payload
+      );
     },
   },
   extraReducers: {
@@ -190,9 +208,16 @@ const userSlice = createSlice({
       state.isLoading = true;
     },
     [bookTutoringSlot.fulfilled]: (state, { payload }) => {
-      console.log(payload);
       state.bookedSlots.push(payload);
       state.bookedSlots.sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1));
+      state.isLoading = false;
+    },
+    [tutorSlotSignUp.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [tutorSlotSignUp.fulfilled]: (state, { payload }) => {
+      state.tutorSignUps.push(payload);
+      state.tutorSignUps.sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1));
       state.isLoading = false;
     },
   },

@@ -34,7 +34,7 @@ function SessionsTutored() {
     });
   }
 
-  function handleDropEntireSession(session_id, session_index) {
+  function handleDropEntireSession(session_id) {
     // [x]: link drop entire session to user store
     dispatch(removeEntireTutoringSession(session_id));
 
@@ -45,7 +45,7 @@ function SessionsTutored() {
   }
 
   function handleAddNote(tuteeId, tuteeName) {
-    //[]: link add note to user store
+    //[x]: link add note to user store
     setTuteeData({ tuteeId: tuteeId, tuteeName: tuteeName });
     handleShowModal();
   }

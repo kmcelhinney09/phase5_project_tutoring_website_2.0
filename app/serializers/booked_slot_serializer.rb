@@ -1,5 +1,5 @@
 class BookedSlotSerializer < ActiveModel::Serializer
-  attributes :id, :date, :start_time, :end_time, :location, :tutor, :tutee, :created_at, :date_sort
+  attributes :id, :date, :start_time, :end_time, :location, :tutor, :tutee, :created_at, :date_sort, :tutor_slot_sign_up_id
   
   def date
     time_slot = object.tutoring_time_slot

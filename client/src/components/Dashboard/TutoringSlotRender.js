@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
-import { bookTutoringSlot } from "../ManageUsers/userSlice";
+import { bookTutoringSlot, tutorSlotSignUp } from "../ManageUsers/userSlice";
 function TutoringSlotRender({
   slotInfo,
   handleDashboardKeyChange,
@@ -36,39 +36,17 @@ function TutoringSlotRender({
   }
 
   function handleTutorSignUp() {
-    setErrors([]);
-    //[]:add tutor sign up to user store
-    let newUser = JSON.parse(JSON.stringify(user));
-    let signUps = newUser.tutor_sign_ups;
-    const newSignUp = {
-      date: slotInfo.date,
-      date_sort: slotInfo.date_sort,
-      end_time: slotInfo.end_time,
-      location: slotInfo.location_render,
-      start_time: slotInfo.start_time,
-    };
-    signUps.push(newSignUp);
-  
-    fetch("/tutor_slot_sign_up", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        tutor_id: user.id,
+    setErrors([]); //add to error handeling
+
+    //[x]:add tutor sign up to user store
+    const slotSignUp = {
+      tutor_id: user.id,
         tutoring_time_slot_id: slotInfo.id,
-      }),
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((tutorSignUp) => {
-          //[]: create message that action was successful
-          handleDashboardKeyChange("dashboard");
-          navigate(`/user/${user.id}`, { replace: true });
-        });
-      } else {
-        res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to errors in school store
-      }
-    });
+    };
+    
+    dispatch(tutorSlotSignUp(slotSignUp))
+    handleDashboardKeyChange("dashboard");
+    navigate(`/user/${user.id}`, { replace: true });
   }
 
   return (
