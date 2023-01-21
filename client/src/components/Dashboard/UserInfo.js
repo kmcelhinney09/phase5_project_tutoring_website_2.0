@@ -9,7 +9,10 @@ import SessionRender from "./SessionRender";
 import SessionsTutored from "./SessionsTutored";
 import RenderNotes from "./RenderNotes";
 import Col from "react-bootstrap/esm/Col";
-import { removeWrittenNote, removeSubjectsTutored } from "../ManageUsers/userSlice";
+import {
+  removeWrittenNote,
+  removeSubjectsTutored,
+} from "../ManageUsers/userSlice";
 //TODOremove useAuth
 
 function UserInfo() {
@@ -72,10 +75,10 @@ function UserInfo() {
 
   function handleSubjectRemoved(sub, subIndex) {
     //[x]: link action to remove subjects tutored from user
-    dispatch(removeSubjectsTutored(sub.id))
-
+    dispatch(removeSubjectsTutored(sub.id));
+    console.log(sub);
+    //[]: create message that action was successful
     fetch(`/tutored_subject/${sub.id}`, {
-      //[]: create message that action was successful
       method: "DELETE",
     });
   }

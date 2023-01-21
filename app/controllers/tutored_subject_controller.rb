@@ -7,8 +7,8 @@ class TutoredSubjectController < ApplicationController
   end
   
   def destroy
-    tutored_subject = TutoredSubject.find_by(id:params[:id])
-    tutored_subject.destroy
+    user = User.find(session[:user_id])
+    user.subjects_signed_up.destroy(params[:id])
     head :no_content
   end
   
