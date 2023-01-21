@@ -20,7 +20,7 @@ function SessionRender() {
       method: "DELETE",
     });
   }
-  console.log(user.isLoggedIn);
+  
   return (
     <Container>
       <Row>

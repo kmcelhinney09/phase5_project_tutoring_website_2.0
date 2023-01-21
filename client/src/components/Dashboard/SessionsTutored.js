@@ -23,7 +23,7 @@ function SessionsTutored() {
     let newBookedSlots = newUser.bookedAsTutor;
     newBookedSlots.splice(session_index, 1);
     // auth.updateCurrentUser(newUser);
-
+    //[] link drop to user store
     fetch(`/booked_slot/${session_id}`, {
       method: "DELETE",
     }).then((res) => {
@@ -39,7 +39,7 @@ function SessionsTutored() {
     let newSignUps = newUser.tutorSignUps;
     newSignUps.splice(session_index, 1);
     // auth.updateCurrentUser(newUser);
-
+    // []: link drop entire session to user store
     fetch(`/tutor_slot_sign_up/${session_id}`, {
       //[]: create message that action was successful
       method: "DELETE",
@@ -47,6 +47,7 @@ function SessionsTutored() {
   }
 
   function handleAddNote(tuteeId, tuteeName) {
+    //[]: link add note to user store
     setTuteeData({ tuteeId: tuteeId, tuteeName: tuteeName });
     handleShowModal();
   }

@@ -1,8 +1,7 @@
-// import { useAuth } from "../../context/AuthProvider";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
-//TODO Remove useAuth
+import { bookTutoringSlot } from "../ManageUsers/userSlice";
 function TutoringSlotRender({
   slotInfo,
   handleDashboardKeyChange,
@@ -12,59 +11,28 @@ function TutoringSlotRender({
   // const auth = useAuth();
   // const user = auth.currentUser;
   const user = useSelector((store) => store.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   let slot_status;
 
-  function handleBookTutoring(tutorId, tutorName, tutorSubjects) {
+  function handleBookTutoring(tutorId) {
     setErrors([]);
-    // []:link booking tutoring to user slice
+    // [x]:link booking tutoring to user slice
     let signUpSlot;
-    let newUser = JSON.parse(JSON.stringify(user));
-    let updatedBookedSlots = newUser.booked_slots;
     slotInfo.tutor_slot_sign_ups.forEach((signUp) => {
       if (signUp.tutor_id === tutorId) {
         signUpSlot = signUp.id;
       }
     });
-    let newBooking = {
-      date: slotInfo.date,
-      date_sort: slotInfo.date_sort,
-      end_time: slotInfo.end_time,
-      location: slotInfo.location_render,
-      start_time: slotInfo.start_time,
-      tutee: { id: user.id, full_name: user.full_name },
-      tutor: {
-        id: tutorId,
-        full_name: tutorName,
-        subjects_covered: tutorSubjects,
-      },
+    const bookedSlotData = {
+      tutor_id: tutorId,
+      tutee_id: user.id,
+      tutoring_time_slot_id: slotInfo.id,
+      tutor_slot_sign_up_id: signUpSlot,
     };
-    updatedBookedSlots.push(newBooking);
-
-    // auth.updateCurrentUser(newUser);
-
-    fetch("/booked_slot", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        tutor_id: tutorId,
-        tutee_id: user.id,
-        tutoring_time_slot_id: slotInfo.id,
-        tutor_slot_sign_up_id: signUpSlot,
-      }),
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((bookedSlot) => {
-          //[]: create message that action was successful
-          handleDashboardKeyChange("dashboard");
-          navigate(`/user/${user.id}`, { replace: true });
-        });
-      } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));//[]: link to errors in user store
-      }
-    });
+    dispatch(bookTutoringSlot(bookedSlotData));
+    handleDashboardKeyChange("dashboard");
+    navigate(`/user/${user.id}`, { replace: true });
   }
 
   function handleTutorSignUp() {
@@ -80,8 +48,7 @@ function TutoringSlotRender({
       start_time: slotInfo.start_time,
     };
     signUps.push(newSignUp);
-    // auth.updateCurrentUser(newUser);
-
+  
     fetch("/tutor_slot_sign_up", {
       method: "POST",
       headers: {
@@ -141,7 +108,9 @@ function TutoringSlotRender({
           } else {
             slot_status = <td className="text-danger">Full</td>;
           }
-
+          {
+            //[] replace ID below with uuid
+          }
           return (
             <tr key={slotInfo.id + tutor.full_name + slotInfo.room_id}>
               <td className="text-center">{slotInfo.date}</td>

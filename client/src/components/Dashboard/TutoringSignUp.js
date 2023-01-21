@@ -5,7 +5,7 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import TutoringSlotRender from "./TutoringSlotRender";
-import { sortedSchool } from "../ManageSchool/schoolSlice";
+
 //TODO Remove useAuth
 function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
   // const user = useAuth().currentUser;
@@ -107,7 +107,7 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
                                 <th className="text-center">Status</th>
                               </tr>
                             </thead>
-                            {JSON.parse(
+                            {JSON.parse( //TODO: check should be sorting at server level
                               JSON.stringify(school.tutoringTimeSlots)
                             )
                               .sort((a, b) =>

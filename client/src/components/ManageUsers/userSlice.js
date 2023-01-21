@@ -51,6 +51,22 @@ export const signUpUser = createAsyncThunk("user/SignUp", (signUpForm) => {
     .then((res) => res.json())
     .then((user) => user);
 });
+
+export const bookTutoringSlot = createAsyncThunk(
+  "user/bookTutoringSlot",
+  (bookSlotInfo) => {
+    return fetch("/booked_slot", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bookSlotInfo),
+    })
+      .then((res) => res.json())
+      .then((bookedSlot) => bookedSlot);
+  }
+);
+
 // [x]: add action to delete written notes
 //[]: add action to add subject to user subjects tutored
 //[]: add action to edit subjects tutored to user
@@ -58,7 +74,8 @@ export const signUpUser = createAsyncThunk("user/SignUp", (signUpForm) => {
 //[]: add action to add booked tutoring to store
 //[]: add action to add tutor slot sign up to store
 //[]: add action to edit user info in user store
-//
+//[x]: add createAsyncThunk to book tutoring time slot
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -157,6 +174,15 @@ const userSlice = createSlice({
       state.tutorSignUps = payload.tutor_sign_ups;
       state.notesWritten = payload.written_notes;
       state.isLoggedIn = true;
+      state.isLoading = false;
+    },
+    [bookTutoringSlot.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [bookTutoringSlot.fulfilled]: (state, { payload }) => {
+      console.log(payload);
+      state.bookedSlots.push(payload);
+      state.bookedSlots.sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1));
       state.isLoading = false;
     },
   },

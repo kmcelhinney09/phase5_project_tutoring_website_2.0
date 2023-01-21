@@ -17,11 +17,12 @@ function EditUserInfo({
     role: userInfo.role,
     grade: userInfo.grade,
   });
-  
 
   const [errors, setErrors] = useState([]); // link to errors in user store
-  const [subjectsTutored,setSubjectsTutored] = useState(userInfo.subjects_signed_up) // Pull from userselecor userStore
-  
+  const [subjectsTutored, setSubjectsTutored] = useState(
+    userInfo.subjects_signed_up
+  ); 
+
   function renderErrors() {
     const error_text = errors.map((error, index) => {
       return (
@@ -46,8 +47,8 @@ function EditUserInfo({
 
   function handleUserInfoOnSubmit(e) {
     e.preventDefault();
-    setErrors([]);//[]: link to error reset in user store
-    //[]: link to edit user action in user store
+    setErrors([]); //[]: link to error reset in user store
+    //[x]: link to edit user action in user store (This is contained to just edit/mangae user no need for store)
     let new_data = JSON.parse(JSON.stringify(schoolData));
     new_data[userIndex] = userInfoForm;
     setSchoolData(new_data);
@@ -69,17 +70,16 @@ function EditUserInfo({
   }
 
   function handleSubjectsTutoredEdit(e) {
-    let value = e.target.value
-    //[]: link to edit tutored subjects in user screen
+    let value = e.target.value;
+    //[x]: link to edit tutored subjects in user screen (This is contained to just edit/mangae user no need for store)
     value = value.split(",")
     const newSubjectsList = subjectsTutored.splice(value[0],1)
     setSubjectsTutored(newSubjectsList)
-    
+
     fetch(`/tutored_subject/${value[1]}`, {
       //[]: create message that action was succesful
       method: "DELETE",
     });
-
   }
 
   return (
@@ -147,13 +147,9 @@ function EditUserInfo({
         >
           <Form.Select onChange={handleSubjectsTutoredEdit}>
             <option>(click to remove)</option>
-            {userInfo.subjects_signed_up.map((sub,index) => {
+            {userInfo.subjects_signed_up.map((sub, index) => {
               return (
-                <option
-                  key={sub.id}
-                  value={[index,sub.id]}
-                  
-                >
+                <option key={sub.id} value={[index, sub.id]}>
                   {sub.name}
                 </option>
               );
