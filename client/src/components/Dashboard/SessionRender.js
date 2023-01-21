@@ -1,22 +1,20 @@
 import React from "react";
-// import { useAuth } from "../../context/AuthProvider";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/esm/Table";
 import Button from "react-bootstrap/esm/Button";
-//[]remove useAuth
-function SessionRender() {
-  // const auth = useAuth();
-  // const user = auth.currentUser;
-  const user = useSelector((state) => state.user);
+import { removeBookedTimeSlots } from "../ManageUsers/userSlice";
 
-  function handleDropSession(sessionId, sessionIndex) {
-    //[]hook this drop session to school store
-    let newUser = JSON.parse(JSON.stringify(user));
-    let updatedBookedSlots = newUser.bookedSlots;
-    updatedBookedSlots.splice(sessionIndex, 1);
-    // auth.updateCurrentUser(newUser);
+function SessionRender() {
+
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  function handleDropSession(sessionId) {
+    //[x]hook this drop session to school store
+    dispatch(removeBookedTimeSlots(sessionId))
+    
     //[]: create message that that action was successful
     fetch(`/booked_slot/${sessionId}`, {
       method: "DELETE",
@@ -40,7 +38,7 @@ function SessionRender() {
           </thead>
           <tbody>
             {user.isLoggedIn ? (
-              user.bookedSlots.map((slot, index) => {
+              user.bookedSlots.map((slot) => {
                 return (
                   <tr key={slot.id}>
                     <td>{slot.location}</td>
@@ -53,7 +51,7 @@ function SessionRender() {
                     <td>
                       <Button
                         variant="success"
-                        onClick={() => handleDropSession(slot.id, index)}
+                        onClick={() => handleDropSession(slot.id)}
                       >
                         Drop Session
                       </Button>

@@ -92,6 +92,11 @@ const userSlice = createSlice({
         (signup) => signup.id !== payload
       );
     },
+    removeBookedTimeSlots(state, { payload }) {
+      state.bookedSlots = state.bookedSlots.filter(
+        (booked) => booked.id !== payload
+      );
+    },
   },
   extraReducers: {
     [getUserInfo.pending]: (state) => {
@@ -163,6 +168,7 @@ export const {
   addTutorNote,
   removeWrittenNote,
   removeSubjectsTutored,
+  removeBookedTimeSlots,
 } = userSlice.actions;
 
 export default userSlice.reducer;
