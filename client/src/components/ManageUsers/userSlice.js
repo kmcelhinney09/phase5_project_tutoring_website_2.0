@@ -83,8 +83,8 @@ export const tutorSlotSignUp = createAsyncThunk(
 );
 
 // [x]: add action to delete written notes
-//[]: add action to add subject to user subjects tutored
-//[]: add action to edit subjects tutored to user
+//[x]: add action to add subject to user subjects tutored
+//[x]: add action to edit subjects tutored to user (This is self contained in edit user)
 //[x]: add action to remove subjects tutored from user
 //[x]: add action to add booked tutoring to store
 //[x]: add action to add tutor slot sign up to store

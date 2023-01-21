@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { addSchoolSubject } from "./schoolSlice";
 //[x]: add useSelector to attach user
 function AddSubject({ closeForm }) {
-  const user = useSelector((store) => store.user)
+  const school = useSelector((store) => store.school);
+  const dispatch = useDispatch();
   const [subjectForm, setSubjectForm] = useState({
     name: "",
-    school_id: user.school.id,
+    school_id: school.id,
   });
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState([]); //[]: Hook up to error rendering
 
   function renderErrors() {
     //[]: link to errors in user store
@@ -29,35 +31,17 @@ function AddSubject({ closeForm }) {
   }
 
   function handleChangeSubjectForm(e) {
-    let name = e.target.name
-    let value = e.target.value
-    setSubjectForm({...subjectForm, [name]:value})
+    let name = e.target.name;
+    let value = e.target.value;
+    setSubjectForm({ ...subjectForm, [name]: value });
   }
 
   function handleSubmiitSubjectForm(e) {
     e.preventDefault();
     setErrors([]);
-    //[]: link add subject to school store
-    let newUser = JSON.parse(JSON.stringify(user));
-    let updatedSubject = newUser.school.subjects
-    updatedSubject.push(subjectForm)
-    
-
+    //[x]: link add subject to school store
+    dispatch(addSchoolSubject(subjectForm))
     closeForm();
-
-    fetch("/subject", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(subjectForm),
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((subject) => {
-          //[]: create message that action was successful
-        });
-      } else {
-        res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to errors
-      }
-    });
   }
 
   return (

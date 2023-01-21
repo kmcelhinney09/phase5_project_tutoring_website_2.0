@@ -79,6 +79,20 @@ export const updateTutoringTimeSlot = createAsyncThunk(
   }
 );
 
+export const addSchoolSubject = createAsyncThunk(
+  "school/addSchoolSubject",
+  (subjectData) => {
+    return fetch("/subject", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(subjectData),
+    })
+      .then((res) => res.json())
+      .then((subject) => subject);
+    //[]: create message that action was successful
+  }
+);
+
 const createNewSiteTutoringSlot = (slotData) => {
   const newTimeSlot = {
     id: slotData.id,
@@ -109,6 +123,7 @@ const createNewSiteTutoringSlot = (slotData) => {
 //[] add action to add new room to school
 //[] add action to edit room to school
 //[x] add action to remove room from school
+//[x] add action to add subject from school
 //[x] add action to remove subject from school
 
 const schoolSlice = createSlice({
@@ -149,10 +164,12 @@ const schoolSlice = createSlice({
         }
       });
       console.log(new_locations);
-      return ({...state, locations: new_locations});
+      return { ...state, locations: new_locations };
     },
-    removeSchoolSubject(state,{payload}){
-      state.subjects = state.subjects.filter((subject) => subject.id !== payload)
+    removeSchoolSubject(state, { payload }) {
+      state.subjects = state.subjects.filter(
+        (subject) => subject.id !== payload
+      );
     },
   },
   extraReducers: {
@@ -193,10 +210,18 @@ const schoolSlice = createSlice({
       //[]: add sucess message and error handeling here
       state.isloading = false;
     },
+    [addSchoolSubject.fulfilled]: (state, action) => {
+      state.subjects.push(action.payload);
+      state.subjects.sort((a, b) => (a.name > b.name ? 1 : -1));
+    },
   },
 });
 
 //[]: create selector that will return rooms associated with building (might do on back end with serializer)
-export const { removeTutoringTimeSlot, removeBuildingAndItsRooms, removeRoom, removeSchoolSubject } =
-  schoolSlice.actions;
+export const {
+  removeTutoringTimeSlot,
+  removeBuildingAndItsRooms,
+  removeRoom,
+  removeSchoolSubject,
+} = schoolSlice.actions;
 export default schoolSlice.reducer;
