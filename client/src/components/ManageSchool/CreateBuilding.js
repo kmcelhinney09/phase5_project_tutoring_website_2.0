@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthProvider";
+import { useDispatch } from "react-redux";
+import { addNewBuilding } from "./schoolSlice";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-//TODO remove useAuth
-function CreateBuilding({ closeForm, school_id }) {
-  const auth = useAuth();
-  const [errors, setErrors] = useState([])
 
-  const [createBuilding, setCreateBuilding] = useState(false);
-  const [buildingForm, setBuildingForm] = useState([]);
+function CreateBuilding({ closeForm, school_id }) {
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState([]); //[]: link to error handeling
+
+  const [buildingForm, setBuildingForm] = useState({
+    name: "",
+    school_id: school_id,
+  });
 
   function renderErrors() {
     // []: link errors to school store
@@ -29,38 +32,16 @@ function CreateBuilding({ closeForm, school_id }) {
 
   function handleBuildingFormOnChange(e) {
     let value = e.target.value;
-    setBuildingForm({ name: value, school_id: school_id });
-    let new_building = {
-      building: { name: value, school_id: school_id },
-      rooms: [],
-    };
-    setCreateBuilding(new_building);
+    let name = e.target.name;
+    setBuildingForm({ ...buildingForm, [name]: value });
   }
 
   function handleCreateBuildingSubmit(e) {
     e.preventDefault();
-    setErrors([])
+    setErrors([]); //[]: link to error handeling
     //[]: link to action to add building to school store
-    let new_user = JSON.parse(JSON.stringify(auth.currentUser));
-    let locations = new_user.school.locations;
-    locations.push(createBuilding);
-    new_user.school.locations = locations;
-    auth.updateCurrentUser(new_user);
+    dispatch(addNewBuilding(buildingForm));
     closeForm();
-    fetch("/building", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(buildingForm),
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((building) => {
-          auth.auto(); //TODO: remove
-          //[]: create message to action was successful
-        });
-      } else {
-        res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to errors
-      }
-    });
   }
 
   return (
@@ -72,7 +53,7 @@ function CreateBuilding({ closeForm, school_id }) {
         <Form.Control
           type="text"
           placeholder="Building Name"
-          value={createBuilding.name}
+          value={buildingForm.name}
           onChange={handleBuildingFormOnChange}
           name="name"
         />

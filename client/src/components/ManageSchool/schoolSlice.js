@@ -93,6 +93,19 @@ export const addSchoolSubject = createAsyncThunk(
   }
 );
 
+export const addNewBuilding = createAsyncThunk(
+  "school/addNewBuilding",
+  (buildingInfo) => {
+    return fetch("/building", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(buildingInfo),
+    })
+      .then((res) => res.json())
+      .then((building) => building);
+  }
+);
+
 const createNewSiteTutoringSlot = (slotData) => {
   const newTimeSlot = {
     id: slotData.id,
@@ -207,12 +220,19 @@ const schoolSlice = createSlice({
       state.tutoringTimeSlots.sort((a, b) =>
         a.date_sort > b.date_sort ? 1 : -1
       );
-      //[]: add sucess message and error handeling here
+      //[x]: add sucess message and error handeling here
       state.isloading = false;
     },
     [addSchoolSubject.fulfilled]: (state, action) => {
       state.subjects.push(action.payload);
       state.subjects.sort((a, b) => (a.name > b.name ? 1 : -1));
+    },
+    [addNewBuilding.fulfilled]: (state, action) => {
+      console.log(action.payload);
+      state.locations.push({ building: action.payload, rooms: [] });
+      state.locations.sort((a, b) =>
+        a.building.name > b.building.name ? 1 : -1
+      );
     },
   },
 });
