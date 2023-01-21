@@ -75,6 +75,8 @@ export const bookTutoringSlot = createAsyncThunk(
 //[]: add action to add tutor slot sign up to store
 //[]: add action to edit user info in user store
 //[x]: add createAsyncThunk to book tutoring time slot
+//[x]: add drop booked session
+//[x]: add drop entiore tutoring session
 
 const userSlice = createSlice({
   name: "user",
@@ -113,6 +115,14 @@ const userSlice = createSlice({
       state.bookedSlots = state.bookedSlots.filter(
         (booked) => booked.id !== payload
       );
+    },
+    removeBookedAsTutor(state, { payload }) {
+      state.bookedAsTutor = state.bookedAsTutor.filter(
+        (session) => session.id !== payload
+      );
+    },
+    removeEntireTutoringSession(state, {payload}){
+      state.tutorSignUps = state.tutorSignUps.filter((session) => session.id !== payload)
     },
   },
   extraReducers: {
@@ -195,6 +205,8 @@ export const {
   removeWrittenNote,
   removeSubjectsTutored,
   removeBookedTimeSlots,
+  removeBookedAsTutor,
+  removeEntireTutoringSession,
 } = userSlice.actions;
 
 export default userSlice.reducer;

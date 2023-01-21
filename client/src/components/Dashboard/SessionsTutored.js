@@ -1,5 +1,4 @@
-// import { useAuth } from "../../context/AuthProvider";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
@@ -7,39 +6,38 @@ import Table from "react-bootstrap/esm/Table";
 import Button from "react-bootstrap/esm/Button";
 import Modal from "react-bootstrap/esm/Modal";
 import LeaveNote from "./LeaveNote";
-// TODO Remove useAuth
+import {
+  removeBookedAsTutor,
+  removeEntireTutoringSession,
+} from "../ManageUsers/userSlice";
+
 function SessionsTutored() {
-  // const auth = useAuth();
-  // const user = auth.currentUser;
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const [showModal, setShowModal] = useState(false);
   const [tuteeData, setTuteeData] = useState(0);
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-  function handleDropBookedSession(session_id, session_index) {
-    let newUser = JSON.parse(JSON.stringify(user));
-    let newBookedSlots = newUser.bookedAsTutor;
-    newBookedSlots.splice(session_index, 1);
-    // auth.updateCurrentUser(newUser);
-    //[] link drop to user store
+  function handleDropBookedSession(session_id) {
+    dispatch(removeBookedAsTutor(session_id));
+
+    //[x] link drop to user store
     fetch(`/booked_slot/${session_id}`, {
       method: "DELETE",
     }).then((res) => {
       if (res.ok) {
         //[]: create message that action was successful
-        // auth.auto();//TODO: remove
       }
     });
   }
 
   function handleDropEntireSession(session_id, session_index) {
-    let newUser = JSON.parse(JSON.stringify(user));
-    let newSignUps = newUser.tutorSignUps;
-    newSignUps.splice(session_index, 1);
-    // auth.updateCurrentUser(newUser);
-    // []: link drop entire session to user store
+    // [x]: link drop entire session to user store
+    dispatch(removeEntireTutoringSession(session_id));
+
     fetch(`/tutor_slot_sign_up/${session_id}`, {
       //[]: create message that action was successful
       method: "DELETE",
@@ -70,7 +68,7 @@ function SessionsTutored() {
               </thead>
               <tbody>
                 {user.tutorSignUps.length !== 0 ? (
-                  user.tutorSignUps.map((signUp, index) => {
+                  user.tutorSignUps.map((signUp) => {
                     return (
                       <tr key={signUp.id + 10}>
                         <td>{signUp.location}</td>
@@ -82,9 +80,7 @@ function SessionsTutored() {
                           <Button
                             variant="success"
                             className="mb-2"
-                            onClick={() =>
-                              handleDropEntireSession(signUp.id, index)
-                            }
+                            onClick={() => handleDropEntireSession(signUp.id)}
                           >
                             Drop Session
                           </Button>
@@ -114,7 +110,7 @@ function SessionsTutored() {
               </thead>
               <tbody>
                 {user.bookedAsTutor.length !== 0 ? (
-                  user.bookedAsTutor.map((slot, index) => {
+                  user.bookedAsTutor.map((slot) => {
                     return (
                       <tr key={slot.id.toString() + slot.tutee.full_name}>
                         <td>{slot.location}</td>
@@ -127,9 +123,7 @@ function SessionsTutored() {
                           <Button
                             variant="success"
                             className="mb-2"
-                            onClick={() =>
-                              handleDropBookedSession(slot.id, index)
-                            }
+                            onClick={() => handleDropBookedSession(slot.id)}
                           >
                             Drop Session
                           </Button>{" "}

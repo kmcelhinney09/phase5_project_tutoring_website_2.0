@@ -61,7 +61,7 @@ function CreateRoom({ closeForm, building_id }) {
       if (res.ok) {
         res.json().then((room) => {
           //[]: Create message that action was succeful 
-          auth.auto(); // []: remove
+          
         });
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to errors

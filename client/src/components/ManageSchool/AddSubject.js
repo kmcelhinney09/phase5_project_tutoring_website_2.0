@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthProvider";
+import { useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-//TODO remove useAuth
-//[]: add useSelector to attach user
+//[x]: add useSelector to attach user
 function AddSubject({ closeForm }) {
-  const auth = useAuth();
-  const user = auth.currentUser // replace with useSelector user
+  const user = useSelector((store) => store.user)
   const [subjectForm, setSubjectForm] = useState({
     name: "",
     school_id: user.school.id,
@@ -43,7 +41,7 @@ function AddSubject({ closeForm }) {
     let newUser = JSON.parse(JSON.stringify(user));
     let updatedSubject = newUser.school.subjects
     updatedSubject.push(subjectForm)
-    auth.updateCurrentUser(newUser)
+    
 
     closeForm();
 
