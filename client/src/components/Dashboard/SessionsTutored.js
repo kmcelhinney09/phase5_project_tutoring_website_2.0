@@ -7,7 +7,7 @@ import Table from "react-bootstrap/esm/Table";
 import Button from "react-bootstrap/esm/Button";
 import Modal from "react-bootstrap/esm/Modal";
 import LeaveNote from "./LeaveNote";
-// [] Remove useAuth
+// TODO Remove useAuth
 function SessionsTutored() {
   // const auth = useAuth();
   // const user = auth.currentUser;

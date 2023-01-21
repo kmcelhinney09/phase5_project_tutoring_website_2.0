@@ -10,7 +10,7 @@ import SessionsTutored from "./SessionsTutored";
 import RenderNotes from "./RenderNotes";
 import Col from "react-bootstrap/esm/Col";
 import { removeWrittenNote, removeSubjectsTutored } from "../ManageUsers/userSlice";
-//[]:remove useAuth
+//TODOremove useAuth
 
 function UserInfo() {
   // const auth = useAuth();

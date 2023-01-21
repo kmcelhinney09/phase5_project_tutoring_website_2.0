@@ -17,7 +17,7 @@ const initialState = {
   tutorSignUps: [],
   notesWritten: [],
 };
-//[]: create thunk for user sign up
+
 export const getUserInfo = createAsyncThunk(
   "user/initializeUser",
   (loginForm) => {
@@ -41,7 +41,7 @@ export const reAuthorizeUser = createAsyncThunk("user/reAuthorize", () => {
       return userInfo;
     });
 });
-
+//[x]: create thunk for user sign up
 export const signUpUser = createAsyncThunk("user/SignUp", (signUpForm) => {
   return fetch("/users", {
     method: "POST",

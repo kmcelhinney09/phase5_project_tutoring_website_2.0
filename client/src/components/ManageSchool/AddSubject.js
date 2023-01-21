@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-//[]: remove useAuth
+//TODO remove useAuth
 //[]: add useSelector to attach user
 function AddSubject({ closeForm }) {
   const auth = useAuth();

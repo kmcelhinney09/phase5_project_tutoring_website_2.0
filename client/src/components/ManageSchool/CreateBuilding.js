@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-//[]: remove useAuth
+//TODO remove useAuth
 function CreateBuilding({ closeForm, school_id }) {
   const auth = useAuth();
   const [errors, setErrors] = useState([])
