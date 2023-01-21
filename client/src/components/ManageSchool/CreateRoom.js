@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthProvider";
+import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-//TODO remove useAuth
-function CreateRoom({ closeForm, building_id }) {
-  const auth = useAuth();
-  const user = auth.currentUser;
+import { addNewRoom } from "./schoolSlice";
 
+function CreateRoom({ closeForm, building_id }) {
+  const dispatch = useDispatch();
   const [roomForm, setRoomForm] = useState({
     name: "",
     building_id: 0,
@@ -38,35 +37,9 @@ function CreateRoom({ closeForm, building_id }) {
   function handleCreateRoomSubmit(e) {
     e.preventDefault();
     setErrors([]); //[]: clear school errors
-
-    //[]: link to action for adding room to school store
-    let new_user = JSON.parse(JSON.stringify(user));
-    let locations = new_user.school.locations;
-
-    let updated_locations = locations.map((location) => {
-      if (location.building.id === building_id) {
-        location.rooms.push(roomForm);
-      }
-      return location;
-    });
-    new_user.school.locations = updated_locations;
-    auth.updateCurrentUser(new_user);
+    //[x]: link to action for adding room to school store
+    dispatch(addNewRoom(roomForm))
     closeForm();
-
-    fetch("/room", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(roomForm),
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((room) => {
-          //[]: Create message that action was succeful 
-          
-        });
-      } else {
-        res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to errors
-      }
-    });
   }
 
   return (

@@ -108,7 +108,7 @@ export const addNewBuilding = createAsyncThunk(
 
 export const editBuildingInfo = createAsyncThunk(
   "school/editBuildingInfo",
-  (newBuildingInfo, thunkAPI) => {
+  (newBuildingInfo) => {
     return fetch(`/building/${newBuildingInfo.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -116,6 +116,19 @@ export const editBuildingInfo = createAsyncThunk(
     })
       .then((res) => res.json())
       .then((building) => building);
+  }
+);
+
+export const addNewRoom = createAsyncThunk(
+  "school/addNewRoom",
+  (newRoomInfo) => {
+    return fetch("/room", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newRoomInfo),
+    })
+      .then((res) => res.json())
+      .then((room) => room);
   }
 );
 
@@ -146,7 +159,7 @@ const createNewSiteTutoringSlot = (slotData) => {
 //[x] add action to add new building to school
 //[x] add action to edit building to school
 //[x] add action to remove building from school
-//[] add action to add new room to school
+//[x] add action to add new room to school
 //[] add action to edit room to school
 //[x] add action to remove room from school
 //[x] add action to add subject from school
@@ -248,10 +261,23 @@ const schoolSlice = createSlice({
       );
     },
     [editBuildingInfo.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.locations = state.locations.map((location) => {
         if (location.building.id === action.payload.id) {
           location.building = action.payload;
+          return location;
+        } else {
+          return location;
+        }
+      });
+      state.locations.sort((a, b) =>
+        a.building.name > b.building.name ? 1 : -1
+      );
+    },
+    [addNewRoom.fulfilled]: (state, action) => {
+      state.locations = state.locations.map((location) => {
+        if (location.building.id === action.payload.building_id) {
+          location.rooms.push(action.payload);
+          location.rooms.sort((a, b) => (a.name > b.name ? 1 : -1));
           return location;
         } else {
           return location;
