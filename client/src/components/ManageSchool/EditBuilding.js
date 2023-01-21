@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthProvider";
+import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { editBuildingInfo } from "./schoolSlice";
 //TODO remove useAuth
 function EditBuilding({ closeForm, building_id, school_id, building_name }) {
-  const auth = useAuth();
-  const user = auth.currentUser;
-
+  
+  const dispatch = useDispatch();
+  
   const [buildingForm, setBuildingForm] = useState({
     id: building_id,
     name: building_name,
@@ -40,41 +41,9 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
   function handleEditBuildingSubmit(e) {
     e.preventDefault();
     setErrors([]); // []: link to clear erros in school errors
-    //https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/
-    //[]: link to edit building action in school store
-    let new_user = JSON.parse(JSON.stringify(user));
-    let locations = JSON.parse(JSON.stringify(new_user.school.locations));
-
-    locations = locations.map((location) => {
-      if (location.building.name !== buildingForm.name) {
-        if (location.building.id === buildingForm.id) {
-          location.building.name = buildingForm.name;
-          return location;
-        } else {
-          return location;
-        }
-      } else {
-        return location;
-      }
-    });
-    new_user.school.locations = locations;
-    auth.updateCurrentUser(new_user);
-
+    //[x]: link to edit building action in school store
+    dispatch(editBuildingInfo(buildingForm))
     closeForm();
-    fetch(`/building/${building_id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(buildingForm),
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((building) => {
-          //[]: create message that action was sucessful
-          auth.auto();// remove
-        });
-      } else {
-        res.json().then((e) => setErrors(Object.entries(e.error))); // []: link to school errors
-      }
-    });
   }
 
   return (

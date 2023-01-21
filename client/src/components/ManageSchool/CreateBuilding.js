@@ -39,7 +39,7 @@ function CreateBuilding({ closeForm, school_id }) {
   function handleCreateBuildingSubmit(e) {
     e.preventDefault();
     setErrors([]); //[]: link to error handeling
-    //[]: link to action to add building to school store
+    //[x]: link to action to add building to school store
     dispatch(addNewBuilding(buildingForm));
     closeForm();
   }

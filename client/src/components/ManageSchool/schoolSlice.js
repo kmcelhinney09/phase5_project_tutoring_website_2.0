@@ -106,6 +106,19 @@ export const addNewBuilding = createAsyncThunk(
   }
 );
 
+export const editBuildingInfo = createAsyncThunk(
+  "school/editBuildingInfo",
+  (newBuildingInfo, thunkAPI) => {
+    return fetch(`/building/${newBuildingInfo.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newBuildingInfo),
+    })
+      .then((res) => res.json())
+      .then((building) => building);
+  }
+);
+
 const createNewSiteTutoringSlot = (slotData) => {
   const newTimeSlot = {
     id: slotData.id,
@@ -130,8 +143,8 @@ const createNewSiteTutoringSlot = (slotData) => {
 //[x] add action to add new tutoring time slot
 //[x] add action to edit tutoring time slot
 //[x] add action to remove tutoring time slot
-//[] add action to add new building to school
-//[] add action to edit building to school
+//[x] add action to add new building to school
+//[x] add action to edit building to school
 //[x] add action to remove building from school
 //[] add action to add new room to school
 //[] add action to edit room to school
@@ -233,6 +246,17 @@ const schoolSlice = createSlice({
       state.locations.sort((a, b) =>
         a.building.name > b.building.name ? 1 : -1
       );
+    },
+    [editBuildingInfo.fulfilled]: (state, action) => {
+      console.log(action.payload);
+      state.locations = state.locations.map((location) => {
+        if (location.building.id === action.payload.id) {
+          location.building = action.payload;
+          return location;
+        } else {
+          return location;
+        }
+      });
     },
   },
 });
