@@ -255,18 +255,21 @@ const userSlice = createSlice({
     },
     [addNewNote.pending]: (state) => {
       state.renderErrorMessage = true;
-      state.isLoading = true;
     },
     [addNewNote.fulfilled]: (state, { payload }) => {
       if (Object.keys(payload).includes("error")) {
-        typeof payload.error === "string"
-          ? (state.errorText = [["Server Error", payload.error]])
-          : (state.errorText = Object.entries(payload.error));
+        console.log("Action Payload: ", payload)
+        if(typeof payload.error === "string"){
+          state.errorText = [["Server Error", payload.error]]
+        }else{
+          state.errorText = Object.entries(payload.error)
+        }
       } else {
         state.renderErrorMessage = false;
         state.notesWritten.push(payload);
       }
     },
+
   },
 });
 

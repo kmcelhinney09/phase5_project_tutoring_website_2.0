@@ -4,6 +4,8 @@ import { format } from "date-fns";
 
 //TODO: Crete Error handleling ?? Maybe have an errors tag and just render errors there have actio to add errors and clear errors
 const initialState = {
+  errorText: "",
+  renderErrorMessage: true,
   isLoading: false,
   id: 0,
   name: "",
@@ -21,7 +23,6 @@ export const getSchoolData = createAsyncThunk("school/getSchoolData", () => {
 export const createTutoringTimeSlot = createAsyncThunk(
   "school/createTutoringTimeSlot",
   (slotForm, thunkAPI) => {
-    
     const school = thunkAPI.getState().school;
     let roomId;
 
@@ -178,6 +179,9 @@ const schoolSlice = createSlice({
   name: "school",
   initialState,
   reducers: {
+    clearError(state) {
+      state.errorText = "";
+    },
     removeTutoringTimeSlot(state, { payload }) {
       state.tutoringTimeSlots = state.tutoringTimeSlots.filter(
         (slot) => slot.id !== payload
@@ -187,7 +191,6 @@ const schoolSlice = createSlice({
       state.locations.splice(payload, 1);
     },
     removeRoom(state, { payload }) {
-
       const new_locations = JSON.parse(JSON.stringify(state.locations));
       let new_rooms = [];
       let saved_index;
@@ -220,100 +223,167 @@ const schoolSlice = createSlice({
   },
   extraReducers: {
     [getSchoolData.pending]: (state) => {
+      state.renderErrorMessage = true;
       state.isLoading = true;
     },
     [getSchoolData.fulfilled]: (state, { payload }) => {
-      state.id = payload.id;
-      state.name = payload.name;
-      state.rooms = payload.rooms;
-      state.buildings = payload.buildings;
-      state.locations = payload.locations;
-      state.subjects = payload.subjects;
-      state.tutoringTimeSlots = payload.tutoring_time_slots;
-      state.isLoading = false;
+      if (Object.keys(payload).includes("error")) {
+        typeof payload.error === "string"
+          ? (state.errorText = [["Server Error", payload.error]])
+          : (state.errorText = Object.entries(payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        state.id = payload.id;
+        state.name = payload.name;
+        state.rooms = payload.rooms;
+        state.buildings = payload.buildings;
+        state.locations = payload.locations;
+        state.subjects = payload.subjects;
+        state.tutoringTimeSlots = payload.tutoring_time_slots;
+        state.isLoading = false;
+      }
     },
     [createTutoringTimeSlot.pending]: (state) => {
+      state.renderErrorMessage = true;
       state.isLoading = true;
     },
     [createTutoringTimeSlot.fulfilled]: (state, action) => {
-      const newSiteTimeSlot = createNewSiteTutoringSlot(action.payload);
-      state.tutoringTimeSlots.push(newSiteTimeSlot);
-      state.tutoringTimeSlots.sort((a, b) =>
-        a.date_sort > b.date_sort ? 1 : -1
-      );
-      //[]: add sucess message and error handeling here
-      state.isloading = false;
+      if (Object.keys(action.payload).includes("error")) {
+        typeof action.payload.error === "string"
+          ? (state.errorText = [["Server Error", action.payload.error]])
+          : (state.errorText = Object.entries(action.payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        const newSiteTimeSlot = createNewSiteTutoringSlot(action.payload);
+        state.tutoringTimeSlots.push(newSiteTimeSlot);
+        state.tutoringTimeSlots.sort((a, b) =>
+          a.date_sort > b.date_sort ? 1 : -1
+        );
+        //[]: add sucess message and error handeling here
+        state.isloading = false;
+      }
     },
     [updateTutoringTimeSlot.pending]: (state) => {
+      state.renderErrorMessage = true;
       state.isLoading = true;
     },
     [updateTutoringTimeSlot.fulfilled]: (state, action) => {
-      const newSiteTimeSlot = createNewSiteTutoringSlot(action.payload);
-      state.tutoringTimeSlots.push(newSiteTimeSlot);
-      state.tutoringTimeSlots.sort((a, b) =>
-        a.date_sort > b.date_sort ? 1 : -1
-      );
-      //[x]: add sucess message and error handeling here
-      state.isloading = false;
+      if (Object.keys(action.payload).includes("error")) {
+        typeof action.payload.error === "string"
+          ? (state.errorText = [["Server Error", action.payload.error]])
+          : (state.errorText = Object.entries(action.payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        const newSiteTimeSlot = createNewSiteTutoringSlot(action.payload);
+        state.tutoringTimeSlots.push(newSiteTimeSlot);
+        state.tutoringTimeSlots.sort((a, b) =>
+          a.date_sort > b.date_sort ? 1 : -1
+        );
+        //[]: add sucess message and error handeling here
+        state.isloading = false;
+      }
+    },
+    [addSchoolSubject.pending]: (state) => {
+      state.renderErrorMessage = true;
     },
     [addSchoolSubject.fulfilled]: (state, action) => {
       state.subjects.push(action.payload);
       state.subjects.sort((a, b) => (a.name > b.name ? 1 : -1));
     },
+    [addNewBuilding.pending]: (state) => {
+      state.renderErrorMessage = true;
+    },
     [addNewBuilding.fulfilled]: (state, action) => {
-      state.locations.push({ building: action.payload, rooms: [] });
-      state.locations.sort((a, b) =>
-        a.building.name > b.building.name ? 1 : -1
-      );
+      if (Object.keys(action.payload).includes("error")) {
+        typeof action.payload.error === "string"
+          ? (state.errorText = [["Server Error", action.payload.error]])
+          : (state.errorText = Object.entries(action.payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        state.locations.push({ building: action.payload, rooms: [] });
+        state.locations.sort((a, b) =>
+          a.building.name > b.building.name ? 1 : -1
+        );
+      }
+    },
+    [editBuildingInfo.pending]: (state) => {
+      state.renderErrorMessage = true;
     },
     [editBuildingInfo.fulfilled]: (state, action) => {
-      state.locations = state.locations.map((location) => {
-        if (location.building.id === action.payload.id) {
-          location.building = action.payload;
-          return location;
-        } else {
-          return location;
-        }
-      });
-      state.locations.sort((a, b) =>
-        a.building.name > b.building.name ? 1 : -1
-      );
-    },
-    [addNewRoom.fulfilled]: (state, action) => {
-      state.locations = state.locations.map((location) => {
-        if (location.building.id === action.payload.building_id) {
-          location.rooms.push(action.payload);
-          location.rooms.sort((a, b) => (a.name > b.name ? 1 : -1));
-          return location;
-        } else {
-          return location;
-        }
-      });
-    },
-    [editRoomInfo.fulfilled]: (state, action) => {
-      let current_building;
-      let room_index;
-      state.locations.forEach((location) => {
-        location.rooms.forEach((room, index) => {
-          if (room.id === action.payload.id) {
-            current_building = room.building_id;
-            room_index = index
+      if (Object.keys(action.payload).includes("error")) {
+        typeof action.payload.error === "string"
+          ? (state.errorText = [["Server Error", action.payload.error]])
+          : (state.errorText = Object.entries(action.payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        state.locations = state.locations.map((location) => {
+          if (location.building.id === action.payload.id) {
+            location.building = action.payload;
+            return location;
+          } else {
+            return location;
           }
         });
-      });
-      state.locations = state.locations.map((location) => {
-        if (location.building.id === action.payload.building_id) {
-          location.rooms.splice(room_index, 1, action.payload);
-          return location;
-        } else {
-          if(location.building.id === current_building){
-            location.rooms.filter((room) => room.id !== action.payload.id)
-            return location
-          }else{
-            return location
+        state.locations.sort((a, b) =>
+          a.building.name > b.building.name ? 1 : -1
+        );
+      }
+    },
+    [addNewRoom.pending]: (state) => {
+      state.renderErrorMessage = true;
+    },
+    [addNewRoom.fulfilled]: (state, action) => {
+      if (Object.keys(action.payload).includes("error")) {
+        typeof action.payload.error === "string"
+          ? (state.errorText = [["Server Error", action.payload.error]])
+          : (state.errorText = Object.entries(action.payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        state.locations = state.locations.map((location) => {
+          if (location.building.id === action.payload.building_id) {
+            location.rooms.push(action.payload);
+            location.rooms.sort((a, b) => (a.name > b.name ? 1 : -1));
+            return location;
+          } else {
+            return location;
           }
-        }
-      });
+        });
+      }
+    },
+    [editRoomInfo.pending]: (state) => {
+      state.renderErrorMessage = true;
+    },
+    [editRoomInfo.fulfilled]: (state, action) => {
+      if (Object.keys(action.payload).includes("error")) {
+        typeof action.payload.error === "string"
+          ? (state.errorText = [["Server Error", action.payload.error]])
+          : (state.errorText = Object.entries(action.payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        let current_building;
+        let room_index;
+        state.locations.forEach((location) => {
+          location.rooms.forEach((room, index) => {
+            if (room.id === action.payload.id) {
+              current_building = room.building_id;
+              room_index = index;
+            }
+          });
+        });
+        state.locations = state.locations.map((location) => {
+          if (location.building.id === action.payload.building_id) {
+            location.rooms.splice(room_index, 1, action.payload);
+            return location;
+          } else {
+            if (location.building.id === current_building) {
+              location.rooms.filter((room) => room.id !== action.payload.id);
+              return location;
+            } else {
+              return location;
+            }
+          }
+        });
+      }
     },
   },
 });

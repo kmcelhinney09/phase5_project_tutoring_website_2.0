@@ -34,7 +34,7 @@ function AppWithStore() {
     if (user.id) {
       dispatch(getSchoolData());
     }
-  }, [user]);
+  }, []);
 
   function handleLogout() {
     fetch("/logout", {
@@ -52,7 +52,7 @@ function AppWithStore() {
 
   function handleUserView() {
     let navigation;
-    
+
     if (user.role === "admin") {
       navigation = <Navigate to={`/admin/${user.id}`} />;
     } else {

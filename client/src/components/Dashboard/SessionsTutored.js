@@ -9,6 +9,7 @@ import LeaveNote from "./LeaveNote";
 import {
   removeBookedAsTutor,
   removeEntireTutoringSession,
+  clearError
 } from "../ManageUsers/userSlice";
 
 function SessionsTutored() {
@@ -18,7 +19,10 @@ function SessionsTutored() {
   const [showModal, setShowModal] = useState(false);
   const [tuteeData, setTuteeData] = useState(0);
 
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    dispatch(clearError())
+    setShowModal(false);
+  }
   const handleShowModal = () => setShowModal(true);
 
   function handleDropBookedSession(session_id) {

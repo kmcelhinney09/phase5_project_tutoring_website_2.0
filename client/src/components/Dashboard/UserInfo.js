@@ -18,25 +18,6 @@ function UserInfo() {
   const { user, school } = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  const [errors, setErrors] = useState([]); //[]: link error handeling
-
-  //[]: connect errors to the proper store user
-  function renderErrors() {
-    const error_text = errors.map((error, index) => {
-      return (
-        <li key={index}>
-          {error[0]}
-          <ul>
-            {error[1].map((text) => (
-              <li>{text}</li>
-            ))}
-          </ul>
-        </li>
-      );
-    });
-    return error_text;
-  }
-
   function handleDeleteWrittenNotes(noteId) {
     //[x]: Link action to remove writtenNotes from user store
     dispatch(removeWrittenNote(noteId));
@@ -58,9 +39,9 @@ function UserInfo() {
     }).then((res) => {
       if (res.ok) {
         //[]: create message that action was successful
-        res.json().then((subjectSignedUp) => {});
+        res.json().then((subjectSignedUp) => subjectSignedUp);
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to errors in user store
+        res.json().then((e) => Object.entries(e.error)); //[]: link to errors in user store
       }
     });
   }
@@ -138,7 +119,6 @@ function UserInfo() {
                   }
                 })}
               </ul>
-              <p>{renderErrors()}</p>
             </Row>
           </>
         ) : null}

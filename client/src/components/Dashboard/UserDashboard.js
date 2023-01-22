@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux"; 
+import { useSelector } from "react-redux";
 import Tab from "react-bootstrap/Tab";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
@@ -80,7 +80,7 @@ function UserDashboard({ dashboardKey, handleDashboardKeyChange }) {
           </Tab.Container>
         </div>
       ) : (
-        <h1>Loading....</h1>
+        <h1>Loading......</h1>
       )}
     </>
   );

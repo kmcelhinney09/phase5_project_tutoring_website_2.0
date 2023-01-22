@@ -3,32 +3,35 @@ import { useState } from "react";
 import Form from "react-bootstrap/esm/Form";
 import FloatingLabel from "react-bootstrap/esm/FloatingLabel";
 import Button from "react-bootstrap/esm/Button";
-import { addNewNote } from "../ManageUsers/userSlice";
-//[]: Fix Error Handeling to work with store
+import { addNewNote, clearError } from "../ManageUsers/userSlice";
+
 //Note: created action to add note to store
 function LeaveNote({ closeForm, tuteeData }) {
   const dispatch = useDispatch();
 
   const user = useSelector((store) => store.user);
+  const errorText = useSelector((store) => store.user.errorText);
+  const renderErrorMessage = useSelector(
+    (store) => store.user.renderErrorMessage
+  );
 
   const [noteForm, setNoteForm] = useState({
     tutor_id: user.id,
     tutee_id: tuteeData.tuteeId,
     note: "",
   });
-  const [errors, setErrors] = useState([]);
 
-  function renderErrors() {
+  function renderErrors(errors) {
     const error_text = errors.map((error, index) => {
       return (
-        <li key={index}>
-          {error[0]}
-          <ul>
-            {error[1].map((text) => (
-              <li>{text}</li>
-            ))}
-          </ul>
-        </li>
+        <ul key={index}>
+          <li>
+            {error[0]}
+            <ul>
+              <li>{error[1]}</li>
+            </ul>
+          </li>
+        </ul>
       );
     });
     return error_text;
@@ -42,11 +45,12 @@ function LeaveNote({ closeForm, tuteeData }) {
 
   function handleNoteOnSubmit(e) {
     e.preventDefault();
-    setErrors([]); //[]: link to error handeling
     //[x]: include note in written notes section
     dispatch(addNewNote(noteForm));
-    closeForm();
-
+    if (!renderErrorMessage) {
+      dispatch(clearError());
+      closeForm();
+    }
   }
 
   return (
@@ -78,9 +82,11 @@ function LeaveNote({ closeForm, tuteeData }) {
           Close
         </Button>
         <br />
-        <Form.Text className="text-danger">
-          <ul>{renderErrors()}</ul>
-        </Form.Text>
+        {errorText.length > 0 && (
+          <Form.Text className="text-danger">
+            {renderErrors(errorText)}
+          </Form.Text>
+        )}
       </Form>
     </div>
   );
