@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
@@ -8,32 +7,23 @@ import TutoringSlotRender from "./TutoringSlotRender";
 function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
   const { user, school } = useSelector((store) => store);
 
-  //[]: hook errors up to school store
-  const [errors, setErrors] = useState([]);
-
-  
-  function handleSetErrors(inputErrors) {
-    setErrors(inputErrors);
-  }
-
-  function renderErrors() {
+  function renderErrors(errors) {
     const error_text = errors.map((error, index) => {
       return (
-        <li key={index}>
-          {error[0]}
-          <ul>
-            {error[1].map((text) => (
-              <li>{text}</li>
-            ))}
-          </ul>
-        </li>
+        <ul key={index}>
+          <li>
+            {error[0]}
+            <ul>
+              <li>{error[1]}</li>
+            </ul>
+          </li>
+        </ul>
       );
     });
     return error_text;
   }
 
   function handle_closed_sessions(session) {
-    
     if (callingComponent === "TutoringSignUp") {
       if (session.open_status === true) {
         return (
@@ -41,7 +31,6 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
             slotInfo={session}
             handleDashboardKeyChange={handleDashboardKeyChange}
             callingComponent={callingComponent}
-            setErrors={handleSetErrors}
           />
         );
       } else {
@@ -61,7 +50,6 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
               slotInfo={session}
               handleDashboardKeyChange={handleDashboardKeyChange}
               callingComponent={callingComponent}
-              setErrors={handleSetErrors}
             />
           );
         } else {
@@ -76,7 +64,7 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
         <Container>
           <Row>
             <h1>{school.name}</h1>
-            <ul>{renderErrors()}</ul>
+            <ul>{renderErrors(school.errorText)}</ul>
           </Row>
           <Row>
             {school.locations.map((buildingInfo) => {

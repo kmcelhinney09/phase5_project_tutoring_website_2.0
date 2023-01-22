@@ -4,7 +4,7 @@ import { format } from "date-fns";
 
 //TODO: Crete Error handleling ?? Maybe have an errors tag and just render errors there have actio to add errors and clear errors
 const initialState = {
-  errorText: "",
+  errorText: [],
   renderErrorMessage: true,
   isLoading: false,
   id: 0,
@@ -179,6 +179,9 @@ const schoolSlice = createSlice({
   name: "school",
   initialState,
   reducers: {
+    setServerError(state, { payload }) {
+      state.errorText = payload.error;
+    },
     clearError(state) {
       state.errorText = "";
     },
@@ -389,6 +392,8 @@ const schoolSlice = createSlice({
 });
 
 export const {
+  setServerError,
+  clearError,
   removeTutoringTimeSlot,
   removeBuildingAndItsRooms,
   removeRoom,

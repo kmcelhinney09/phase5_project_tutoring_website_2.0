@@ -2,9 +2,9 @@ import React from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 
-function ActionMessage({ closeForm, actionMessage }) {
+function ActionMessage({ closeForm, actionMessage, bgcolor }) {
   return (
-    <Alert show={true} variant="success">
+    <Alert show={true} variant={bgcolor}>
       <Alert.Heading>"Action Message"</Alert.Heading>
       <p>{actionMessage}</p>
       <hr />

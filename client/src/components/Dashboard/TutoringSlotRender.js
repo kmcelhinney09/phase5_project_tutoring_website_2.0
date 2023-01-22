@@ -7,7 +7,6 @@ function TutoringSlotRender({
   slotInfo,
   handleDashboardKeyChange,
   callingComponent,
-  setErrors,
 }) {
   // const auth = useAuth();
   // const user = auth.currentUser;
@@ -17,7 +16,6 @@ function TutoringSlotRender({
   let slot_status;
 
   function handleBookTutoring(tutorId) {
-    setErrors([]);
     // [x]:link booking tutoring to user slice
     let signUpSlot;
     slotInfo.tutor_slot_sign_ups.forEach((signUp) => {
@@ -37,8 +35,6 @@ function TutoringSlotRender({
   }
 
   function handleTutorSignUp() {
-    setErrors([]); //add to error handeling
-
     //[x]:add tutor sign up to user store
     const slotSignUp = {
       tutor_id: user.id,
