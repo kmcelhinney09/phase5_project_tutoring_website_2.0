@@ -101,6 +101,9 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    setServerError(state, { payload }) {
+      state.errorText = payload.error;
+    },
     clearError(state) {
       state.errorText = "";
     },
@@ -269,6 +272,7 @@ const userSlice = createSlice({
 });
 
 export const {
+  setServerError,
   clearError,
   logOutUser,
   removeWrittenNote,

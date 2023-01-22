@@ -27,7 +27,6 @@ function ManageSchool() {
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
-  const [actionMessage, setActionMessage] = useState("");
 
   const handleCloseModal = () => {
     setShowModal(false);
