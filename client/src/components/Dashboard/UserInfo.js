@@ -11,9 +11,8 @@ import Col from "react-bootstrap/esm/Col";
 import {
   removeWrittenNote,
   removeSubjectsTutored,
-  addSubjectsTutored
+  addSubjectsTutored,
 } from "../ManageUsers/userSlice";
-
 
 function UserInfo() {
   const { user, school } = useSelector((state) => state);
@@ -50,7 +49,7 @@ function UserInfo() {
 
   function handleSubjectSelect(subject) {
     //[x]: Link action to add subject to user subjects tutored
-    dispatch(addSubjectsTutored(subject))
+    dispatch(addSubjectsTutored(subject));
 
     fetch(`/tutored_subject`, {
       method: "POST",
@@ -69,7 +68,7 @@ function UserInfo() {
   function handleSubjectRemoved(sub) {
     //[x]: link action to remove subjects tutored from user
     dispatch(removeSubjectsTutored(sub.id));
-    
+
     //[]: create message that action was successful
     fetch(`/tutored_subject/${sub.id}`, {
       method: "DELETE",
@@ -129,16 +128,16 @@ function UserInfo() {
             </Col>
             <Row>
               <h5>Subjects Tutored</h5>
-              <p className="ms-4">
+              <ul className="ms-4">
                 {user.subjectsSignedUp.map((sub, index) => {
                   const size = user.subjectsSignedUp.length;
                   if (index <= size - 2) {
-                    return <>{`${sub.name}, `}</>;
+                    return <li key={index}>{`${sub.name}, `}</li>;
                   } else {
-                    return <>{`${sub.name}`}</>;
+                    return <li key={index}>{`${sub.name}`}</li>;
                   }
                 })}
-              </p>
+              </ul>
               <p>{renderErrors()}</p>
             </Row>
           </>
