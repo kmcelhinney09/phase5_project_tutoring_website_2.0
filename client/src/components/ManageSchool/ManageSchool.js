@@ -11,10 +11,13 @@ import CreateRoom from "./CreateRoom";
 import EditRoom from "./EditRoom";
 import EditBuilding from "./EditBuilding";
 import AddSubject from "./AddSubject";
+import ActionMessage from "../ActionMessage";
 import {
   removeBuildingAndItsRooms,
   removeRoom,
   removeSchoolSubject,
+  setServerError,
+  clearError,
 } from "./schoolSlice";
 
 function ManageSchool() {
@@ -24,8 +27,12 @@ function ManageSchool() {
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
+  const [actionMessage, setActionMessage] = useState("");
 
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    dispatch(clearError);
+  };
   const handleShowModal = () => setShowModal(true);
 
   function handleModalAction(modal_type, id = 0, resources_name = []) {
@@ -61,6 +68,15 @@ function ManageSchool() {
     } else if (modal_type === "Create Subject") {
       setModalTitle("Add Subject");
       setModalBody(<AddSubject closeForm={handleCloseModal} />);
+    } else if (modal_type === "renderError") {
+      setModalTitle("Error");
+      setModalBody(
+        <ActionMessage
+          closeForm={handleCloseModal}
+          actionMessage={school.errorText}
+          bgcolor="danger"
+        />
+      );
     }
     handleShowModal();
   }
@@ -70,6 +86,11 @@ function ManageSchool() {
     dispatch(removeRoom(room_id));
     fetch(`/room/${room_id}`, {
       method: "DELETE",
+    }).then((res) => {
+      if (!res.ok) {
+        dispatch(setServerError({ error: [res.status, res.statusText] }));
+        handleModalAction("renderError");
+      }
     });
   }
 
@@ -87,16 +108,26 @@ function ManageSchool() {
     fetch(`/building/${building_id}`, {
       //[]: create message that action was successful
       method: "DELETE",
+    }).then((res) => {
+      if (!res.ok) {
+        dispatch(setServerError({ error: [res.status, res.statusText] }));
+        handleModalAction("renderError");
+      }
     });
   }
 
-  function handleRemoveSubject(subjectId, subjectIndex) {
+  function handleRemoveSubject(subjectId) {
     //[x]: link to action to remove subject from school store
     dispatch(removeSchoolSubject(subjectId));
 
     fetch(`/subject/${subjectId}`, {
       //[]: create message that action was successful
       method: "DELETE",
+    }).then((res) => {
+      if (!res.ok) {
+        dispatch(setServerError({ error: [res.status, res.statusText] }));
+        handleModalAction("renderError");
+      }
     });
   }
 
@@ -205,14 +236,14 @@ function ManageSchool() {
               </tr>
             </thead>
             <tbody>
-              {school.subjects.map((subject, index) => {
+              {school.subjects.map((subject) => {
                 return (
                   <tr key={subject.id}>
                     <td>{subject.name}</td>
                     <td>
                       <Button
                         variant="success"
-                        onClick={() => handleRemoveSubject(subject.id, index)}
+                        onClick={() => handleRemoveSubject(subject.id)}
                       >
                         Drop Subject
                       </Button>
