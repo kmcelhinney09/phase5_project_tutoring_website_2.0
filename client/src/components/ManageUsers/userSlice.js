@@ -113,17 +113,6 @@ const userSlice = createSlice({
       state.isLoading = false;
       state = initialState;
     },
-    addTutorNote(state, { payload }) {
-      console.log(payload);
-      const newNote = {
-        id: uuid(),
-        tutor_id: payload.tutor_id,
-        tutor_name: payload.tutor_name,
-        tutor_note: payload.tutor_note,
-        tutee_name: payload.tutee_name,
-      };
-      state.notesWritten.push(newNote);
-    },
     removeWrittenNote(state, { payload }) {
       state.notesWritten = state.notesWritten.filter(
         (note) => note.id !== payload
@@ -243,7 +232,6 @@ const userSlice = createSlice({
 export const {
   addTutorSignUp,
   logOutUser,
-  addTutorNote,
   removeWrittenNote,
   addSubjectsTutored,
   removeSubjectsTutored,
