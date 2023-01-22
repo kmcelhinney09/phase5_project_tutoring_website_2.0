@@ -258,7 +258,6 @@ const userSlice = createSlice({
     },
     [addNewNote.fulfilled]: (state, { payload }) => {
       if (Object.keys(payload).includes("error")) {
-        console.log("Action Payload: ", payload)
         if(typeof payload.error === "string"){
           state.errorText = [["Server Error", payload.error]]
         }else{

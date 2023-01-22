@@ -8,8 +8,7 @@ import ResetPassward from "./ResetPassward";
 import EditUserInfo from "./EditUserInfo";
 
 function ManageUsers() {
-  
-  const {user,school} = useSelector((state) => state)
+  const { user, school } = useSelector((state) => state);
   const [schoolData, setSchoolData] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
@@ -19,18 +18,20 @@ function ManageUsers() {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-  const [errors, setErrors] = useState([])//[]: link to errors in user store (might Remove do we need?)
+  const [errors, setErrors] = useState([]); //[]: link to errors in user store (might Remove do we need?)
 
   useEffect(() => {
-    fetch("/users").then((res) => {
-      if (res.ok) {
-        res.json().then((data) => {
-          setSchoolData(data);
-        });
-      } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
-      }
-    });
+    if (user.role === "admin") {
+      fetch("/users").then((res) => {
+        if (res.ok) {
+          res.json().then((data) => {
+            setSchoolData(data);
+          });
+        } else {
+          res.json().then((e) => setErrors(Object.entries(e.error)));
+        }
+      });
+    }
   }, [school.id]);
 
   function renderErrors() {
@@ -49,7 +50,7 @@ function ManageUsers() {
     });
     return error_text;
   }
-  
+
   function handleModalAction(modal_type, id = 0, resources = [], index = 0) {
     if (modal_type === "editUser") {
       setModalTitle("Edit User");
@@ -74,19 +75,25 @@ function ManageUsers() {
   }
 
   function confirmDeleteUserModal(userId, userName, userIndex) {
-    return(
-    <>
-      <h4>{`Are you sure you want to ${userName}`}</h4>
-      <br />
-      <Button variant="primary" type="submit" onClick={() => {handleDeleteUser(userId, userIndex)}}>
-        Yes
-      </Button>{" "}
-      <Button variant="primary" onClick={handleCloseModal}>
-        Close
-      </Button>
-      <br />
-    </>
-    )
+    return (
+      <>
+        <h4>{`Are you sure you want to ${userName}`}</h4>
+        <br />
+        <Button
+          variant="primary"
+          type="submit"
+          onClick={() => {
+            handleDeleteUser(userId, userIndex);
+          }}
+        >
+          Yes
+        </Button>{" "}
+        <Button variant="primary" onClick={handleCloseModal}>
+          Close
+        </Button>
+        <br />
+      </>
+    );
   }
 
   function handleDeleteUser(userId, userIndex) {
@@ -100,10 +107,10 @@ function ManageUsers() {
     });
     handleCloseModal();
   }
-  
+
   return (
     <>
-    {renderErrors.length !==0?(<ul>{renderErrors()}</ul>):null}
+      {renderErrors.length !== 0 ? <ul>{renderErrors()}</ul> : null}
       <Table striped bordered hover>
         <thead>
           <tr>

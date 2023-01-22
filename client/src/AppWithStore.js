@@ -34,7 +34,7 @@ function AppWithStore() {
     if (user.id) {
       dispatch(getSchoolData());
     }
-  }, []);
+  }, [user.id]);
 
   function handleLogout() {
     fetch("/logout", {
