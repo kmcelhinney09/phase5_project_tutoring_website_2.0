@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { v4 as uuid } from "uuid";
 //TODO: create an error tag and an update or add error and a reset error action
 const initialState = {
+  errorText: "",
+  renderErrorMessage: true,
   isLoading: false,
   isLoggedIn: false,
   id: 0,
@@ -34,9 +35,7 @@ export const getUserInfo = createAsyncThunk(
 export const reAuthorizeUser = createAsyncThunk("user/reAuthorize", () => {
   return fetch("/auth")
     .then((res) => res.json())
-    .then((userInfo) => {
-      return userInfo;
-    });
+    .then((userInfo) => userInfo);
 });
 //[x]: create thunk for user sign up
 export const signUpUser = createAsyncThunk("user/SignUp", (signUpForm) => {
@@ -105,8 +104,12 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    clearError(state) {
+      state.errorText = "";
+    },
     logOutUser(state) {
       state.isLoading = false;
+      state.isLoggedIn = false;
       state = initialState;
     },
     removeWrittenNote(state, { payload }) {
@@ -144,23 +147,31 @@ const userSlice = createSlice({
   },
   extraReducers: {
     [getUserInfo.pending]: (state) => {
+      state.renderErrorMessage = true;
       state.isLoading = true;
     },
     [getUserInfo.fulfilled]: (state, { payload }) => {
-      state.id = payload.id;
-      state.email = payload.email;
-      state.fullName = payload.full_name;
-      state.grade = payload.grade;
-      state.role = payload.role;
-      state.schoolId = payload.school.id;
-      state.bookedAsTutor = payload.booked_as_tutor;
-      state.bookedSlots = payload.booked_slots;
-      state.subjectsSignedUp = payload.subjects_signed_up;
-      state.tutorNotes = payload.tutor_notes;
-      state.tutorSignUps = payload.tutor_sign_ups;
-      state.notesWritten = payload.written_notes;
-      state.isLoggedIn = true;
-      state.isLoading = false;
+      if (Object.keys(payload).includes("error")) {
+        typeof payload.error === "string"
+          ? (state.errorText = [["Server Error", payload.error]])
+          : (state.errorText = Object.entries(payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        state.id = payload.id;
+        state.email = payload.email;
+        state.fullName = payload.full_name;
+        state.grade = payload.grade;
+        state.role = payload.role;
+        state.schoolId = payload.school.id;
+        state.bookedAsTutor = payload.booked_as_tutor;
+        state.bookedSlots = payload.booked_slots;
+        state.subjectsSignedUp = payload.subjects_signed_up;
+        state.tutorNotes = payload.tutor_notes;
+        state.tutorSignUps = payload.tutor_sign_ups;
+        state.notesWritten = payload.written_notes;
+        state.isLoggedIn = true;
+        state.isLoading = false;
+      }
     },
     [reAuthorizeUser.pending]: (state) => {
       state.isLoading = true;
@@ -185,46 +196,82 @@ const userSlice = createSlice({
       }
     },
     [signUpUser.pending]: (state) => {
+      state.renderErrorMessage = true;
       state.isLoading = true;
     },
     [signUpUser.fulfilled]: (state, { payload }) => {
-      state.id = payload.id;
-      state.email = payload.email;
-      state.fullName = payload.full_name;
-      state.grade = payload.grade;
-      state.role = payload.role;
-      state.bookedAsTutor = payload.booked_as_tutor;
-      state.bookedSlots = payload.booked_slots;
-      state.subjectsSignedUp = payload.subjects_signed_up;
-      state.tutorNotes = payload.tutor_notes;
-      state.tutorSignUps = payload.tutor_sign_ups;
-      state.notesWritten = payload.written_notes;
-      state.isLoggedIn = true;
-      state.isLoading = false;
+      if (Object.keys(payload).includes("error")) {
+        typeof payload.error === "string"
+          ? (state.errorText = [["Server Error", payload.error]])
+          : (state.errorText = Object.entries(payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        state.id = payload.id;
+        state.email = payload.email;
+        state.fullName = payload.full_name;
+        state.grade = payload.grade;
+        state.role = payload.role;
+        state.bookedAsTutor = payload.booked_as_tutor;
+        state.bookedSlots = payload.booked_slots;
+        state.subjectsSignedUp = payload.subjects_signed_up;
+        state.tutorNotes = payload.tutor_notes;
+        state.tutorSignUps = payload.tutor_sign_ups;
+        state.notesWritten = payload.written_notes;
+        state.isLoggedIn = true;
+        state.isLoading = false;
+      }
     },
     [bookTutoringSlot.pending]: (state) => {
+      state.renderErrorMessage = true;
       state.isLoading = true;
     },
     [bookTutoringSlot.fulfilled]: (state, { payload }) => {
-      state.bookedSlots.push(payload);
-      state.bookedSlots.sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1));
-      state.isLoading = false;
+      if (Object.keys(payload).includes("error")) {
+        typeof payload.error === "string"
+          ? (state.errorText = [["Server Error", payload.error]])
+          : (state.errorText = Object.entries(payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        state.bookedSlots.push(payload);
+        state.bookedSlots.sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1));
+        state.isLoading = false;
+      }
     },
     [tutorSlotSignUp.pending]: (state) => {
+      state.renderErrorMessage = true;
       state.isLoading = true;
     },
     [tutorSlotSignUp.fulfilled]: (state, { payload }) => {
-      state.tutorSignUps.push(payload);
-      state.tutorSignUps.sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1));
-      state.isLoading = false;
+      if (Object.keys(payload).includes("error")) {
+        typeof payload.error === "string"
+          ? (state.errorText = [["Server Error", payload.error]])
+          : (state.errorText = Object.entries(payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        state.tutorSignUps.push(payload);
+        state.tutorSignUps.sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1));
+        state.isLoading = false;
+      }
+    },
+    [addNewNote.pending]: (state) => {
+      state.renderErrorMessage = true;
+      state.isLoading = true;
     },
     [addNewNote.fulfilled]: (state, { payload }) => {
-      state.notesWritten.push(payload);
+      if (Object.keys(payload).includes("error")) {
+        typeof payload.error === "string"
+          ? (state.errorText = [["Server Error", payload.error]])
+          : (state.errorText = Object.entries(payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        state.notesWritten.push(payload);
+      }
     },
   },
 });
 
 export const {
+  clearError,
   logOutUser,
   removeWrittenNote,
   addSubjectsTutored,

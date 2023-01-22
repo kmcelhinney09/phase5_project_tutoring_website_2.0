@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { signUpUser } from "./ManageUsers/userSlice";
+import { signUpUser, clearError } from "./ManageUsers/userSlice";
 
 function SignUp({ closeForm }) {
   const [signUpForm, setSignUpForm] = useState({
@@ -15,7 +15,7 @@ function SignUp({ closeForm }) {
     password_confirmation: "",
   });
   const dispatch = useDispatch();
- 
+  const { errorText, renderErrorMessage } = useSelector((store) => store.user);
   function handleFormOnChange(e) {
     let name = e.target.name;
     let value = e.target.value;
@@ -29,7 +29,27 @@ function SignUp({ closeForm }) {
     //[x]: link to signup user in user store
     e.preventDefault();
     dispatch(signUpUser(signUpForm));
-    closeForm();
+    if (!renderErrorMessage){
+      dispatch(clearError())
+      closeForm();
+    }
+  }
+
+
+  function renderErrors(errors) {
+    const error_text = errors.map((error, index) => {
+      return (
+        <ul key={index}>
+          <li>
+            {error[0]}
+            <ul>
+              <li>{error[1]}</li>
+            </ul>
+          </li>
+        </ul>
+      );
+    });
+    return error_text;
   }
 
   return (
@@ -97,6 +117,11 @@ function SignUp({ closeForm }) {
           Cancel
         </Button>
         <br />
+        {errorText.length > 0 && (
+          <Form.Text className="text-danger">
+            {renderErrors(errorText)}
+          </Form.Text>
+        )}
       </Form>
     </div>
   );

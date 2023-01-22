@@ -1,28 +1,30 @@
 import { useState } from "react";
-// import { useAuth } from "../context/AuthProvider";
+import { useDispatch } from "react-redux";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/esm/Button";
 import Image from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";
-import Alert from "react-bootstrap/Alert";
 import SignUp from "./SignUp";
 import Login from "./Login";
+import { clearError } from "./ManageUsers/userSlice";
 
 function Home() {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  // const auth = useAuth();
-  // const showAlert = auth.showAlert
-  // const alertOff = () => auth.handleShowAlertClose()
-  // const errors = auth.errors;
+  const dispatch = useDispatch();
 
-
-  const handleCloseSignUp = () => setShowSignUp(false);
+  const handleCloseSignUp = () => {
+    dispatch(clearError());
+    setShowSignUp(false);
+  };
   const handleShowSignUp = () => setShowSignUp(true);
 
-  const handleCloseLogin = () => setShowLogin(false);
+  const handleCloseLogin = () => {
+    dispatch(clearError());
+    setShowLogin(false);
+  };
   const handleShowLogin = () => setShowLogin(true);
 
   function splashScreen() {
@@ -53,9 +55,6 @@ function Home() {
                   Sign-Up
                 </Button>
               </Col>
-              {/* {showAlert ? (
-                <Alert variant="danger" onClose={() => alertOff(false)} dismissible>{<ul>{errors}</ul>}</Alert>
-              ) : null} */}
             </Row>
           </Col>
         </Row>

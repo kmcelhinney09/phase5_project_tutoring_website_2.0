@@ -1,8 +1,8 @@
 import { useState } from "react";
 // import { useAuth } from "../context/AuthProvider";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserInfo } from "./ManageUsers/userSlice";
-import { getSchoolData } from "./ManageSchool/schoolSlice";
+import { getUserInfo, clearError } from "./ManageUsers/userSlice";
+
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
@@ -11,9 +11,24 @@ function Login({ closeForm }) {
     email: "",
     password: "",
   });
-
-  // const auth = useAuth();
+  const { errorText, renderErrorMessage } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+
+  function renderErrors(errors) {
+    const error_text = errors.map((error, index) => {
+      return (
+        <ul key={index}>
+          <li>
+            {error[0]}
+            <ul>
+              <li>{error[1]}</li>
+            </ul>
+          </li>
+        </ul>
+      );
+    });
+    return error_text;
+  }
 
   function handleFormOnChange(e) {
     let name = e.target.name;
@@ -24,16 +39,13 @@ function Login({ closeForm }) {
     });
   }
 
-  // function handleSignUpSubmit(e) {
-  //   e.preventDefault();
-  //   auth.login(loginForm);
-  //   closeForm();
-  // }
-
   function handleSignUpSubmitStore(e) {
     e.preventDefault();
     dispatch(getUserInfo(loginForm));
-    closeForm();
+    if (!renderErrorMessage){
+      dispatch(clearError())
+      closeForm();
+    }
   }
 
   return (
@@ -64,6 +76,11 @@ function Login({ closeForm }) {
           Cancel
         </Button>
         <br />
+        {errorText.length > 0 && (
+          <Form.Text className="text-danger">
+            {renderErrors(errorText)}
+          </Form.Text>
+        )}
       </Form>
     </div>
   );
