@@ -13,13 +13,11 @@ import EditBuilding from "./EditBuilding";
 import AddSubject from "./AddSubject";
 import { removeBuildingAndItsRooms, removeRoom, removeSchoolSubject } from "./schoolSlice";
 
-//TODO: Remove useAuth
+
 function ManageSchool() {
-  // const auth = useAuth();
-  // let user = auth.currentUser;
   const { school, user } = useSelector((state) => state);
   const dispatch = useDispatch();
-  // const school = useSelector((state) => state.school)
+
   console.log(school);
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");

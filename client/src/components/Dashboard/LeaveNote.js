@@ -1,16 +1,12 @@
-// import { useAuth } from "../../context/AuthProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import Form from "react-bootstrap/esm/Form";
 import FloatingLabel from "react-bootstrap/esm/FloatingLabel";
 import Button from "react-bootstrap/esm/Button";
 import { addTutorNote } from "../ManageUsers/userSlice";
-//TODO: Remove useAuth
 //[]: Fix Error Handeling to work with store
 //Note: created action to add note to store
 function LeaveNote({ closeForm, tuteeData }) {
-  // const auth = useAuth();
-  // const user = auth.currentUser;
   const dispatch = useDispatch();
 
   const user = useSelector((store) => store.user);

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { editBuildingInfo } from "./schoolSlice";
-//TODO remove useAuth
+
 function EditBuilding({ closeForm, building_id, school_id, building_name }) {
   
   const dispatch = useDispatch();

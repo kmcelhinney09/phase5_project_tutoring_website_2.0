@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import { useAuth } from "../../context/AuthProvider";
 import { useSelector, useDispatch } from "react-redux";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
@@ -14,17 +13,13 @@ import {
   removeSubjectsTutored,
   addSubjectsTutored
 } from "../ManageUsers/userSlice";
-//TODOremove useAuth
+
 
 function UserInfo() {
-  // const auth = useAuth();
-  // const user = auth.currentUser;
   const { user, school } = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  // console.log(user);
-
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState([]); //[]: link error handeling
 
   //[]: connect errors to the proper store user
   function renderErrors() {

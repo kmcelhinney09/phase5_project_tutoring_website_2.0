@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-// import { useAuth } from "../../context/AuthProvider";
+
 import { useSelector } from "react-redux";
 import Modal from "react-bootstrap/Modal";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
 import ResetPassward from "./ResetPassward";
 import EditUserInfo from "./EditUserInfo";
-//TODO: remove useAuth
+
 function ManageUsers() {
-  // const user = useAuth().currentUser;
+  
   const {user,school} = useSelector((state) => state)
   const [schoolData, setSchoolData] = useState([]);
 
@@ -20,7 +20,7 @@ function ManageUsers() {
   const handleShowModal = () => setShowModal(true);
 
   const [errors, setErrors] = useState([])//[]: link to errors in user store (might Remove do we need?)
-  // NOTE: Does this call need to be made? Can I include it in the User call if they are admin?(only used on this page not need for store)
+
   useEffect(() => {
     fetch("/users").then((res) => {
       if (res.ok) {

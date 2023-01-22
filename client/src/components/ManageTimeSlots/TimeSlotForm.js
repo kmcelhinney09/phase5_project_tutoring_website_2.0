@@ -53,8 +53,7 @@ function TimeSlotForm({
       setRoomSelection(false);
     } else {
       let rooms;
-      const locations = school.locations;
-      locations.forEach((location) => {
+      school.locations.forEach((location) => {
         if (location.building.name === buildingName) {
           rooms = location.rooms;
         }

@@ -4,9 +4,9 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
-//TODO: remove useAuth
+
 function ViewTutoringTimeSlot() {
-  // const auth = useAuth();
+  
   const [tutoringSlotInfo, setTutoringSlotInfo] = useState(false);
   const [refresh,setRefresh] = useState(false);
   const { id } = useParams();
@@ -24,6 +24,7 @@ function ViewTutoringTimeSlot() {
   }, [id, refresh]);
 
   function handleDropTutor(tutor_id, tutor_index){
+    //[]: link drop tutor to school store
     let new_slot = JSON.parse(JSON.stringify(tutoringSlotInfo));
     let tutors = new_slot.tutors
     let tutor_signup_id
@@ -36,11 +37,6 @@ function ViewTutoringTimeSlot() {
     })
     fetch(`/tutor_slot_sign_up/${tutor_signup_id}`, {
       method: "DELETE",
-    }).then(res => {
-      if(res.ok){
-        //[]: create message that action successful
-        setRefresh(true) //TODO: Remove store should refresh on change
-      }
     })
   }
 
@@ -48,15 +44,10 @@ function ViewTutoringTimeSlot() {
     let new_booked_slot = JSON.parse(JSON.stringify(tutoringSlotInfo));
     new_booked_slot.booked_slots.splice(session_index,1)
     setTutoringSlotInfo(new_booked_slot)
-
+    //[]: link drop booked session to user store
     fetch(`/booked_slot/${session_id}`, {
       method: "DELETE",
-    }).then(res => {
-      if(res.ok){
-        //[]: create message that action successful
-        setRefresh(true) //TODO: Remove store should refresh on change
-      }
-    });
+    })
   }
 
   function render_booked_slots(slots_info) {

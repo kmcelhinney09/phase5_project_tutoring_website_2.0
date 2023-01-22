@@ -1,4 +1,3 @@
-// import { useAuth } from "../../context/AuthProvider";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Container from "react-bootstrap/esm/Container";
@@ -6,12 +5,10 @@ import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
 import TutoringSlotRender from "./TutoringSlotRender";
 
-//TODO Remove useAuth
 function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
-  // const user = useAuth().currentUser;
   const { user, school } = useSelector((store) => store);
 
-  //hook errors up to school store
+  //[]: hook errors up to school store
   const [errors, setErrors] = useState([]);
 
   // console.log(school);
@@ -107,21 +104,15 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
                                 <th className="text-center">Status</th>
                               </tr>
                             </thead>
-                            {JSON.parse( //TODO: check should be sorting at server level
-                              JSON.stringify(school.tutoringTimeSlots)
-                            )
-                              .sort((a, b) =>
-                                a.date_sort > b.date_sort ? 1 : -1
-                              )
-                              .map((slot) => {
-                                return (
-                                  <tbody key={slot.id}>
-                                    {slot.room_id === rooms.id
-                                      ? handle_closed_sessions(slot)
-                                      : null}
-                                  </tbody>
-                                );
-                              })}
+                            {school.tutoringTimeSlots.map((slot) => {
+                              return (
+                                <tbody key={slot.id}>
+                                  {slot.room_id === rooms.id
+                                    ? handle_closed_sessions(slot)
+                                    : null}
+                                </tbody>
+                              );
+                            })}
                           </Table>
                         </Row>
                       </Row>
