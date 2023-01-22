@@ -43,29 +43,10 @@ function LeaveNote({ closeForm, tuteeData }) {
   function handleNoteOnSubmit(e) {
     e.preventDefault();
     setErrors([]); //[]: link to error handeling
-    // let newNote = {
-    //   tutor_id: user.id,
-    //   tutor_name: user.fullName,
-    //   tutor_note: noteForm.note,
-    //   tutee_name: tuteeData.tuteeName,
-    // };
-    //[]: include note in written notes section
+    //[x]: include note in written notes section
     dispatch(addNewNote(noteForm));
     closeForm();
 
-    // fetch("/tutor_note", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(noteForm),
-    // }).then((res) => {
-    //   console.log(res);
-    //   if (res.ok) {
-    //     //[]: create message that action was sucessful
-    //     res.json().then((return_note) => {}); //[]: include note in written notes section
-    //   } else {
-    //     res.json().then((e) => setErrors(Object.entries(e.error)));
-    //   }
-    // });
   }
 
   return (
