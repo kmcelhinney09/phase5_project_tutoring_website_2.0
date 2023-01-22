@@ -11,20 +11,19 @@ function AddSubject({ closeForm }) {
     name: "",
     school_id: school.id,
   });
-  const [errors, setErrors] = useState([]); //[]: Hook up to error rendering
 
-  function renderErrors() {
-    //[]: link to errors in user store
+  function renderErrors(errors) {
+    console.log(errors);
     const error_text = errors.map((error, index) => {
       return (
-        <li key={index}>
-          {error[0]}
-          <ul>
-            {error[1].map((text) => (
-              <li>{text}</li>
-            ))}
-          </ul>
-        </li>
+        <ul key={index}>
+          <li>
+            {error[0]}
+            <ul>
+              <li>{error[1]}</li>
+            </ul>
+          </li>
+        </ul>
       );
     });
     return error_text;
@@ -38,10 +37,12 @@ function AddSubject({ closeForm }) {
 
   function handleSubmiitSubjectForm(e) {
     e.preventDefault();
-    setErrors([]);
     //[x]: link add subject to school store
-    dispatch(addSchoolSubject(subjectForm))
-    closeForm();
+    dispatch(addSchoolSubject(subjectForm));
+    console.log(!school.renderErrorMessage);
+    if (school.renderErrorMessage) {
+      closeForm();
+    }
   }
 
   return (
@@ -62,9 +63,11 @@ function AddSubject({ closeForm }) {
           Cancel
         </Button>
         <br />
-        <Form.Text className="text-danger">
-          <ul>{renderErrors()}</ul>
-        </Form.Text>
+        {school.errorText.length > 0 && (
+          <Form.Text className="text-danger">
+            {renderErrors(school.errorText)}
+          </Form.Text>
+        )}
       </Form>
     </div>
   );

@@ -1,6 +1,4 @@
-import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
-import { v4 as uuid } from "uuid";
-import { format } from "date-fns";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 //TODO: Crete Error handleling ?? Maybe have an errors tag and just render errors there have actio to add errors and clear errors
 const initialState = {
@@ -89,7 +87,6 @@ export const addSchoolSubject = createAsyncThunk(
     })
       .then((res) => res.json())
       .then((subject) => subject);
-    //[]: create message that action was successful
   }
 );
 
@@ -184,6 +181,7 @@ const schoolSlice = createSlice({
     },
     clearError(state) {
       state.errorText = "";
+      state.renderErrorMessage = true;
     },
     removeTutoringTimeSlot(state, { payload }) {
       state.tutoringTimeSlots = state.tutoringTimeSlots.filter(
@@ -290,8 +288,16 @@ const schoolSlice = createSlice({
       state.renderErrorMessage = true;
     },
     [addSchoolSubject.fulfilled]: (state, action) => {
-      state.subjects.push(action.payload);
-      state.subjects.sort((a, b) => (a.name > b.name ? 1 : -1));
+      if (Object.keys(action.payload).includes("error")) {
+        typeof action.payload.error === "string"
+          ? (state.errorText = [["Server Error", action.payload.error]])
+          : (state.errorText = Object.entries(action.payload.error));
+      } else {
+        state.renderErrorMessage = false;
+        state.subjects.push(action.payload);
+        state.subjects.sort((a, b) => (a.name > b.name ? 1 : -1));
+        state.renderErrorMessage = false;
+      }
     },
     [addNewBuilding.pending]: (state) => {
       state.renderErrorMessage = true;

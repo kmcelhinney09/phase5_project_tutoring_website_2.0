@@ -64,7 +64,9 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
         <Container>
           <Row>
             <h1>{school.name}</h1>
-            <ul>{renderErrors(school.errorText)}</ul>
+            {school.errorText.length > 0 ? (
+              <ul>{renderErrors(school.errorText)}</ul>
+            ) : null}
           </Row>
           <Row>
             {school.locations.map((buildingInfo) => {

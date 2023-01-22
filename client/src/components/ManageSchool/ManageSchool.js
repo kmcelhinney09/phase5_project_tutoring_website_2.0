@@ -30,7 +30,7 @@ function ManageSchool() {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    dispatch(clearError);
+    dispatch(clearError());
   };
   const handleShowModal = () => setShowModal(true);
 

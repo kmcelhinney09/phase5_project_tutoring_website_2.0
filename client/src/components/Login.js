@@ -42,8 +42,8 @@ function Login({ closeForm }) {
   function handleSignUpSubmitStore(e) {
     e.preventDefault();
     dispatch(getUserInfo(loginForm));
-    if (!renderErrorMessage){
-      dispatch(clearError())
+    if (!renderErrorMessage) {
+      dispatch(clearError());
       closeForm();
     }
   }
