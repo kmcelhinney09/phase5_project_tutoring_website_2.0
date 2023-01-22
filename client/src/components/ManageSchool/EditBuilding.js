@@ -5,9 +5,8 @@ import Form from "react-bootstrap/Form";
 import { editBuildingInfo } from "./schoolSlice";
 
 function EditBuilding({ closeForm, building_id, school_id, building_name }) {
-  
   const dispatch = useDispatch();
-  
+
   const [buildingForm, setBuildingForm] = useState({
     id: building_id,
     name: building_name,
@@ -40,9 +39,8 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
 
   function handleEditBuildingSubmit(e) {
     e.preventDefault();
-    setErrors([]); // []: link to clear erros in school errors
     //[x]: link to edit building action in school store
-    dispatch(editBuildingInfo(buildingForm))
+    dispatch(editBuildingInfo(buildingForm));
     closeForm();
   }
 

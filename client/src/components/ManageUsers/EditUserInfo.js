@@ -21,7 +21,7 @@ function EditUserInfo({
   const [errors, setErrors] = useState([]); // link to errors in user store
   const [subjectsTutored, setSubjectsTutored] = useState(
     userInfo.subjects_signed_up
-  ); 
+  );
 
   function renderErrors() {
     const error_text = errors.map((error, index) => {
@@ -61,7 +61,6 @@ function EditUserInfo({
       body: JSON.stringify(userInfoForm),
     }).then((res) => {
       if (res.ok) {
-        //[]: create message that action was succesful
         res.json().then((user) => {});
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to add errors in user store
@@ -72,12 +71,11 @@ function EditUserInfo({
   function handleSubjectsTutoredEdit(e) {
     let value = e.target.value;
     //[x]: link to edit tutored subjects in user screen (This is contained to just edit/mangae user no need for store)
-    value = value.split(",")
-    const newSubjectsList = subjectsTutored.splice(value[0],1)
-    setSubjectsTutored(newSubjectsList)
+    value = value.split(",");
+    const newSubjectsList = subjectsTutored.splice(value[0], 1);
+    setSubjectsTutored(newSubjectsList);
 
     fetch(`/tutored_subject/${value[1]}`, {
-      //[]: create message that action was succesful
       method: "DELETE",
     });
   }

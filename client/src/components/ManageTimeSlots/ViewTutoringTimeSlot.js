@@ -15,7 +15,6 @@ function ViewTutoringTimeSlot() {
     fetch(`/tutoring_time_slots/${id}`).then((res) => {
       if (res.ok) {
         res.json().then((data) => {
-          //[]: create message that action successful
           setTutoringSlotInfo(data);
           setRefresh(false);
         });
@@ -43,7 +42,7 @@ function ViewTutoringTimeSlot() {
     });
 
     fetch(`/tutor_slot_sign_up/${tutor_signup_id}`, {
-      method: "DELETE", //[]: create message that action was successful
+      method: "DELETE",
     });
     setRefresh(true);
   }
@@ -52,9 +51,9 @@ function ViewTutoringTimeSlot() {
     let new_booked_slot = JSON.parse(JSON.stringify(tutoringSlotInfo));
     new_booked_slot.booked_slots.splice(session_index, 1);
     setTutoringSlotInfo(new_booked_slot);
-    //[]: link drop booked session to user store
+    //[x]: link drop booked session to user store (self contained)
     fetch(`/booked_slot/${session_id}`, {
-      method: "DELETE", //[]: create message that action was sucessful
+      method: "DELETE",
     });
     setRefresh(true);
   }

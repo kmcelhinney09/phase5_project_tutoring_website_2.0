@@ -23,7 +23,6 @@ function UserInfo() {
     dispatch(removeWrittenNote(noteId));
 
     fetch(`/tutor_note/${noteId}`, {
-      //[]: create message that action was successful
       method: "DELETE",
     });
   }
@@ -38,7 +37,6 @@ function UserInfo() {
       body: JSON.stringify({ subject_id: subject.id, tutor_id: user.id }),
     }).then((res) => {
       if (res.ok) {
-        //[]: create message that action was successful
         res.json().then((subjectSignedUp) => subjectSignedUp);
       } else {
         res.json().then((e) => Object.entries(e.error)); //[]: link to errors in user store
@@ -49,8 +47,6 @@ function UserInfo() {
   function handleSubjectRemoved(sub) {
     //[x]: link action to remove subjects tutored from user
     dispatch(removeSubjectsTutored(sub.id));
-
-    //[]: create message that action was successful
     fetch(`/tutored_subject/${sub.id}`, {
       method: "DELETE",
     });

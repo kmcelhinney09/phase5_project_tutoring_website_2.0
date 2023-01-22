@@ -10,10 +10,10 @@ function TimeSlotForm({
   closeForm,
   errors,
 }) {
-  const { user, school } = useSelector((store) => store)
+  const { user, school } = useSelector((store) => store);
   const [roomSelection, setRoomSelection] = useState("");
 
-  useEffect(() => { //[]: link to selector to store to pull rooms based on building id
+  useEffect(() => {
     if (slotForm.building !== "") {
       handleGetRooms(slotForm.building);
     }

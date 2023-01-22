@@ -11,8 +11,11 @@ import CreateRoom from "./CreateRoom";
 import EditRoom from "./EditRoom";
 import EditBuilding from "./EditBuilding";
 import AddSubject from "./AddSubject";
-import { removeBuildingAndItsRooms, removeRoom, removeSchoolSubject } from "./schoolSlice";
-
+import {
+  removeBuildingAndItsRooms,
+  removeRoom,
+  removeSchoolSubject,
+} from "./schoolSlice";
 
 function ManageSchool() {
   const { school, user } = useSelector((state) => state);
@@ -66,7 +69,6 @@ function ManageSchool() {
     //[x]: link to remove room action in school store
     dispatch(removeRoom(room_id));
     fetch(`/room/${room_id}`, {
-      //[]: create message that action was successful
       method: "DELETE",
     });
   }
@@ -79,7 +81,7 @@ function ManageSchool() {
         building_index = index;
       }
     });
-    
+
     dispatch(removeBuildingAndItsRooms(building_index));
 
     fetch(`/building/${building_id}`, {
@@ -90,8 +92,7 @@ function ManageSchool() {
 
   function handleRemoveSubject(subjectId, subjectIndex) {
     //[x]: link to action to remove subject from school store
-    dispatch(removeSchoolSubject(subjectId))
-  
+    dispatch(removeSchoolSubject(subjectId));
 
     fetch(`/subject/${subjectId}`, {
       //[]: create message that action was successful

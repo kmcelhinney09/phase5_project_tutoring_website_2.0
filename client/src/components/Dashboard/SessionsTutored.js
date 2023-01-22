@@ -9,7 +9,7 @@ import LeaveNote from "./LeaveNote";
 import {
   removeBookedAsTutor,
   removeEntireTutoringSession,
-  clearError
+  clearError,
 } from "../ManageUsers/userSlice";
 
 function SessionsTutored() {
@@ -20,9 +20,9 @@ function SessionsTutored() {
   const [tuteeData, setTuteeData] = useState(0);
 
   const handleCloseModal = () => {
-    dispatch(clearError())
+    dispatch(clearError());
     setShowModal(false);
-  }
+  };
   const handleShowModal = () => setShowModal(true);
 
   function handleDropBookedSession(session_id) {
@@ -31,8 +31,7 @@ function SessionsTutored() {
     //[x] link drop to user store
     fetch(`/booked_slot/${session_id}`, {
       method: "DELETE",
-    })
-        //[]: create message that action was successful
+    });
   }
 
   function handleDropEntireSession(session_id) {
@@ -40,8 +39,7 @@ function SessionsTutored() {
     dispatch(removeEntireTutoringSession(session_id));
 
     fetch(`/tutor_slot_sign_up/${session_id}`, {
-      //[]: create message that action was successful
-      method: "DELETE", //[]: create message that action was successful
+      method: "DELETE",
     });
   }
 

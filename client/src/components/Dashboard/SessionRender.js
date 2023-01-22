@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
@@ -7,20 +6,18 @@ import Button from "react-bootstrap/esm/Button";
 import { removeBookedTimeSlots } from "../ManageUsers/userSlice";
 
 function SessionRender() {
-
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   function handleDropSession(sessionId) {
     //[x]hook this drop session to school store
-    dispatch(removeBookedTimeSlots(sessionId))
-    
-    //[]: create message that that action was successful
+    dispatch(removeBookedTimeSlots(sessionId));
+
     fetch(`/booked_slot/${sessionId}`, {
       method: "DELETE",
     });
   }
-  
+
   return (
     <Container>
       <Row>
@@ -37,7 +34,7 @@ function SessionRender() {
             </tr>
           </thead>
           <tbody>
-            {user.bookedSlots.length !== 0? (
+            {user.bookedSlots.length !== 0 ? (
               user.bookedSlots.map((slot) => {
                 return (
                   <tr key={slot.id}>

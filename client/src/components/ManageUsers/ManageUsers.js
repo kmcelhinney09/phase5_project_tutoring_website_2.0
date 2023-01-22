@@ -103,7 +103,7 @@ function ManageUsers() {
     setSchoolData(newSchoolData);
 
     fetch(`/users/${userId}`, {
-      method: "DELETE", //[]: create message that action was successful
+      method: "DELETE",
     });
     handleCloseModal();
   }

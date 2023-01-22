@@ -79,16 +79,13 @@ export const tutorSlotSignUp = createAsyncThunk(
 );
 
 export const addNewNote = createAsyncThunk("user/addNewNote", (noteInfo) => {
-  return (
-    fetch("/tutor_note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(noteInfo),
-    })
-      .then((res) => res.json())
-      //[]: create message that action was sucessful
-      .then((return_note) => return_note)
-  );
+  return fetch("/tutor_note", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(noteInfo),
+  })
+    .then((res) => res.json())
+    .then((return_note) => return_note);
 });
 
 // [x]: add action to delete written notes
@@ -258,17 +255,16 @@ const userSlice = createSlice({
     },
     [addNewNote.fulfilled]: (state, { payload }) => {
       if (Object.keys(payload).includes("error")) {
-        if(typeof payload.error === "string"){
-          state.errorText = [["Server Error", payload.error]]
-        }else{
-          state.errorText = Object.entries(payload.error)
+        if (typeof payload.error === "string") {
+          state.errorText = [["Server Error", payload.error]];
+        } else {
+          state.errorText = Object.entries(payload.error);
         }
       } else {
         state.renderErrorMessage = false;
         state.notesWritten.push(payload);
       }
     },
-
   },
 });
 

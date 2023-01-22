@@ -388,7 +388,6 @@ const schoolSlice = createSlice({
   },
 });
 
-//[]: create selector that will return rooms associated with building (might do on back end with serializer)
 export const {
   removeTutoringTimeSlot,
   removeBuildingAndItsRooms,

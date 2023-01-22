@@ -36,9 +36,8 @@ function CreateRoom({ closeForm, building_id }) {
 
   function handleCreateRoomSubmit(e) {
     e.preventDefault();
-    setErrors([]); //[]: clear school errors
     //[x]: link to action for adding room to school store
-    dispatch(addNewRoom(roomForm))
+    dispatch(addNewRoom(roomForm));
     closeForm();
   }
 
