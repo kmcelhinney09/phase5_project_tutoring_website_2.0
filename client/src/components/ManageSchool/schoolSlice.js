@@ -119,11 +119,21 @@ export const editBuildingInfo = createAsyncThunk(
   }
 );
 
-export const addNewRoom = createAsyncThunk(
-  "school/addNewRoom",
+export const addNewRoom = createAsyncThunk("school/addNewRoom", (roomInfo) => {
+  return fetch("/room", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(roomInfo),
+  })
+    .then((res) => res.json())
+    .then((room) => room);
+});
+
+export const editRoomInfo = createAsyncThunk(
+  "school/editRoomInfo",
   (newRoomInfo) => {
-    return fetch("/room", {
-      method: "POST",
+    return fetch(`/room/${newRoomInfo.id}`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newRoomInfo),
     })
@@ -160,7 +170,7 @@ const createNewSiteTutoringSlot = (slotData) => {
 //[x] add action to edit building to school
 //[x] add action to remove building from school
 //[x] add action to add new room to school
-//[] add action to edit room to school
+//[x] add action to edit room to school
 //[x] add action to remove room from school
 //[x] add action to add subject from school
 //[x] add action to remove subject from school
@@ -281,6 +291,32 @@ const schoolSlice = createSlice({
           return location;
         } else {
           return location;
+        }
+      });
+    },
+    [editRoomInfo.fulfilled]: (state, action) => {
+      console.log(action.payload);
+      let current_building;
+      let room_index;
+      state.locations.forEach((location) => {
+        location.rooms.forEach((room, index) => {
+          if (room.id === action.payload.id) {
+            current_building = room.building_id;
+            room_index = index
+          }
+        });
+      });
+      state.locations = state.locations.map((location) => {
+        if (location.building.id === action.payload.building_id) {
+          location.rooms.splice(room_index, 1, action.payload);
+          return location;
+        } else {
+          if(location.building.id === current_building){
+            location.rooms.filter((room) => room.id !== action.payload.id)
+            return location
+          }else{
+            return location
+          }
         }
       });
     },
