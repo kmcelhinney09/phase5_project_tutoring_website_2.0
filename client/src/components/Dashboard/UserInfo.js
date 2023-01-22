@@ -2,21 +2,49 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
+import Col from "react-bootstrap/esm/Col";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import Modal from "react-bootstrap/Modal";
 import SessionRender from "./SessionRender";
 import SessionsTutored from "./SessionsTutored";
 import RenderNotes from "./RenderNotes";
-import Col from "react-bootstrap/esm/Col";
+import ActionMessage from "../ActionMessage";
 import {
   removeWrittenNote,
   removeSubjectsTutored,
   addSubjectsTutored,
+  setServerError,
+  clearError,
 } from "../ManageUsers/userSlice";
 
 function UserInfo() {
   const { user, school } = useSelector((state) => state);
   const dispatch = useDispatch();
+
+  const [showModal, setShowModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalBody, setModalBody] = useState("");
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    dispatch(clearError);
+  };
+  const handleShowModal = () => setShowModal(true);
+
+  function handleModalAction(modal_type) {
+    if (modal_type === "renderError") {
+      setModalTitle("Error");
+      setModalBody(
+        <ActionMessage
+          closeForm={handleCloseModal}
+          actionMessage={user.errorText}
+          bgcolor="danger"
+        />
+      );
+    }
+    handleShowModal();
+  }
 
   function handleDeleteWrittenNotes(noteId) {
     //[x]: Link action to remove writtenNotes from user store
@@ -24,6 +52,11 @@ function UserInfo() {
 
     fetch(`/tutor_note/${noteId}`, {
       method: "DELETE",
+    }).then((res) => {
+      if (!res.ok) {
+        dispatch(setServerError({ error: [res.status, res.statusText] }));
+        handleModalAction("renderError");
+      }
     });
   }
 
@@ -39,7 +72,8 @@ function UserInfo() {
       if (res.ok) {
         res.json().then((subjectSignedUp) => subjectSignedUp);
       } else {
-        res.json().then((e) => Object.entries(e.error)); //[]: link to errors in user store
+        dispatch(setServerError({ error: [res.status, res.statusText] }));
+        handleModalAction("renderError");
       }
     });
   }
@@ -49,6 +83,11 @@ function UserInfo() {
     dispatch(removeSubjectsTutored(sub.id));
     fetch(`/tutored_subject/${sub.id}`, {
       method: "DELETE",
+    }).then((res) => {
+      if (!res.ok) {
+        dispatch(setServerError({ error: [res.status, res.statusText] }));
+        handleModalAction("renderError");
+      }
     });
   }
 
@@ -139,6 +178,12 @@ function UserInfo() {
           />
         </Row>
       ) : null}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header>
+          <Modal.Title>{modalTitle}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalBody}</Modal.Body>
+      </Modal>
     </Container>
   );
 }
