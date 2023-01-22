@@ -60,7 +60,7 @@ function LeaveNote({ closeForm, tuteeData }) {
       console.log(res);
       if (res.ok) {
         //[]: create message that action was sucessful
-        res.json().then((return_note) => {});
+        res.json().then((return_note) => {}); //[]: include note in written notes section
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error)));
       }

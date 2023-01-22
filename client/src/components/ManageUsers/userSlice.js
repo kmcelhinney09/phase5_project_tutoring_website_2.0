@@ -27,10 +27,7 @@ export const getUserInfo = createAsyncThunk(
       body: JSON.stringify(loginForm),
     })
       .then((res) => res.json())
-      .then((userInfo) => {
-        console.log(userInfo);
-        return userInfo;
-      });
+      .then((userInfo) => userInfo);
   }
 );
 

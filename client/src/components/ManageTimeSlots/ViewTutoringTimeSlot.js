@@ -36,7 +36,7 @@ function ViewTutoringTimeSlot() {
       }
     })
     fetch(`/tutor_slot_sign_up/${tutor_signup_id}`, {
-      method: "DELETE",
+      method: "DELETE", //[]: create message that action was successful
     })
   }
 
@@ -46,7 +46,7 @@ function ViewTutoringTimeSlot() {
     setTutoringSlotInfo(new_booked_slot)
     //[]: link drop booked session to user store
     fetch(`/booked_slot/${session_id}`, {
-      method: "DELETE",
+      method: "DELETE", //[]: create message that action was sucessful
     })
   }
 

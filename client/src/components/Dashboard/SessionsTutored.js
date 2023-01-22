@@ -27,11 +27,8 @@ function SessionsTutored() {
     //[x] link drop to user store
     fetch(`/booked_slot/${session_id}`, {
       method: "DELETE",
-    }).then((res) => {
-      if (res.ok) {
+    })
         //[]: create message that action was successful
-      }
-    });
   }
 
   function handleDropEntireSession(session_id) {
@@ -40,7 +37,7 @@ function SessionsTutored() {
 
     fetch(`/tutor_slot_sign_up/${session_id}`, {
       //[]: create message that action was successful
-      method: "DELETE",
+      method: "DELETE", //[]: create message that action was successful
     });
   }
 
