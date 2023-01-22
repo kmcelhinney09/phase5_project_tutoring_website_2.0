@@ -21,7 +21,7 @@ export const getSchoolData = createAsyncThunk("school/getSchoolData", () => {
 export const createTutoringTimeSlot = createAsyncThunk(
   "school/createTutoringTimeSlot",
   (slotForm, thunkAPI) => {
-    // console.log("FROOM FETCH FORM: ", slotForm);
+    
     const school = thunkAPI.getState().school;
     let roomId;
 
@@ -44,7 +44,6 @@ export const createTutoringTimeSlot = createAsyncThunk(
       school_id: school.id,
       room_id: roomId,
     };
-    console.log("From FETCH :", newServerTimeSlot);
 
     return fetch("/tutoring_time_slots", {
       method: "POST",
@@ -188,8 +187,7 @@ const schoolSlice = createSlice({
       state.locations.splice(payload, 1);
     },
     removeRoom(state, { payload }) {
-      console.log("Removing Room");
-      console.log(payload);
+
       const new_locations = JSON.parse(JSON.stringify(state.locations));
       let new_rooms = [];
       let saved_index;
@@ -212,7 +210,6 @@ const schoolSlice = createSlice({
           });
         }
       });
-      console.log(new_locations);
       return { ...state, locations: new_locations };
     },
     removeSchoolSubject(state, { payload }) {
@@ -264,7 +261,6 @@ const schoolSlice = createSlice({
       state.subjects.sort((a, b) => (a.name > b.name ? 1 : -1));
     },
     [addNewBuilding.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.locations.push({ building: action.payload, rooms: [] });
       state.locations.sort((a, b) =>
         a.building.name > b.building.name ? 1 : -1
@@ -295,7 +291,6 @@ const schoolSlice = createSlice({
       });
     },
     [editRoomInfo.fulfilled]: (state, action) => {
-      console.log(action.payload);
       let current_building;
       let room_index;
       state.locations.forEach((location) => {

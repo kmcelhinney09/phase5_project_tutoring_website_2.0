@@ -18,7 +18,6 @@ function ManageSchool() {
   const { school, user } = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  console.log(school);
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
@@ -80,7 +79,7 @@ function ManageSchool() {
         building_index = index;
       }
     });
-    console.log(building_index);
+    
     dispatch(removeBuildingAndItsRooms(building_index));
 
     fetch(`/building/${building_id}`, {

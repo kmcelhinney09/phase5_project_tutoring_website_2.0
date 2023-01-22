@@ -11,7 +11,7 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
   //[]: hook errors up to school store
   const [errors, setErrors] = useState([]);
 
-  // console.log(school);
+  
   function handleSetErrors(inputErrors) {
     setErrors(inputErrors);
   }
@@ -33,8 +33,7 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
   }
 
   function handle_closed_sessions(session) {
-    console.log(callingComponent)
-    console.log(session)
+    
     if (callingComponent === "TutoringSignUp") {
       if (session.open_status === true) {
         return (

@@ -66,10 +66,10 @@ function UserInfo() {
     });
   }
 
-  function handleSubjectRemoved(sub, subIndex) {
+  function handleSubjectRemoved(sub) {
     //[x]: link action to remove subjects tutored from user
     dispatch(removeSubjectsTutored(sub.id));
-    console.log(sub);
+    
     //[]: create message that action was successful
     fetch(`/tutored_subject/${sub.id}`, {
       method: "DELETE",

@@ -23,20 +23,18 @@ import { getSchoolData } from "./components/ManageSchool/schoolSlice";
 //TODO: Change to APP instead of  APP WITH STORE
 function AppWithStore() {
   const [dashboardKey, setDashboardKey] = useState("dashboard");
-  const storeUser = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
-  // console.log(storeUser);
 
   useEffect(() => {
     dispatch(reAuthorizeUser());
   }, []);
 
   useEffect(() => {
-    if (storeUser.id) {
+    if (user.id) {
       dispatch(getSchoolData());
     }
-  }, [storeUser]);
+  }, [user]);
 
   function handleLogout() {
     fetch("/logout", {
@@ -54,11 +52,11 @@ function AppWithStore() {
 
   function handleUserView() {
     let navigation;
-    console.log("User info from APP: ", storeUser.id);
-    if (storeUser.role === "admin") {
-      navigation = <Navigate to={`/admin/${storeUser.id}`} />;
+    
+    if (user.role === "admin") {
+      navigation = <Navigate to={`/admin/${user.id}`} />;
     } else {
-      navigation = <Navigate to={`/user/${storeUser.id}`} />;
+      navigation = <Navigate to={`/user/${user.id}`} />;
     }
     return navigation;
   }
@@ -76,11 +74,11 @@ function AppWithStore() {
               <Nav className="me-auto"></Nav>
               <Nav>
                 <Nav.Link href="" className="text-white">
-                  {storeUser.isLoggedIn ? storeUser.fullName : null}
+                  {user.isLoggedIn ? user.fullName : null}
                 </Nav.Link>
               </Nav>
               <Nav>
-                {storeUser.isLoggedIn ? (
+                {user.isLoggedIn ? (
                   <Nav.Link href="/">
                     <Button variant="success" onClick={handleLogout}>
                       Logout
@@ -138,7 +136,7 @@ function AppWithStore() {
           </Route>
           <Route
             path="/"
-            element={storeUser.isLoggedIn ? handleUserView() : <Home />}
+            element={user.isLoggedIn ? handleUserView() : <Home />}
           />
         </Routes>
       </div>

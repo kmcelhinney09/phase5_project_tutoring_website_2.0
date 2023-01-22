@@ -105,10 +105,6 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    addTutorSignUp(state, action) {
-      console.log(state);
-      console.log(action);
-    },
     logOutUser(state) {
       state.isLoading = false;
       state = initialState;
@@ -171,7 +167,6 @@ const userSlice = createSlice({
     },
     [reAuthorizeUser.fulfilled]: (state, { payload }) => {
       if (Object.keys(payload).includes("error")) {
-        console.log(payload);
       } else {
         state.id = payload.id;
         state.email = payload.email;
@@ -230,7 +225,6 @@ const userSlice = createSlice({
 });
 
 export const {
-  addTutorSignUp,
   logOutUser,
   removeWrittenNote,
   addSubjectsTutored,

@@ -32,7 +32,7 @@ function Login({ closeForm }) {
 
   function handleSignUpSubmitStore(e) {
     e.preventDefault();
-    console.log(dispatch(getUserInfo(loginForm)));
+    dispatch(getUserInfo(loginForm));
     closeForm();
   }
 
