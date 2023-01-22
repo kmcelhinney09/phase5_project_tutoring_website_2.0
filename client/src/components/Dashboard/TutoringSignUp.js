@@ -33,7 +33,8 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
   }
 
   function handle_closed_sessions(session) {
-    // console.log(session)
+    console.log(callingComponent)
+    console.log(session)
     if (callingComponent === "TutoringSignUp") {
       if (session.open_status === true) {
         return (

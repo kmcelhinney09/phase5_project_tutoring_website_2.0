@@ -79,6 +79,19 @@ export const tutorSlotSignUp = createAsyncThunk(
   }
 );
 
+export const addNewNote = createAsyncThunk("user/addNewNote", (noteInfo) => {
+  return (
+    fetch("/tutor_note", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(noteInfo),
+    })
+      .then((res) => res.json())
+      //[]: create message that action was sucessful
+      .then((return_note) => return_note)
+  );
+});
+
 // [x]: add action to delete written notes
 //[x]: add action to add subject to user subjects tutored
 //[x]: add action to edit subjects tutored to user (This is self contained in edit user)
@@ -220,6 +233,9 @@ const userSlice = createSlice({
       state.tutorSignUps.push(payload);
       state.tutorSignUps.sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1));
       state.isLoading = false;
+    },
+    [addNewNote.fulfilled]: (state, { payload }) => {
+      state.notesWritten.push(payload);
     },
   },
 });

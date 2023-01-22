@@ -37,7 +37,7 @@ function SessionRender() {
             </tr>
           </thead>
           <tbody>
-            {user.isLoggedIn ? (
+            {user.bookedSlots.length !== 0? (
               user.bookedSlots.map((slot) => {
                 return (
                   <tr key={slot.id}>

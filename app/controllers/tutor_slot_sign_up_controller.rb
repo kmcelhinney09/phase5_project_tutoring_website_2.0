@@ -3,6 +3,9 @@ class TutorSlotSignUpController < ApplicationController
 
   def create
     new_signup = TutorSlotSignUp.create!(tutor_sign_up_params)
+    tutor_time_slot = TutoringTimeSlot.find_by(id:new_signup.tutoring_time_slot_id)
+    tutor_time_slot.open_status_update
+    tutor_time_slot.booked_status_update
     render json: new_signup, status: :created
   end
 

@@ -3,7 +3,7 @@ import { useState } from "react";
 import Form from "react-bootstrap/esm/Form";
 import FloatingLabel from "react-bootstrap/esm/FloatingLabel";
 import Button from "react-bootstrap/esm/Button";
-import { addTutorNote } from "../ManageUsers/userSlice";
+import { addNewNote } from "../ManageUsers/userSlice";
 //[]: Fix Error Handeling to work with store
 //Note: created action to add note to store
 function LeaveNote({ closeForm, tuteeData }) {
@@ -42,29 +42,30 @@ function LeaveNote({ closeForm, tuteeData }) {
 
   function handleNoteOnSubmit(e) {
     e.preventDefault();
-    setErrors([]);
-    let newNote = {
-      tutor_id: user.id,
-      tutor_name: user.fullName,
-      tutor_note: noteForm.note,
-      tutee_name: tuteeData.tuteeName,
-    };
-    dispatch(addTutorNote(newNote));
+    setErrors([]); //[]: link to error handeling
+    // let newNote = {
+    //   tutor_id: user.id,
+    //   tutor_name: user.fullName,
+    //   tutor_note: noteForm.note,
+    //   tutee_name: tuteeData.tuteeName,
+    // };
+    //[]: include note in written notes section
+    dispatch(addNewNote(noteForm));
     closeForm();
 
-    fetch("/tutor_note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(noteForm),
-    }).then((res) => {
-      console.log(res);
-      if (res.ok) {
-        //[]: create message that action was sucessful
-        res.json().then((return_note) => {}); //[]: include note in written notes section
-      } else {
-        res.json().then((e) => setErrors(Object.entries(e.error)));
-      }
-    });
+    // fetch("/tutor_note", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(noteForm),
+    // }).then((res) => {
+    //   console.log(res);
+    //   if (res.ok) {
+    //     //[]: create message that action was sucessful
+    //     res.json().then((return_note) => {}); //[]: include note in written notes section
+    //   } else {
+    //     res.json().then((e) => setErrors(Object.entries(e.error)));
+    //   }
+    // });
   }
 
   return (
