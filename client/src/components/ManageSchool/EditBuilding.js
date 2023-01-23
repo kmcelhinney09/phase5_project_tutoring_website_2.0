@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useSelector } from "react";
 import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { editBuildingInfo } from "./schoolSlice";
 
-function EditBuilding({ closeForm, building_id, school_id, building_name }) {
+function EditBuilding({ closeForm, building_id, building_name }) {
+  const errorText = useSelector((store) => store.school.errorText);
+  const renderErrorMessage = useSelector(
+    (store) => store.school.renderErrorMessage
+  );
   const dispatch = useDispatch();
 
   const [buildingForm, setBuildingForm] = useState({
@@ -12,20 +16,17 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
     name: building_name,
   });
 
-  const [errors, setErrors] = useState([]);
-
-  function renderErrors() {
-    //[]: link school errors to render errors
+  function renderErrors(errors) {
     const error_text = errors.map((error, index) => {
       return (
-        <li key={index}>
-          {error[0]}
-          <ul>
-            {error[1].map((text) => (
-              <li>{text}</li>
-            ))}
-          </ul>
-        </li>
+        <ul key={index}>
+          <li>
+            {error[0]}
+            <ul>
+              <li>{error[1]}</li>
+            </ul>
+          </li>
+        </ul>
       );
     });
     return error_text;
@@ -41,7 +42,9 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
     e.preventDefault();
     //[x]: link to edit building action in school store
     dispatch(editBuildingInfo(buildingForm));
-    closeForm();
+    if (renderErrorMessage) {
+      closeForm();
+    }
   }
 
   return (
@@ -65,9 +68,11 @@ function EditBuilding({ closeForm, building_id, school_id, building_name }) {
           Cancel
         </Button>
         <br />
-        <Form.Text className="text-danger">
-          <ul>{renderErrors()}</ul>
-        </Form.Text>
+        {errorText.length > 0 && (
+          <Form.Text className="text-danger">
+            {renderErrors(errorText)}
+          </Form.Text>
+        )}
       </Form>
     </div>
   );
