@@ -1,5 +1,5 @@
 class TutorSlotSignUpSerializer < ActiveModel::Serializer
-  attributes :id, :date,:start_time,:end_time, :date_sort, :tutor, :location
+  attributes :id, :date,:start_time,:end_time, :date_sort, :tutor, :location, :tutoring_time_slot_id
   belongs_to :tutoring_time_slot
   belongs_to :tutor, class_name:"User"
 

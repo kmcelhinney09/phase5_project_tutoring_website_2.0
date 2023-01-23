@@ -1,4 +1,7 @@
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import Toast from "react-bootstrap/Toast";
+import ToastContainer from "react-bootstrap/ToastContainer";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Table from "react-bootstrap/Table";
@@ -6,6 +9,10 @@ import TutoringSlotRender from "./TutoringSlotRender";
 
 function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
   const { user, school } = useSelector((store) => store);
+
+  const [showSessionMessage, setShowSessionMessage] = useState(false);
+  const toggleShowSessionMessage = () =>
+    setShowSessionMessage(!showSessionMessage);
 
   function renderErrors(errors) {
     const error_text = errors.map((error, index) => {
@@ -31,6 +38,7 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
             slotInfo={session}
             handleDashboardKeyChange={handleDashboardKeyChange}
             callingComponent={callingComponent}
+            toggleShowSessionMessage={toggleShowSessionMessage}
           />
         );
       } else {
@@ -50,6 +58,7 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
               slotInfo={session}
               handleDashboardKeyChange={handleDashboardKeyChange}
               callingComponent={callingComponent}
+              toggleShowSessionMessage={toggleShowSessionMessage}
             />
           );
         } else {
@@ -112,6 +121,21 @@ function TutoringSignUp({ callingComponent, handleDashboardKeyChange }) {
               );
             })}
           </Row>
+          <ToastContainer clasname="p-3" position={"top-center"}>
+            <Toast
+              show={showSessionMessage}
+              onClose={toggleShowSessionMessage}
+              className="d-inline-block m-1"
+              bg={"warning"}
+              delay={5000}
+              autohide
+            >
+              <Toast.Header>
+                <strong className="me-auto">Session Message</strong>
+              </Toast.Header>
+              <Toast.Body>You can not sign up for the same session!</Toast.Body>
+            </Toast>
+          </ToastContainer>
         </Container>
       ) : (
         <h1> Loading....</h1>

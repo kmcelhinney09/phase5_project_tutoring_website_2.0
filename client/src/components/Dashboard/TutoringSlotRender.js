@@ -7,6 +7,7 @@ function TutoringSlotRender({
   slotInfo,
   handleDashboardKeyChange,
   callingComponent,
+  toggleShowSessionMessage,
 }) {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
@@ -15,34 +16,49 @@ function TutoringSlotRender({
 
   function handleBookTutoring(tutorId) {
     // [x]:link booking tutoring to user slice
-    console.log(slotInfo);
-    let signUpSlot;
-    slotInfo.tutor_slot_sign_ups.forEach((signUp) => {
-      if (signUp.tutor_id === tutorId) {
-        signUpSlot = signUp.id;
-      }
-    });
-    const bookedSlotData = {
-      tutor_id: tutorId,
-      tutee_id: user.id,
-      tutoring_time_slot_id: slotInfo.id,
-      tutor_slot_sign_up_id: signUpSlot,
-    };
-    dispatch(bookTutoringSlot(bookedSlotData));
-    handleDashboardKeyChange("dashboard");
-    navigate(`/user/${user.id}`, { replace: true });
+
+    const bookedSlotsIds = user.bookedSlots.map(
+      (slot) => slot.tutoring_time_slot_id
+    );
+    if (bookedSlotsIds.includes(slotInfo.id)) {
+      toggleShowSessionMessage();
+    } else {
+      let signUpSlot;
+      slotInfo.tutor_slot_sign_ups.forEach((signUp) => {
+        if (signUp.tutor_id === tutorId) {
+          signUpSlot = signUp.id;
+        }
+      });
+      const bookedSlotData = {
+        tutor_id: tutorId,
+        tutee_id: user.id,
+        tutoring_time_slot_id: slotInfo.id,
+        tutor_slot_sign_up_id: signUpSlot,
+      };
+      dispatch(bookTutoringSlot(bookedSlotData));
+      handleDashboardKeyChange("dashboard");
+      navigate(`/user/${user.id}`, { replace: true });
+    }
   }
 
   function handleTutorSignUp() {
     //[x]:add tutor sign up to user store
-    const slotSignUp = {
-      tutor_id: user.id,
-      tutoring_time_slot_id: slotInfo.id,
-    };
 
-    dispatch(tutorSlotSignUp(slotSignUp));
-    handleDashboardKeyChange("dashboard");
-    navigate(`/user/${user.id}`, { replace: true });
+    const tutorSignupIds = user.tutorSignUps.map(
+      (slot) => slot.tutoring_time_slot_id
+    );
+    if (tutorSignupIds.includes(slotInfo.id)) {
+      toggleShowSessionMessage();
+    } else {
+      const slotSignUp = {
+        tutor_id: user.id,
+        tutoring_time_slot_id: slotInfo.id,
+      };
+
+      dispatch(tutorSlotSignUp(slotSignUp));
+      handleDashboardKeyChange("dashboard");
+      navigate(`/user/${user.id}`, { replace: true });
+    }
   }
 
   return (
