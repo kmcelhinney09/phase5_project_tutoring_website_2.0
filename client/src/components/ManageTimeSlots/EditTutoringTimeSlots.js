@@ -43,7 +43,7 @@ function EditTutoringTimeSlots({ closeForm, slotInfo }) {
     e.preventDefault();
     //[x]: link to edit tutoring time slot in school store
     dispatch(updateTutoringTimeSlot(slotForm));
-    if (school.renderErrorMessage) {
+    if (school.renderErrorMessage === false) {
       closeForm();
     }
   }

@@ -275,7 +275,13 @@ const schoolSlice = createSlice({
         } else {
           state.renderErrorMessage = false;
           const newSiteTimeSlot = createNewSiteTutoringSlot(action.payload);
-          state.tutoringTimeSlots.push(newSiteTimeSlot);
+          state.tutoringTimeSlots = state.tutoringTimeSlots.map((slot) => {
+            if (slot.id === newSiteTimeSlot.id) {
+              return newSiteTimeSlot;
+            } else {
+              return slot;
+            }
+          });
           state.tutoringTimeSlots.sort((a, b) =>
             a.date_sort > b.date_sort ? 1 : -1
           );

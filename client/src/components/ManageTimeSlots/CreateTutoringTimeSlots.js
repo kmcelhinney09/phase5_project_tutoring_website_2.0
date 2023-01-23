@@ -24,7 +24,7 @@ function CreateTutoringTimeSlots({ closeForm }) {
     e.preventDefault();
     //[x] link to add a new tutoring timeslot to the school store
     dispatch(createTutoringTimeSlot(slotForm));
-    if (renderErrorMessage) {
+    if (renderErrorMessage === false) {
       closeForm();
     }
   }

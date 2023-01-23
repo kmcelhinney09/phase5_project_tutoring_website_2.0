@@ -29,12 +29,11 @@ function SignUp({ closeForm }) {
     //[x]: link to signup user in user store
     e.preventDefault();
     dispatch(signUpUser(signUpForm));
-    if (!renderErrorMessage){
-      dispatch(clearError())
+    if (!renderErrorMessage === false) {
+      dispatch(clearError());
       closeForm();
     }
   }
-
 
   function renderErrors(errors) {
     const error_text = errors.map((error, index) => {
