@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-//TODO: create an error tag and an update or add error and a reset error action
+
 const initialState = {
   errorText: "",
   renderErrorMessage: true,

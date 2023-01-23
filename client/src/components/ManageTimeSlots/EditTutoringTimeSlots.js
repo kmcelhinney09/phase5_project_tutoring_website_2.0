@@ -23,7 +23,6 @@ function EditTutoringTimeSlots({ closeForm, slotInfo }) {
     room_id: slotInfo.room_id,
   });
 
-  //TODO: Is this still necessary with the store?
   function getBuilding() {
     let building;
     let room;

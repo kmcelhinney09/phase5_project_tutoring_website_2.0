@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "./context/AuthProvider";
+import { useSelector, useDispatch } from "react-redux";
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,19 +15,35 @@ import Home from "./components/Home";
 import UserDashboard from "./components/Dashboard/UserDashboard";
 import PrivateRoutes from "./components/PrivateRoutes";
 import ViewTutoringTimeSlot from "./components/ManageTimeSlots/ViewTutoringTimeSlot";
-//TODO: Remove this APP and change the other oone to APP
+import {
+  logOutUser,
+  reAuthorizeUser,
+} from "./components/ManageUsers/userSlice";
+import { getSchoolData } from "./components/ManageSchool/schoolSlice";
+
 function App() {
-  const auth = useAuth();
-  const user = auth.currentUser;
   const [dashboardKey, setDashboardKey] = useState("dashboard");
-  
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    auth.auto();
+    dispatch(reAuthorizeUser());
   }, []);
 
+  useEffect(() => {
+    if (user.id) {
+      dispatch(getSchoolData());
+    }
+  }, [user.id]);
+
   function handleLogout() {
-    auth.logout();
+    fetch("/logout", {
+      method: "DELETE",
+    }).then((res) => {
+      if (res.ok) {
+        dispatch(logOutUser());
+      }
+    });
   }
 
   function handleDashboardKeyChange(key) {
@@ -36,10 +52,11 @@ function App() {
 
   function handleUserView() {
     let navigation;
+
     if (user.role === "admin") {
-      navigation = <Navigate to={`/admin/${auth.currentUser.id}`} />;
+      navigation = <Navigate to={`/admin/${user.id}`} />;
     } else {
-      navigation = <Navigate to={`/user/${auth.currentUser.id}`} />;
+      navigation = <Navigate to={`/user/${user.id}`} />;
     }
     return navigation;
   }
@@ -56,14 +73,18 @@ function App() {
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto"></Nav>
               <Nav>
-                {auth.isLoggedIn ? (
-                  <Button variant="success" onClick={handleLogout}>
-                    Logout
-                  </Button>
-                ) : null}
-                <Nav.Link href="">
-                  {auth.isLoggedIn ? auth.currentUser.full_name : null}
+                <Nav.Link href="" className="text-white">
+                  {user.isLoggedIn ? user.fullName : null}
                 </Nav.Link>
+              </Nav>
+              <Nav>
+                {user.isLoggedIn ? (
+                  <Nav.Link href="/">
+                    <Button variant="success" onClick={handleLogout}>
+                      Logout
+                    </Button>
+                  </Nav.Link>
+                ) : null}
               </Nav>
             </Navbar.Collapse>
           </Container>
@@ -115,7 +136,7 @@ function App() {
           </Route>
           <Route
             path="/"
-            element={auth.isLoggedIn ? handleUserView() : <Home />}
+            element={user.isLoggedIn ? handleUserView() : <Home />}
           />
         </Routes>
       </div>
