@@ -221,176 +221,177 @@ const schoolSlice = createSlice({
       );
     },
   },
-  extraReducers: {
-    [getSchoolData.pending]: (state) => {
-      state.renderErrorMessage = true;
-      state.isLoading = true;
-    },
-    [getSchoolData.fulfilled]: (state, { payload }) => {
-      if (Object.keys(payload).includes("error")) {
-        typeof payload.error === "string"
-          ? (state.errorText = [["Server Error", payload.error]])
-          : (state.errorText = Object.entries(payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        state.id = payload.id;
-        state.name = payload.name;
-        state.rooms = payload.rooms;
-        state.buildings = payload.buildings;
-        state.locations = payload.locations;
-        state.subjects = payload.subjects;
-        state.tutoringTimeSlots = payload.tutoring_time_slots;
-        state.isLoading = false;
-      }
-    },
-    [createTutoringTimeSlot.pending]: (state) => {
-      state.renderErrorMessage = true;
-      state.isLoading = true;
-    },
-    [createTutoringTimeSlot.fulfilled]: (state, action) => {
-      if (Object.keys(action.payload).includes("error")) {
-        typeof action.payload.error === "string"
-          ? (state.errorText = [["Server Error", action.payload.error]])
-          : (state.errorText = Object.entries(action.payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        const newSiteTimeSlot = createNewSiteTutoringSlot(action.payload);
-        state.tutoringTimeSlots.push(newSiteTimeSlot);
-        state.tutoringTimeSlots.sort((a, b) =>
-          a.date_sort > b.date_sort ? 1 : -1
-        );
-        state.isloading = false;
-      }
-    },
-    [updateTutoringTimeSlot.pending]: (state) => {
-      state.renderErrorMessage = true;
-      state.isLoading = true;
-    },
-    [updateTutoringTimeSlot.fulfilled]: (state, action) => {
-      if (Object.keys(action.payload).includes("error")) {
-        typeof action.payload.error === "string"
-          ? (state.errorText = [["Server Error", action.payload.error]])
-          : (state.errorText = Object.entries(action.payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        const newSiteTimeSlot = createNewSiteTutoringSlot(action.payload);
-        state.tutoringTimeSlots.push(newSiteTimeSlot);
-        state.tutoringTimeSlots.sort((a, b) =>
-          a.date_sort > b.date_sort ? 1 : -1
-        );
-        state.isloading = false;
-      }
-    },
-    [addSchoolSubject.pending]: (state) => {
-      state.renderErrorMessage = true;
-    },
-    [addSchoolSubject.fulfilled]: (state, action) => {
-      if (Object.keys(action.payload).includes("error")) {
-        typeof action.payload.error === "string"
-          ? (state.errorText = [["Server Error", action.payload.error]])
-          : (state.errorText = Object.entries(action.payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        state.subjects.push(action.payload);
-        state.subjects.sort((a, b) => (a.name > b.name ? 1 : -1));
-        state.renderErrorMessage = false;
-      }
-    },
-    [addNewBuilding.pending]: (state) => {
-      state.renderErrorMessage = true;
-    },
-    [addNewBuilding.fulfilled]: (state, action) => {
-      if (Object.keys(action.payload).includes("error")) {
-        typeof action.payload.error === "string"
-          ? (state.errorText = [["Server Error", action.payload.error]])
-          : (state.errorText = Object.entries(action.payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        state.locations.push({ building: action.payload, rooms: [] });
-        state.locations.sort((a, b) =>
-          a.building.name > b.building.name ? 1 : -1
-        );
-      }
-    },
-    [editBuildingInfo.pending]: (state) => {
-      state.renderErrorMessage = true;
-    },
-    [editBuildingInfo.fulfilled]: (state, action) => {
-      if (Object.keys(action.payload).includes("error")) {
-        typeof action.payload.error === "string"
-          ? (state.errorText = [["Server Error", action.payload.error]])
-          : (state.errorText = Object.entries(action.payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        state.locations = state.locations.map((location) => {
-          if (location.building.id === action.payload.id) {
-            location.building = action.payload;
-            return location;
-          } else {
-            return location;
-          }
-        });
-        state.locations.sort((a, b) =>
-          a.building.name > b.building.name ? 1 : -1
-        );
-      }
-    },
-    [addNewRoom.pending]: (state) => {
-      state.renderErrorMessage = true;
-    },
-    [addNewRoom.fulfilled]: (state, action) => {
-      if (Object.keys(action.payload).includes("error")) {
-        typeof action.payload.error === "string"
-          ? (state.errorText = [["Server Error", action.payload.error]])
-          : (state.errorText = Object.entries(action.payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        state.locations = state.locations.map((location) => {
-          if (location.building.id === action.payload.building_id) {
-            location.rooms.push(action.payload);
-            location.rooms.sort((a, b) => (a.name > b.name ? 1 : -1));
-            return location;
-          } else {
-            return location;
-          }
-        });
-      }
-    },
-    [editRoomInfo.pending]: (state) => {
-      state.renderErrorMessage = true;
-    },
-    [editRoomInfo.fulfilled]: (state, action) => {
-      if (Object.keys(action.payload).includes("error")) {
-        typeof action.payload.error === "string"
-          ? (state.errorText = [["Server Error", action.payload.error]])
-          : (state.errorText = Object.entries(action.payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        let current_building;
-        let room_index;
-        state.locations.forEach((location) => {
-          location.rooms.forEach((room, index) => {
-            if (room.id === action.payload.id) {
-              current_building = room.building_id;
-              room_index = index;
-            }
-          });
-        });
-        state.locations = state.locations.map((location) => {
-          if (location.building.id === action.payload.building_id) {
-            location.rooms.splice(room_index, 1, action.payload);
-            return location;
-          } else {
-            if (location.building.id === current_building) {
-              location.rooms.filter((room) => room.id !== action.payload.id);
+  extraReducers: (builder) => {
+    builder
+      .addCase(getSchoolData.pending, (state) => {
+        state.renderErrorMessage = true;
+        state.isLoading = true;
+      })
+      .addCase(getSchoolData.fulfilled, (state, { payload }) => {
+        if (Object.keys(payload).includes("error")) {
+          typeof payload.error === "string"
+            ? (state.errorText = [["Server Error", payload.error]])
+            : (state.errorText = Object.entries(payload.error));
+        } else {
+          state.renderErrorMessage = false;
+          state.id = payload.id;
+          state.name = payload.name;
+          state.rooms = payload.rooms;
+          state.buildings = payload.buildings;
+          state.locations = payload.locations;
+          state.subjects = payload.subjects;
+          state.tutoringTimeSlots = payload.tutoring_time_slots;
+          state.isLoading = false;
+        }
+      })
+      .addCase(createTutoringTimeSlot.pending, (state) => {
+        state.renderErrorMessage = true;
+        state.isLoading = true;
+      })
+      .addCase(createTutoringTimeSlot.fulfilled, (state, action) => {
+        if (Object.keys(action.payload).includes("error")) {
+          typeof action.payload.error === "string"
+            ? (state.errorText = [["Server Error", action.payload.error]])
+            : (state.errorText = Object.entries(action.payload.error));
+        } else {
+          state.renderErrorMessage = false;
+          const newSiteTimeSlot = createNewSiteTutoringSlot(action.payload);
+          state.tutoringTimeSlots.push(newSiteTimeSlot);
+          state.tutoringTimeSlots.sort((a, b) =>
+            a.date_sort > b.date_sort ? 1 : -1
+          );
+          state.isloading = false;
+        }
+      })
+      .addCase(updateTutoringTimeSlot.pending, (state) => {
+        state.renderErrorMessage = true;
+        state.isLoading = true;
+      })
+      .addCase(updateTutoringTimeSlot.fulfilled, (state, action) => {
+        if (Object.keys(action.payload).includes("error")) {
+          typeof action.payload.error === "string"
+            ? (state.errorText = [["Server Error", action.payload.error]])
+            : (state.errorText = Object.entries(action.payload.error));
+        } else {
+          state.renderErrorMessage = false;
+          const newSiteTimeSlot = createNewSiteTutoringSlot(action.payload);
+          state.tutoringTimeSlots.push(newSiteTimeSlot);
+          state.tutoringTimeSlots.sort((a, b) =>
+            a.date_sort > b.date_sort ? 1 : -1
+          );
+          state.isloading = false;
+        }
+      })
+      .addCase(addSchoolSubject.pending, (state) => {
+        state.renderErrorMessage = true;
+      })
+      .addCase(addSchoolSubject.fulfilled, (state, action) => {
+        if (Object.keys(action.payload).includes("error")) {
+          typeof action.payload.error === "string"
+            ? (state.errorText = [["Server Error", action.payload.error]])
+            : (state.errorText = Object.entries(action.payload.error));
+        } else {
+          state.renderErrorMessage = false;
+          state.subjects.push(action.payload);
+          state.subjects.sort((a, b) => (a.name > b.name ? 1 : -1));
+          state.renderErrorMessage = false;
+        }
+      })
+      .addCase(addNewBuilding.pending, (state) => {
+        state.renderErrorMessage = true;
+      })
+      .addCase(addNewBuilding.fulfilled, (state, action) => {
+        if (Object.keys(action.payload).includes("error")) {
+          typeof action.payload.error === "string"
+            ? (state.errorText = [["Server Error", action.payload.error]])
+            : (state.errorText = Object.entries(action.payload.error));
+        } else {
+          state.renderErrorMessage = false;
+          state.locations.push({ building: action.payload, rooms: [] });
+          state.locations.sort((a, b) =>
+            a.building.name > b.building.name ? 1 : -1
+          );
+        }
+      })
+      .addCase(editBuildingInfo.pending, (state) => {
+        state.renderErrorMessage = true;
+      })
+      .addCase(editBuildingInfo.fulfilled, (state, action) => {
+        if (Object.keys(action.payload).includes("error")) {
+          typeof action.payload.error === "string"
+            ? (state.errorText = [["Server Error", action.payload.error]])
+            : (state.errorText = Object.entries(action.payload.error));
+        } else {
+          state.renderErrorMessage = false;
+          state.locations = state.locations.map((location) => {
+            if (location.building.id === action.payload.id) {
+              location.building = action.payload;
               return location;
             } else {
               return location;
             }
-          }
-        });
-      }
-    },
+          });
+          state.locations.sort((a, b) =>
+            a.building.name > b.building.name ? 1 : -1
+          );
+        }
+      })
+      .addCase(addNewRoom.pending, (state) => {
+        state.renderErrorMessage = true;
+      })
+      .addCase(addNewRoom.fulfilled, (state, action) => {
+        if (Object.keys(action.payload).includes("error")) {
+          typeof action.payload.error === "string"
+            ? (state.errorText = [["Server Error", action.payload.error]])
+            : (state.errorText = Object.entries(action.payload.error));
+        } else {
+          state.renderErrorMessage = false;
+          state.locations = state.locations.map((location) => {
+            if (location.building.id === action.payload.building_id) {
+              location.rooms.push(action.payload);
+              location.rooms.sort((a, b) => (a.name > b.name ? 1 : -1));
+              return location;
+            } else {
+              return location;
+            }
+          });
+        }
+      })
+      .addCase(editRoomInfo.pending, (state) => {
+        state.renderErrorMessage = true;
+      })
+      .addCase(editRoomInfo.fulfilled, (state, action) => {
+        if (Object.keys(action.payload).includes("error")) {
+          typeof action.payload.error === "string"
+            ? (state.errorText = [["Server Error", action.payload.error]])
+            : (state.errorText = Object.entries(action.payload.error));
+        } else {
+          state.renderErrorMessage = false;
+          let current_building;
+          let room_index;
+          state.locations.forEach((location) => {
+            location.rooms.forEach((room, index) => {
+              if (room.id === action.payload.id) {
+                current_building = room.building_id;
+                room_index = index;
+              }
+            });
+          });
+          state.locations = state.locations.map((location) => {
+            if (location.building.id === action.payload.building_id) {
+              location.rooms.splice(room_index, 1, action.payload);
+              return location;
+            } else {
+              if (location.building.id === current_building) {
+                location.rooms.filter((room) => room.id !== action.payload.id);
+                return location;
+              } else {
+                return location;
+              }
+            }
+          });
+        }
+      });
   },
 });
 

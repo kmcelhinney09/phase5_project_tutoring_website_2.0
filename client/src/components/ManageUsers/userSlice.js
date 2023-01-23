@@ -146,129 +146,134 @@ const userSlice = createSlice({
       );
     },
   },
-  extraReducers: {
-    [getUserInfo.pending]: (state) => {
-      state.renderErrorMessage = true;
-      state.isLoading = true;
-    },
-    [getUserInfo.fulfilled]: (state, { payload }) => {
-      if (Object.keys(payload).includes("error")) {
-        typeof payload.error === "string"
-          ? (state.errorText = [["Server Error", payload.error]])
-          : (state.errorText = Object.entries(payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        state.id = payload.id;
-        state.email = payload.email;
-        state.fullName = payload.full_name;
-        state.grade = payload.grade;
-        state.role = payload.role;
-        state.schoolId = payload.school.id;
-        state.bookedAsTutor = payload.booked_as_tutor;
-        state.bookedSlots = payload.booked_slots;
-        state.subjectsSignedUp = payload.subjects_signed_up;
-        state.tutorNotes = payload.tutor_notes;
-        state.tutorSignUps = payload.tutor_sign_ups;
-        state.notesWritten = payload.written_notes;
-        state.isLoggedIn = true;
-        state.isLoading = false;
-      }
-    },
-    [reAuthorizeUser.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [reAuthorizeUser.fulfilled]: (state, { payload }) => {
-      if (Object.keys(payload).includes("error")) {
-      } else {
-        state.id = payload.id;
-        state.email = payload.email;
-        state.fullName = payload.full_name;
-        state.grade = payload.grade;
-        state.role = payload.role;
-        state.schoolId = payload.school.id;
-        state.bookedAsTutor = payload.booked_as_tutor;
-        state.bookedSlots = payload.booked_slots;
-        state.subjectsSignedUp = payload.subjects_signed_up;
-        state.tutorNotes = payload.tutor_notes;
-        state.tutorSignUps = payload.tutor_sign_ups;
-        state.notesWritten = payload.written_notes;
-        state.isLoggedIn = true;
-        state.isLoading = false;
-      }
-    },
-    [signUpUser.pending]: (state) => {
-      state.renderErrorMessage = true;
-      state.isLoading = true;
-    },
-    [signUpUser.fulfilled]: (state, { payload }) => {
-      if (Object.keys(payload).includes("error")) {
-        typeof payload.error === "string"
-          ? (state.errorText = [["Server Error", payload.error]])
-          : (state.errorText = Object.entries(payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        state.id = payload.id;
-        state.email = payload.email;
-        state.fullName = payload.full_name;
-        state.grade = payload.grade;
-        state.role = payload.role;
-        state.bookedAsTutor = payload.booked_as_tutor;
-        state.bookedSlots = payload.booked_slots;
-        state.subjectsSignedUp = payload.subjects_signed_up;
-        state.tutorNotes = payload.tutor_notes;
-        state.tutorSignUps = payload.tutor_sign_ups;
-        state.notesWritten = payload.written_notes;
-        state.isLoggedIn = true;
-        state.isLoading = false;
-      }
-    },
-    [bookTutoringSlot.pending]: (state) => {
-      state.renderErrorMessage = true;
-      state.isLoading = true;
-    },
-    [bookTutoringSlot.fulfilled]: (state, { payload }) => {
-      if (Object.keys(payload).includes("error")) {
-        typeof payload.error === "string"
-          ? (state.errorText = [["Server Error", payload.error]])
-          : (state.errorText = Object.entries(payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        state.bookedSlots.push(payload);
-        state.bookedSlots.sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1));
-        state.isLoading = false;
-      }
-    },
-    [tutorSlotSignUp.pending]: (state) => {
-      state.renderErrorMessage = true;
-      state.isLoading = true;
-    },
-    [tutorSlotSignUp.fulfilled]: (state, { payload }) => {
-      if (Object.keys(payload).includes("error")) {
-        typeof payload.error === "string"
-          ? (state.errorText = [["Server Error", payload.error]])
-          : (state.errorText = Object.entries(payload.error));
-      } else {
-        state.renderErrorMessage = false;
-        state.tutorSignUps.push(payload);
-        state.tutorSignUps.sort((a, b) => (a.date_sort > b.date_sort ? 1 : -1));
-        state.isLoading = false;
-      }
-    },
-    [addNewNote.pending]: (state) => {
-      state.renderErrorMessage = true;
-    },
-    [addNewNote.fulfilled]: (state, { payload }) => {
-      if (Object.keys(payload).includes("error")) {
-        if (typeof payload.error === "string") {
-          state.errorText = [["Server Error", payload.error]];
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUserInfo.pending, (state) => {
+        state.renderErrorMessage = true;
+        state.isLoading = true;
+      })
+      .addCase(getUserInfo.fulfilled, (state, { payload }) => {
+        if (Object.keys(payload).includes("error")) {
+          typeof payload.error === "string"
+            ? (state.errorText = [["Server Error", payload.error]])
+            : (state.errorText = Object.entries(payload.error));
         } else {
-          state.errorText = Object.entries(payload.error);
+          state.renderErrorMessage = false;
+          state.id = payload.id;
+          state.email = payload.email;
+          state.fullName = payload.full_name;
+          state.grade = payload.grade;
+          state.role = payload.role;
+          state.schoolId = payload.school.id;
+          state.bookedAsTutor = payload.booked_as_tutor;
+          state.bookedSlots = payload.booked_slots;
+          state.subjectsSignedUp = payload.subjects_signed_up;
+          state.tutorNotes = payload.tutor_notes;
+          state.tutorSignUps = payload.tutor_sign_ups;
+          state.notesWritten = payload.written_notes;
+          state.isLoggedIn = true;
+          state.isLoading = false;
         }
-      } else {
-        state.renderErrorMessage = false;
-        state.notesWritten.push(payload);
-      }
-    },
+      })
+      .addCase(reAuthorizeUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(reAuthorizeUser.fulfilled, (state, { payload }) => {
+        if (Object.keys(payload).includes("error")) {
+        } else {
+          state.id = payload.id;
+          state.email = payload.email;
+          state.fullName = payload.full_name;
+          state.grade = payload.grade;
+          state.role = payload.role;
+          state.schoolId = payload.school.id;
+          state.bookedAsTutor = payload.booked_as_tutor;
+          state.bookedSlots = payload.booked_slots;
+          state.subjectsSignedUp = payload.subjects_signed_up;
+          state.tutorNotes = payload.tutor_notes;
+          state.tutorSignUps = payload.tutor_sign_ups;
+          state.notesWritten = payload.written_notes;
+          state.isLoggedIn = true;
+          state.isLoading = false;
+        }
+      })
+      .addCase(signUpUser.pending, (state) => {
+        state.renderErrorMessage = true;
+        state.isLoading = true;
+      })
+      .addCase(signUpUser.fulfilled, (state, { payload }) => {
+        if (Object.keys(payload).includes("error")) {
+          typeof payload.error === "string"
+            ? (state.errorText = [["Server Error", payload.error]])
+            : (state.errorText = Object.entries(payload.error));
+        } else {
+          state.renderErrorMessage = false;
+          state.id = payload.id;
+          state.email = payload.email;
+          state.fullName = payload.full_name;
+          state.grade = payload.grade;
+          state.role = payload.role;
+          state.bookedAsTutor = payload.booked_as_tutor;
+          state.bookedSlots = payload.booked_slots;
+          state.subjectsSignedUp = payload.subjects_signed_up;
+          state.tutorNotes = payload.tutor_notes;
+          state.tutorSignUps = payload.tutor_sign_ups;
+          state.notesWritten = payload.written_notes;
+          state.isLoggedIn = true;
+          state.isLoading = false;
+        }
+      })
+      .addCase(bookTutoringSlot.pending, (state) => {
+        state.renderErrorMessage = true;
+        state.isLoading = true;
+      })
+      .addCase(bookTutoringSlot.fulfilled, (state, { payload }) => {
+        if (Object.keys(payload).includes("error")) {
+          typeof payload.error === "string"
+            ? (state.errorText = [["Server Error", payload.error]])
+            : (state.errorText = Object.entries(payload.error));
+        } else {
+          state.renderErrorMessage = false;
+          state.bookedSlots.push(payload);
+          state.bookedSlots.sort((a, b) =>
+            a.date_sort > b.date_sort ? 1 : -1
+          );
+          state.isLoading = false;
+        }
+      })
+      .addCase(tutorSlotSignUp.pending, (state) => {
+        state.renderErrorMessage = true;
+        state.isLoading = true;
+      })
+      .addCase(tutorSlotSignUp.fulfilled, (state, { payload }) => {
+        if (Object.keys(payload).includes("error")) {
+          typeof payload.error === "string"
+            ? (state.errorText = [["Server Error", payload.error]])
+            : (state.errorText = Object.entries(payload.error));
+        } else {
+          state.renderErrorMessage = false;
+          state.tutorSignUps.push(payload);
+          state.tutorSignUps.sort((a, b) =>
+            a.date_sort > b.date_sort ? 1 : -1
+          );
+          state.isLoading = false;
+        }
+      })
+      .addCase(addNewNote.pending, (state) => {
+        state.renderErrorMessage = true;
+      })
+      .addCase(addNewNote.fulfilled, (state, { payload }) => {
+        if (Object.keys(payload).includes("error")) {
+          if (typeof payload.error === "string") {
+            state.errorText = [["Server Error", payload.error]];
+          } else {
+            state.errorText = Object.entries(payload.error);
+          }
+        } else {
+          state.renderErrorMessage = false;
+          state.notesWritten.push(payload);
+        }
+      });
   },
 });
 
