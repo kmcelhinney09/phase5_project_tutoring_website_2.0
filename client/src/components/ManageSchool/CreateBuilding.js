@@ -1,30 +1,32 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addNewBuilding } from "./schoolSlice";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 function CreateBuilding({ closeForm, school_id }) {
+  const errorText = useSelector((store) => store.school.errorText);
+  const renderErrorMessage = useSelector(
+    (store) => store.school.renderErrorMessage
+  );
   const dispatch = useDispatch();
-  const [errors, setErrors] = useState([]); //[]: link to error handeling
-
   const [buildingForm, setBuildingForm] = useState({
     name: "",
     school_id: school_id,
   });
 
-  function renderErrors() {
-    // []: link errors to school store
+  function renderErrors(errors) {
+    console.log(errors);
     const error_text = errors.map((error, index) => {
       return (
-        <li key={index}>
-          {error[0]}
-          <ul>
-            {error[1].map((text) => (
-              <li>{text}</li>
-            ))}
-          </ul>
-        </li>
+        <ul key={index}>
+          <li>
+            {error[0]}
+            <ul>
+              <li>{error[1]}</li>
+            </ul>
+          </li>
+        </ul>
       );
     });
     return error_text;
@@ -38,10 +40,11 @@ function CreateBuilding({ closeForm, school_id }) {
 
   function handleCreateBuildingSubmit(e) {
     e.preventDefault();
-    setErrors([]); //[]: link to error handeling
     //[x]: link to action to add building to school store
     dispatch(addNewBuilding(buildingForm));
-    closeForm();
+    if (renderErrorMessage) {
+      closeForm();
+    }
   }
 
   return (
@@ -65,9 +68,11 @@ function CreateBuilding({ closeForm, school_id }) {
           Cancel
         </Button>
         <br />
-        <Form.Text className="text-danger">
-          <ul>{renderErrors()}</ul>
-        </Form.Text>
+        {errorText.length > 0 && (
+          <Form.Text className="text-danger">
+            {renderErrors(errorText)}
+          </Form.Text>
+        )}
       </Form>
     </div>
   );
