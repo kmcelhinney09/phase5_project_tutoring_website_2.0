@@ -2,9 +2,12 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import format from "date-fns/format";
 import TimeSlotForm from "./TimeSlotForm";
-import { updateTutoringTimeSlot } from "../ManageSchool/schoolSlice";
+import {
+  updateTutoringTimeSlot,
+  clearError,
+} from "../ManageSchool/schoolSlice";
 
-function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
+function EditTutoringTimeSlots({ closeForm, slotInfo }) {
   const school = useSelector((store) => store.school);
   const dispatch = useDispatch();
   const locations = school.locations;
@@ -12,7 +15,6 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
     id: slotInfo.id,
     date: format(new Date(slotInfo.date_sort), "yyyy-MM-dd"),
     start_time: format(new Date(slotInfo.date_sort), "HH:mm"),
-    // start_time: slotInfo.start_time.substring(0, slotInfo.start_time.length - 3),
     end_time: format(
       new Date(`${slotInfo.date} ${slotInfo.end_time}`),
       "HH:mm"
@@ -23,8 +25,6 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
     tutee_capacity: slotInfo.tutee_capacity,
     room_id: slotInfo.room_id,
   });
-  
-  const [errors, setErrors] = useState([]); //[]: link to errors in school store
 
   //TODO: Is this still necessary with the store?
   function getBuilding() {
@@ -45,10 +45,11 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
 
   function handleEditSlotSubmit(e) {
     e.preventDefault();
-    setErrors([]); //[]: link to clear errors in school store
     //[x]: link to edit tutoring time slot in school store
     dispatch(updateTutoringTimeSlot(slotForm));
-    closeForm();
+    if (school.renderErrorMessage) {
+      closeForm();
+    }
   }
 
   return (
@@ -57,7 +58,6 @@ function EditTutoringTimeSlots({ closeForm, index, slotInfo }) {
       setSlotForm={setSlotForm}
       handleSlotSubmit={handleEditSlotSubmit}
       closeForm={closeForm}
-      errors={errors}
     />
   );
 }

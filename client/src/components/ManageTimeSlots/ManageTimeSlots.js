@@ -53,7 +53,6 @@ function ManageTimeSlots() {
         <EditTutoringTimeSlots
           closeForm={handleCloseModal}
           slotInfo={resources}
-          index={index}
         />
       );
     } else if (modal_type === "actionMessage") {
