@@ -45,7 +45,7 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
   function handleEditRoomSubmit(e) {
     e.preventDefault();
     dispatch(editRoomInfo(roomForm));
-    if (renderErrorMessage) {
+    if (renderErrorMessage === false) {
       closeForm();
     }
   }

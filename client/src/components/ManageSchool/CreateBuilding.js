@@ -41,7 +41,7 @@ function CreateBuilding({ closeForm, school_id }) {
     e.preventDefault();
     //[x]: link to action to add building to school store
     dispatch(addNewBuilding(buildingForm));
-    if (renderErrorMessage) {
+    if (renderErrorMessage === false) {
       closeForm();
     }
   }

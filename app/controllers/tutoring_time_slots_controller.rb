@@ -4,7 +4,8 @@ class TutoringTimeSlotsController < ApplicationController
   def index
     user = User.find_by(id:session[:user_id])
     school_id = user.school_id
-    tutoring_slots = TutoringTimeSlot.where(school_id:school_id)
+    school = School.find_by(id:school_id)
+    tutoring_slots = school.tutoring_time_slots
     render json: tutoring_slots, status: :ok
   end
   

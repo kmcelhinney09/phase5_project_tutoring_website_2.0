@@ -40,7 +40,7 @@ function CreateRoom({ closeForm, building_id }) {
     e.preventDefault();
     //[x]: link to action for adding room to school store
     dispatch(addNewRoom(roomForm));
-    if (renderErrorMessage) {
+    if (renderErrorMessage === false) {
       closeForm();
     }
   }

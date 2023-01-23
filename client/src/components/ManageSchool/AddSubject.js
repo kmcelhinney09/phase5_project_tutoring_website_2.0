@@ -39,7 +39,7 @@ function AddSubject({ closeForm }) {
     e.preventDefault();
     //[x]: link add subject to school store
     dispatch(addSchoolSubject(subjectForm));
-    if (school.renderErrorMessage) {
+    if (school.renderErrorMessage === false) {
       closeForm();
     }
   }

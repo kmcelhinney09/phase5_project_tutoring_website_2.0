@@ -42,7 +42,7 @@ function Login({ closeForm }) {
   function handleSignUpSubmitStore(e) {
     e.preventDefault();
     dispatch(getUserInfo(loginForm));
-    if (!renderErrorMessage) {
+    if (!renderErrorMessage === false) {
       dispatch(clearError());
       closeForm();
     }

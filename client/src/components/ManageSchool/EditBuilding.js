@@ -1,5 +1,5 @@
-import { useState, useSelector } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { editBuildingInfo } from "./schoolSlice";
@@ -42,7 +42,7 @@ function EditBuilding({ closeForm, building_id, building_name }) {
     e.preventDefault();
     //[x]: link to edit building action in school store
     dispatch(editBuildingInfo(buildingForm));
-    if (renderErrorMessage) {
+    if (renderErrorMessage === false) {
       closeForm();
     }
   }

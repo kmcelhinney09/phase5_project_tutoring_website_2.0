@@ -47,7 +47,7 @@ function LeaveNote({ closeForm, tuteeData }) {
     e.preventDefault();
     //[x]: include note in written notes section
     dispatch(addNewNote(noteForm));
-    if (!renderErrorMessage) {
+    if (renderErrorMessage === false) {
       dispatch(clearError());
       closeForm();
     }
