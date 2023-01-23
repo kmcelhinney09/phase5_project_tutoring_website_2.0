@@ -7,14 +7,17 @@ import Button from "react-bootstrap/esm/Button";
 
 function ViewTutoringTimeSlot() {
   const [tutoringSlotInfo, setTutoringSlotInfo] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`/tutoring_time_slots/${id}`).then((res) => {
       if (res.ok) {
         res.json().then((data) => {
           setTutoringSlotInfo(data);
+          setIsLoading(false);
         });
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error)));
@@ -94,7 +97,9 @@ function ViewTutoringTimeSlot() {
         ));
     return slot_details;
   }
-  return (
+  return isLoading ? (
+    <h1>Loading...</h1>
+  ) : (
     <Container>
       <Row>
         <h1>{tutoringSlotInfo.location_render}</h1>
