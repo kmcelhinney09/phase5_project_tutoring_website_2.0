@@ -109,8 +109,6 @@ const userSlice = createSlice({
       state.errorText = "";
     },
     logOutUser(state) {
-      state.isLoading = false;
-      state.isLoggedIn = false;
       state = initialState;
     },
     removeWrittenNote(state, { payload }) {
