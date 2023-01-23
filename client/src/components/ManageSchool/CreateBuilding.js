@@ -16,7 +16,6 @@ function CreateBuilding({ closeForm, school_id }) {
   });
 
   function renderErrors(errors) {
-    console.log(errors);
     const error_text = errors.map((error, index) => {
       return (
         <ul key={index}>

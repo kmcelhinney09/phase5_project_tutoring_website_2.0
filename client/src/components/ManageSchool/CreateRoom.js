@@ -1,29 +1,31 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { addNewRoom } from "./schoolSlice";
 
 function CreateRoom({ closeForm, building_id }) {
+  const errorText = useSelector((store) => store.school.errorText);
+  const renderErrorMessage = useSelector(
+    (store) => store.school.renderErrorMessage
+  );
   const dispatch = useDispatch();
   const [roomForm, setRoomForm] = useState({
     name: "",
     building_id: 0,
   });
-  const [errors, setErrors] = useState([]);
 
-  function renderErrors() {
-    //[]: link errors to school store
+  function renderErrors(errors) {
     const error_text = errors.map((error, index) => {
       return (
-        <li key={index}>
-          {error[0]}
-          <ul>
-            {error[1].map((text) => (
-              <li>{text}</li>
-            ))}
-          </ul>
-        </li>
+        <ul key={index}>
+          <li>
+            {error[0]}
+            <ul>
+              <li>{error[1]}</li>
+            </ul>
+          </li>
+        </ul>
       );
     });
     return error_text;
@@ -38,7 +40,9 @@ function CreateRoom({ closeForm, building_id }) {
     e.preventDefault();
     //[x]: link to action for adding room to school store
     dispatch(addNewRoom(roomForm));
-    closeForm();
+    if (renderErrorMessage) {
+      closeForm();
+    }
   }
 
   return (
@@ -62,9 +66,11 @@ function CreateRoom({ closeForm, building_id }) {
           Cancel
         </Button>
         <br />
-        <Form.Text className="text-danger">
-          <ul>{renderErrors()}</ul>
-        </Form.Text>
+        {errorText.length > 0 && (
+          <Form.Text className="text-danger">
+            {renderErrors(errorText)}
+          </Form.Text>
+        )}
       </Form>
     </div>
   );
