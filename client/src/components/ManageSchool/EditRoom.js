@@ -7,6 +7,10 @@ import { editRoomInfo } from "./schoolSlice";
 function EditRoom({ closeForm, room_id = 0, resources_name }) {
   const isLoading = useSelector((store) => store.user.isLoading);
   const locations = useSelector((store) => store.school.locations);
+  const errorText = useSelector((store) => store.school.errorText);
+  const renderErrorMessage = useSelector(
+    (store) => store.school.renderErrorMessage
+  );
 
   const dispatch = useDispatch();
   const [roomForm, setRoomForm] = useState({
@@ -16,20 +20,17 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
     building_id: 0,
   });
 
-  const [errors, setErrors] = useState([]);
-
-  function renderErrors() {
-    //[]: link to errors from school store
+  function renderErrors(errors) {
     const error_text = errors.map((error, index) => {
       return (
-        <li key={index}>
-          {error[0]}
-          <ul>
-            {error[1].map((text) => (
-              <li>{text}</li>
-            ))}
-          </ul>
-        </li>
+        <ul key={index}>
+          <li>
+            {error[0]}
+            <ul>
+              <li>{error[1]}</li>
+            </ul>
+          </li>
+        </ul>
       );
     });
     return error_text;
@@ -43,9 +44,10 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
 
   function handleEditRoomSubmit(e) {
     e.preventDefault();
-    setErrors([]); //[x]:link to clear error in school store
     dispatch(editRoomInfo(roomForm));
-    closeForm();
+    if (renderErrorMessage) {
+      closeForm();
+    }
   }
 
   return (
@@ -88,9 +90,11 @@ function EditRoom({ closeForm, room_id = 0, resources_name }) {
           Cancel
         </Button>
         <br />
-        <Form.Text className="text-danger">
-          <ul>{renderErrors()}</ul>
-        </Form.Text>
+        {errorText.length > 0 && (
+          <Form.Text className="text-danger">
+            {renderErrors(errorText)}
+          </Form.Text>
+        )}
       </Form>
     </div>
   );
