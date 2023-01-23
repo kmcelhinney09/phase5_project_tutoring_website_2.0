@@ -18,25 +18,22 @@ function EditUserInfo({
     grade: userInfo.grade,
   });
 
-  const [errors, setErrors] = useState([]); // link to errors in user store
+  const [errors, setErrors] = useState([]);
   const [subjectsTutored, setSubjectsTutored] = useState(
     userInfo.subjects_signed_up
   );
 
   function renderErrors() {
+    console.log(errors);
     const error_text = errors.map((error, index) => {
-      return (
-        <li key={index}>
-          {error[0]}
-          <ul>
-            {error[1].map((text) => (
-              <li>{text}</li>
-            ))}
-          </ul>
-        </li>
-      );
+      return <li key={index}>{error}</li>;
     });
-    return error_text;
+    return (
+      <>
+        <p>Try and refesh</p>
+        {error_text}
+      </>
+    );
   }
 
   function handleUserInfoOnChange(e) {
@@ -47,13 +44,11 @@ function EditUserInfo({
 
   function handleUserInfoOnSubmit(e) {
     e.preventDefault();
-    setErrors([]); //[]: link to error reset in user store
+    setErrors([]);
     //[x]: link to edit user action in user store (This is contained to just edit/mangae user no need for store)
     let new_data = JSON.parse(JSON.stringify(schoolData));
     new_data[userIndex] = userInfoForm;
     setSchoolData(new_data);
-
-    closeForm();
 
     fetch(`/users/${userInfo.id}`, {
       method: "PATCH",
@@ -61,9 +56,15 @@ function EditUserInfo({
       body: JSON.stringify(userInfoForm),
     }).then((res) => {
       if (res.ok) {
-        res.json().then((user) => {});
+        res.json().then((user) => closeForm());
       } else {
-        res.json().then((e) => setErrors(Object.entries(e.error))); //[]: link to add errors in user store
+        res.json().then((e) => {
+          if (typeof e.error === "string") {
+            setErrors([e.exception, [e.error]]);
+          } else {
+            setErrors(Object.entries(e.error));
+          }
+        });
       }
     });
   }
@@ -77,6 +78,18 @@ function EditUserInfo({
 
     fetch(`/tutored_subject/${value[1]}`, {
       method: "DELETE",
+    }).then((res) => {
+      if (res.ok) {
+        res.json().then((data) => {});
+      } else {
+        res.json().then((e) => {
+          if (typeof e.error === "string") {
+            setErrors([e.exception, [e.error]]);
+          } else {
+            setErrors(Object.entries(e.error));
+          }
+        });
+      }
     });
   }
 
@@ -162,9 +175,11 @@ function EditUserInfo({
           Close
         </Button>
         <br />
-        <Form.Text className="text-danger">
-          <ul>{renderErrors()}</ul>
-        </Form.Text>
+        {errors.length > 0 ? (
+          <Form.Text className="text-danger">
+            <ul>{renderErrors()}</ul>
+          </Form.Text>
+        ) : null}
       </Form>
     </div>
   );

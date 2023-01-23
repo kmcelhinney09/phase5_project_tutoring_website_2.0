@@ -2,10 +2,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import format from "date-fns/format";
 import TimeSlotForm from "./TimeSlotForm";
-import {
-  updateTutoringTimeSlot,
-  clearError,
-} from "../ManageSchool/schoolSlice";
+import { updateTutoringTimeSlot } from "../ManageSchool/schoolSlice";
 
 function EditTutoringTimeSlots({ closeForm, slotInfo }) {
   const school = useSelector((store) => store.school);

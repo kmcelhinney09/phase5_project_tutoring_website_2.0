@@ -25,7 +25,7 @@ function ViewTutoringTimeSlot() {
   }, [id]);
   console.log(tutoringSlotInfo);
   function handleDropTutor(tutor_id, tutor_index) {
-    //[]: link drop tutor to school store
+    //[x]: link drop tutor to school store (self contaned)
     let new_slot = JSON.parse(JSON.stringify(tutoringSlotInfo));
     let tutors = new_slot.tutors;
     let bookedSlots = new_slot.booked_slots;
