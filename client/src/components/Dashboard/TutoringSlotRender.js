@@ -8,8 +8,6 @@ function TutoringSlotRender({
   handleDashboardKeyChange,
   callingComponent,
 }) {
-  // const auth = useAuth();
-  // const user = auth.currentUser;
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,6 +15,7 @@ function TutoringSlotRender({
 
   function handleBookTutoring(tutorId) {
     // [x]:link booking tutoring to user slice
+    console.log(slotInfo);
     let signUpSlot;
     slotInfo.tutor_slot_sign_ups.forEach((signUp) => {
       if (signUp.tutor_id === tutorId) {

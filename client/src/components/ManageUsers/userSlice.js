@@ -37,6 +37,7 @@ export const reAuthorizeUser = createAsyncThunk("user/reAuthorize", () => {
     .then((res) => res.json())
     .then((userInfo) => userInfo);
 });
+
 //[x]: create thunk for user sign up
 export const signUpUser = createAsyncThunk("user/SignUp", (signUpForm) => {
   return fetch("/users", {
