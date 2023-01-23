@@ -18,7 +18,7 @@ function ManageUsers() {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-  const [errors, setErrors] = useState([]); //[]: link to errors in user store (might Remove do we need?)
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     if (user.role === "admin") {
@@ -35,7 +35,6 @@ function ManageUsers() {
   }, [school.id]);
 
   function renderErrors() {
-    //[]: link to errors in user store
     const error_text = errors.map((error, index) => {
       return (
         <li key={index}>
