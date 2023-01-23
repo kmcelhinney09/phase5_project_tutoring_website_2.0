@@ -31,9 +31,9 @@ The front end was built with React, Redux, and React-bootstrap to create unique 
 - Redux-toolkit 1.9.1
 - React Redux 8.0.5
 - React Router Dom 6.4.3
-- React-bootstrap for front end css
-  --Bootstrap 5.2.3
-  --React-Bootstrap 2.6.0
+  React-bootstrap for front end css
+  -Bootstrap 5.2.3
+  -React-Bootstrap 2.6.0
 
 ## Setup
 
