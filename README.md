@@ -31,7 +31,7 @@ The front end was built with React, Redux, and React-bootstrap to create unique 
 - Redux-toolkit 1.9.1
 - React Redux 8.0.5
 - React Router Dom 6.4.3
-  React-bootstrap for front end css
+- React-bootstrap for front end css
   - Bootstrap 5.2.3
   - React-Bootstrap 2.6.0
 
@@ -173,21 +173,36 @@ brew services start postgresql
 ### Getting React-Bootstrap
 
 Navigate to the Client folder in the terminal
-'''cd client '''
+
+```sh
+cd client
+```
 
 then install react-bootstrap
-'''npm install react-bootstrap bootstrap'''
+
+```sh
+npm install react-bootstrap bootstrap
+```
 
 ### Getting Redux-Toolkit
 
 Navigate to the Client folder in the terminal
-'''cd client '''
+
+```sh
+cd client
+```
 
 then install redux-tookit
-'''npm install @reduxjs/toolkit'''
+
+```sh
+npm install @reduxjs/toolkit
+```
 
 you will also need to install react-redux
-'''npm install react-redux'''
+
+```sh
+npm install react-redux
+```
 
 ## Colaboration
 
@@ -198,4 +213,6 @@ I would really like to grow this site as an open source project for schools to u
 - [Getting Started with Ruby on Rails on Render](https://render.com/docs/deploy-rails)
 - [React-Bootstrap getting started](https://react-bootstrap.github.io/getting-started/introduction)
 - [Faker ruby gem](https://github.com/faker-ruby/faker)
-- [React Router Dom](https://reactrouter.com/en/main) -[React Redux](https://react-redux.js.org/introduction/getting-started) -[Redux ToolKit](https://redux-toolkit.js.org/introduction/getting-started)
+- [React Router Dom](https://reactrouter.com/en/main)
+- [React Redux](https://react-redux.js.org/introduction/getting-started)
+- [Redux ToolKit](https://redux-toolkit.js.org/introduction/getting-started)
