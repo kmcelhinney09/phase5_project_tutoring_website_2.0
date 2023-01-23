@@ -260,7 +260,6 @@ const schoolSlice = createSlice({
         state.tutoringTimeSlots.sort((a, b) =>
           a.date_sort > b.date_sort ? 1 : -1
         );
-        //[]: add sucess message and error handeling here
         state.isloading = false;
       }
     },

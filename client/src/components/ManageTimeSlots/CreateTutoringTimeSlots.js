@@ -4,7 +4,10 @@ import { createTutoringTimeSlot } from "../ManageSchool/schoolSlice";
 import TimeSlotForm from "./TimeSlotForm";
 
 function CreateTutoringTimeSlots({ closeForm }) {
-  const { user, school } = useSelector((store) => store);
+  const user = useSelector((store) => store.user);
+  const renderErrorMessage = useSelector(
+    (store) => store.school.renderErrorMessage
+  );
   const dispatch = useDispatch();
   const [slotForm, setSlotForm] = useState({
     userId: user.id,
@@ -16,16 +19,14 @@ function CreateTutoringTimeSlots({ closeForm }) {
     tutor_capacity: 0,
     tutee_capacity: 0,
   });
-  const [errors, setErrors] = useState([]); //[]: link to errors in school store
 
   function handleCreateSlotSubmit(e) {
     e.preventDefault();
-    setErrors([]); //[]: link to clear errors in school store
     //[x] link to add a new tutoring timeslot to the school store
-
     dispatch(createTutoringTimeSlot(slotForm));
-
-    closeForm();
+    if (renderErrorMessage) {
+      closeForm();
+    }
   }
 
   return (
@@ -34,7 +35,6 @@ function CreateTutoringTimeSlots({ closeForm }) {
       setSlotForm={setSlotForm}
       handleSlotSubmit={handleCreateSlotSubmit}
       closeForm={closeForm}
-      errors={errors}
     />
   );
 }

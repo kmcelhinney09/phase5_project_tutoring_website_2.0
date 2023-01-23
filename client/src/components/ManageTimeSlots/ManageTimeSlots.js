@@ -9,7 +9,10 @@ import Button from "react-bootstrap/esm/Button";
 
 import CreateTutoringTimeSlots from "./CreateTutoringTimeSlots";
 import EditTutoringTimeSlots from "./EditTutoringTimeSlots";
-import { removeTutoringTimeSlot } from "../ManageSchool/schoolSlice";
+import {
+  removeTutoringTimeSlot,
+  clearError,
+} from "../ManageSchool/schoolSlice";
 import ActionMessage from "../ActionMessage";
 
 function ManageTimeSlots() {
@@ -21,7 +24,10 @@ function ManageTimeSlots() {
   const [modalTitle, setModalTitle] = useState("");
   const [modalBody, setModalBody] = useState("");
 
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    dispatch(clearError());
+  };
   const handleShowModal = () => setShowModal(true);
 
   function handleRemoveTutoringSlot(slot_index, slot_id) {

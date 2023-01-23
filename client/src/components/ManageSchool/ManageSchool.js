@@ -105,7 +105,6 @@ function ManageSchool() {
     dispatch(removeBuildingAndItsRooms(building_index));
 
     fetch(`/building/${building_id}`, {
-      //[]: create message that action was successful
       method: "DELETE",
     }).then((res) => {
       if (!res.ok) {
@@ -120,7 +119,6 @@ function ManageSchool() {
     dispatch(removeSchoolSubject(subjectId));
 
     fetch(`/subject/${subjectId}`, {
-      //[]: create message that action was successful
       method: "DELETE",
     }).then((res) => {
       if (!res.ok) {

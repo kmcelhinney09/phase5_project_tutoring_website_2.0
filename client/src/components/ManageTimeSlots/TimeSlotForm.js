@@ -3,13 +3,7 @@ import { useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function TimeSlotForm({
-  slotForm,
-  setSlotForm,
-  handleSlotSubmit,
-  closeForm,
-  errors,
-}) {
+function TimeSlotForm({ slotForm, setSlotForm, handleSlotSubmit, closeForm }) {
   const { user, school } = useSelector((store) => store);
   const [roomSelection, setRoomSelection] = useState("");
 
@@ -19,18 +13,17 @@ function TimeSlotForm({
     }
   }, [slotForm]);
 
-  function renderErrors() {
-    //[]: link to errors in school store
+  function renderErrors(errors) {
     const error_text = errors.map((error, index) => {
       return (
-        <li key={index}>
-          {error[0]}
-          <ul>
-            {error[1].map((text) => (
-              <li>{text}</li>
-            ))}
-          </ul>
-        </li>
+        <ul key={index}>
+          <li>
+            {error[0]}
+            <ul>
+              <li>{error[1]}</li>
+            </ul>
+          </li>
+        </ul>
       );
     });
     return error_text;
@@ -147,9 +140,11 @@ function TimeSlotForm({
           Cancel
         </Button>
         <br />
-        <Form.Text className="text-danger">
-          <ul>{renderErrors()}</ul>
-        </Form.Text>
+        {school.errorText.length > 0 && (
+          <Form.Text className="text-danger">
+            {renderErrors(school.errorText)}
+          </Form.Text>
+        )}
       </Form>
     </div>
   );
