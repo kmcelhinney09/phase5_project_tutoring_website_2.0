@@ -8,7 +8,6 @@ import Button from "react-bootstrap/esm/Button";
 function ViewTutoringTimeSlot() {
   const [tutoringSlotInfo, setTutoringSlotInfo] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -16,7 +15,6 @@ function ViewTutoringTimeSlot() {
       if (res.ok) {
         res.json().then((data) => {
           setTutoringSlotInfo(data);
-          setRefresh(false);
         });
       } else {
         res.json().then((e) => setErrors(Object.entries(e.error)));
@@ -44,7 +42,6 @@ function ViewTutoringTimeSlot() {
     fetch(`/tutor_slot_sign_up/${tutor_signup_id}`, {
       method: "DELETE",
     });
-    setRefresh(true);
   }
 
   function handleDropBookedSession(session_id, session_index) {
@@ -55,7 +52,6 @@ function ViewTutoringTimeSlot() {
     fetch(`/booked_slot/${session_id}`, {
       method: "DELETE",
     });
-    setRefresh(true);
   }
 
   function renderErrors() {
